@@ -9,7 +9,7 @@ const HeroSection = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="relative bg-gradient-to-br from-amber-50 via-stone-50 to-green-50 py-20">
+    <section className="relative bg-gradient-to-br from-congo-beige via-congo-beige/80 to-congo-beige/60 py-20">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -33,7 +33,7 @@ const HeroSection = () => {
               </div>
 
               <div className="flex flex-wrap gap-4">
-                <Button asChild size="lg" className="bg-congo-green hover:bg-congo-green/90 text-white">
+                <Button asChild size="lg" className="bg-congo-green hover:bg-congo-green/90 text-congo-beige border-0">
                   <Link to="/explorer" className="flex items-center space-x-2">
                     <MapPin className="h-5 w-5" />
                     <span>{t('nav.explore')}</span>
@@ -74,7 +74,7 @@ const HeroSection = () => {
             >
               <div className="relative overflow-hidden rounded-2xl shadow-2xl">
                 <img
-                  src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&h=600&fit=crop"
+                  src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&h=600&fit=crop"
                   alt="Paysage de la République Démocratique du Congo"
                   className="w-full h-96 object-cover"
                 />
@@ -82,14 +82,14 @@ const HeroSection = () => {
               </div>
               
               {/* Floating badges */}
-              <div className="absolute -top-4 -right-4 bg-congo-beige rounded-full p-4 shadow-lg">
+              <div className="absolute -top-4 -right-4 bg-congo-beige rounded-full p-4 shadow-lg border border-congo-brown/10">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-congo-green">26</div>
                   <div className="text-xs text-congo-brown">Provinces</div>
                 </div>
               </div>
               
-              <div className="absolute -bottom-4 -left-4 bg-congo-beige rounded-full p-4 shadow-lg">
+              <div className="absolute -bottom-4 -left-4 bg-congo-beige rounded-full p-4 shadow-lg border border-congo-brown/10">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-congo-brown">RDC</div>
                   <div className="text-xs text-congo-brown/70">À découvrir</div>

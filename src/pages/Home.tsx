@@ -18,28 +18,28 @@ const Home = () => {
         <CTASection />
         
         {/* About Mission Section */}
-        <section className="py-16 bg-white">
+        <section className="py-16 bg-congo-beige">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center space-y-8">
-              <h2 className="text-3xl font-bold text-stone-900">
+              <h2 className="text-3xl font-bold text-congo-brown">
                 {t('home.aboutTitle')}
               </h2>
-              <p className="text-lg text-stone-600 leading-relaxed">
+              <p className="text-lg text-congo-brown/80 leading-relaxed">
                 {t('home.aboutText')}
               </p>
               
               <div className="grid md:grid-cols-3 gap-8 mt-12">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-green-700 mb-2">26</div>
-                  <div className="text-stone-600">Provinces explorées</div>
+                  <div className="text-3xl font-bold text-congo-green mb-2">26</div>
+                  <div className="text-congo-brown/70">Provinces explorées</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-yellow-600 mb-2">500+</div>
-                  <div className="text-stone-600">Photos partagées</div>
+                  <div className="text-congo-brown/70">Photos partagées</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-blue-600 mb-2">50+</div>
-                  <div className="text-stone-600">Documentaires créés</div>
+                  <div className="text-congo-brown/70">Documentaires créés</div>
                 </div>
               </div>
             </div>

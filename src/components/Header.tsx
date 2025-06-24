@@ -25,7 +25,7 @@ const Header = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-stone-200">
+    <header className="sticky top-0 z-50 bg-congo-beige/95 backdrop-blur-sm border-b border-congo-brown/20">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -35,7 +35,7 @@ const Header = () => {
               alt="VISITE CONGO" 
               className="h-10 w-10 rounded-full"
             />
-            <span className="text-xl font-bold text-green-800">
+            <span className="text-xl font-bold text-congo-brown">
               {t('home.title')}
             </span>
           </Link>
@@ -48,8 +48,8 @@ const Header = () => {
                 to={item.href}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   isActive(item.href)
-                    ? 'text-green-800 bg-green-50'
-                    : 'text-stone-600 hover:text-green-700 hover:bg-stone-50'
+                    ? 'text-congo-beige bg-congo-brown'
+                    : 'text-congo-brown hover:text-congo-beige hover:bg-congo-green'
                 }`}
               >
                 {item.name}
@@ -65,7 +65,7 @@ const Header = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="lg:hidden"
+              className="lg:hidden text-congo-brown hover:text-congo-beige hover:bg-congo-green"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -80,7 +80,7 @@ const Header = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden border-t border-stone-200"
+              className="lg:hidden border-t border-congo-brown/20"
             >
               <nav className="py-4 space-y-2">
                 {navigation.map((item) => (
@@ -89,8 +89,8 @@ const Header = () => {
                     to={item.href}
                     className={`block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                       isActive(item.href)
-                        ? 'text-green-800 bg-green-50'
-                        : 'text-stone-600 hover:text-green-700 hover:bg-stone-50'
+                        ? 'text-congo-beige bg-congo-brown'
+                        : 'text-congo-brown hover:text-congo-beige hover:bg-congo-green'
                     }`}
                     onClick={() => setIsMenuOpen(false)}
                   >
