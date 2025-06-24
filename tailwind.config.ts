@@ -56,44 +56,15 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Custom colors for VISITE CONGO
+				// Custom colors for VISITE CONGO - Updated with your specified colors
 				congo: {
-					green: {
-						50: '#f0f9f4',
-						100: '#dcf2e3',
-						200: '#bce4ca',
-						300: '#8dcfa7',
-						400: '#57b37d',
-						500: '#2d5731',
-						600: '#1f3b24',
-						700: '#19301d',
-						800: '#142619',
-						900: '#0f1d13'
-					},
-					gold: {
-						50: '#fdf8e8',
-						100: '#fbefc2',
-						200: '#f7e089',
-						300: '#f2cc46',
-						400: '#d4af37',
-						500: '#b8961f',
-						600: '#9a7715',
-						700: '#7a5b14',
-						800: '#654817',
-						900: '#563c18'
-					},
-					beige: {
-						50: '#f9f6f2',
-						100: '#f5e6d3',
-						200: '#ebcfa7',
-						300: '#ddb277',
-						400: '#d19c52',
-						500: '#c88a3b',
-						600: '#ba7730',
-						700: '#9b6129',
-						800: '#7d4f26',
-						900: '#654020'
-					}
+					beige: '#fdf1da', // Main beige color
+					brown: '#2f2013', // Main dark brown color
+					green: '#3c5035', // Main green color
+					// Additional shades for better design flexibility
+					'beige-dark': '#f4e4b8',
+					'brown-light': '#4a2f1f',
+					'green-light': '#4d6342'
 				}
 			},
 			borderRadius: {
