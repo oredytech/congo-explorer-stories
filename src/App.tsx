@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -22,7 +21,6 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/explorer" element={<Explorer />} />
-          {/* Placeholder routes for future pages */}
           <Route path="/documentaires" element={<div className="min-h-screen flex items-center justify-center bg-stone-50"><div className="text-center"><h1 className="text-2xl font-bold mb-4">Documentaires</h1><p className="text-stone-600">Page en construction...</p></div></div>} />
           <Route path="/galerie" element={<div className="min-h-screen flex items-center justify-center bg-stone-50"><div className="text-center"><h1 className="text-2xl font-bold mb-4">Galerie</h1><p className="text-stone-600">Page en construction...</p></div></div>} />
           <Route path="/articles" element={<div className="min-h-screen flex items-center justify-center bg-stone-50"><div className="text-center"><h1 className="text-2xl font-bold mb-4">Articles</h1><p className="text-stone-600">Page en construction...</p></div></div>} />
