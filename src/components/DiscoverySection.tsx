@@ -1,0 +1,117 @@
+
+import { useTranslation } from 'react-i18next';
+import { Play, Clock, Eye } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { motion } from 'framer-motion';
+
+const DiscoverySection = () => {
+  const { t } = useTranslation();
+
+  const discovery = {
+    title: "La Vallée de la Nsele",
+    subtitle: "Kinshasa - Province de Kinshasa",
+    description: "Découvrez ce joyau naturel aux portes de Kinshasa, où la nature reprend ses droits dans un écosystème préservé. La Vallée de la Nsele offre des paysages à couper le souffle et une biodiversité exceptionnelle.",
+    image: "https://images.unsplash.com/photo-1485833077593-4278bba3f11f",
+    duration: "15 min",
+    views: "2.3k",
+    type: "Documentaire"
+  };
+
+  return (
+    <section className="py-16 bg-gradient-to-br from-stone-50 to-green-50">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl font-bold text-stone-900 mb-4">
+            {t('home.discoverMonth')}
+          </h2>
+          <p className="text-lg text-stone-600">
+            Chaque mois, nous mettons en lumière un lieu exceptionnel de la RDC
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="max-w-4xl mx-auto"
+        >
+          <Card className="overflow-hidden shadow-2xl border-stone-200">
+            <div className="grid lg:grid-cols-2">
+              {/* Image */}
+              <div className="relative">
+                <img
+                  src={discovery.image}
+                  alt={discovery.title}
+                  className="w-full h-64 lg:h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-black/20"></div>
+                
+                {/* Play button overlay */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Button size="lg" className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/30">
+                    <Play className="h-6 w-6 mr-2" />
+                    Regarder
+                  </Button>
+                </div>
+
+                {/* Video stats */}
+                <div className="absolute bottom-4 left-4 flex items-center space-x-4 text-white text-sm">
+                  <div className="flex items-center space-x-1">
+                    <Clock className="h-4 w-4" />
+                    <span>{discovery.duration}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Eye className="h-4 w-4" />
+                    <span>{discovery.views}</span>
+                  </div>
+                </div>
+
+                {/* Type badge */}
+                <div className="absolute top-4 left-4">
+                  <span className="bg-green-700 text-white px-3 py-1 rounded-full text-sm font-medium">
+                    {discovery.type}
+                  </span>
+                </div>
+              </div>
+
+              {/* Content */}
+              <CardContent className="p-8 flex flex-col justify-center">
+                <div className="space-y-6">
+                  <div>
+                    <p className="text-green-700 font-medium text-sm mb-2">
+                      {discovery.subtitle}
+                    </p>
+                    <h3 className="text-2xl font-bold text-stone-900 mb-4">
+                      {discovery.title}
+                    </h3>
+                    <p className="text-stone-600 leading-relaxed">
+                      {discovery.description}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap gap-3">
+                    <Button className="bg-green-700 hover:bg-green-800">
+                      Voir le documentaire
+                    </Button>
+                    <Button variant="outline">
+                      Explorer la région
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </div>
+          </Card>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default DiscoverySection;
