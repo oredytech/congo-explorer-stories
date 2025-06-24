@@ -79,25 +79,25 @@ const Support = () => {
 
   const impacts = [
     {
-      icon: <Camera className="h-12 w-12 text-blue-600" />,
+      icon: <Camera className="h-12 w-12 text-congo-green" />,
       title: 'Documentation visuelle',
       description: '500+ photos et 50+ vidéos documentaires produites',
       stat: '550+'
     },
     {
-      icon: <Users className="h-12 w-12 text-green-600" />,
+      icon: <Users className="h-12 w-12 text-congo-green" />,
       title: 'Communautés touchées',
       description: 'Plus de 100 communautés visitées et documentées',
       stat: '100+'
     },
     {
-      icon: <Plane className="h-12 w-12 text-purple-600" />,
+      icon: <Plane className="h-12 w-12 text-congo-green" />,
       title: 'Provinces explorées',
       description: '22 des 26 provinces déjà visitées',
       stat: '22/26'
     },
     {
-      icon: <Heart className="h-12 w-12 text-red-600" />,
+      icon: <Heart className="h-12 w-12 text-congo-green" />,
       title: 'Explorateurs actifs',
       description: 'Réseau de 45 explorateurs bénévoles',
       stat: '45'
@@ -137,10 +137,10 @@ const Support = () => {
         <div className="container mx-auto px-4">
           {/* Header */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl font-bold text-stone-900 mb-4">
+            <h1 className="text-4xl font-bold text-congo-brown mb-4">
               Soutenez Notre Mission
             </h1>
-            <p className="text-lg text-stone-600 max-w-3xl mx-auto">
+            <p className="text-lg text-congo-brown/80 max-w-3xl mx-auto">
               Votre soutien nous permet de continuer à révéler les trésors cachés de la RDC 
               et de partager sa beauté avec le monde entier.
             </p>
@@ -148,23 +148,23 @@ const Support = () => {
 
           {/* Impact Section */}
           <div className="mb-16">
-            <h2 className="text-2xl font-bold text-stone-900 text-center mb-8">
+            <h2 className="text-2xl font-bold text-congo-brown text-center mb-8">
               Notre Impact
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {impacts.map((impact, index) => (
-                <Card key={index} className="text-center">
+                <Card key={index} className="text-center bg-congo-beige border-congo-brown/20">
                   <CardContent className="pt-6">
                     <div className="flex justify-center mb-4">
                       {impact.icon}
                     </div>
-                    <div className="text-3xl font-bold text-stone-900 mb-2">
+                    <div className="text-3xl font-bold text-congo-brown mb-2">
                       {impact.stat}
                     </div>
-                    <h3 className="font-semibold text-stone-900 mb-2">
+                    <h3 className="font-semibold text-congo-brown mb-2">
                       {impact.title}
                     </h3>
-                    <p className="text-sm text-stone-600">
+                    <p className="text-sm text-congo-brown/70">
                       {impact.description}
                     </p>
                   </CardContent>
@@ -176,7 +176,7 @@ const Support = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Left Column - Projects */}
             <div className="lg:col-span-2 space-y-8">
-              <h2 className="text-2xl font-bold text-stone-900">
+              <h2 className="text-2xl font-bold text-congo-brown">
                 Projets à soutenir
               </h2>
               
@@ -184,8 +184,8 @@ const Support = () => {
                 {projects.map((project) => (
                   <Card 
                     key={project.id}
-                    className={`cursor-pointer transition-all hover:shadow-lg ${
-                      selectedProject === project.id ? 'ring-2 ring-green-500' : ''
+                    className={`cursor-pointer transition-all hover:shadow-lg bg-congo-beige border-congo-brown/20 ${
+                      selectedProject === project.id ? 'ring-2 ring-congo-green' : ''
                     }`}
                     onClick={() => setSelectedProject(project.id)}
                   >
@@ -196,26 +196,26 @@ const Support = () => {
                         className="w-full h-40 object-cover rounded-t-lg"
                       />
                       {selectedProject === project.id && (
-                        <Badge className="absolute top-2 right-2 bg-green-600">
+                        <Badge className="absolute top-2 right-2 bg-congo-green text-congo-beige">
                           Sélectionné
                         </Badge>
                       )}
                     </div>
                     <CardContent className="p-4">
-                      <h3 className="font-semibold text-stone-900 mb-2">
+                      <h3 className="font-semibold text-congo-brown mb-2">
                         {project.title}
                       </h3>
-                      <p className="text-sm text-stone-600 mb-4">
+                      <p className="text-sm text-congo-brown/70 mb-4">
                         {project.description}
                       </p>
                       
                       {/* Progress */}
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span className="text-stone-600">
+                          <span className="text-congo-brown/80">
                             {project.raised.toLocaleString()}$ collectés
                           </span>
-                          <span className="text-stone-600">
+                          <span className="text-congo-brown/80">
                             {Math.round((project.raised / project.target) * 100)}%
                           </span>
                         </div>
@@ -223,7 +223,7 @@ const Support = () => {
                           value={(project.raised / project.target) * 100}
                           className="h-2"
                         />
-                        <div className="flex justify-between text-xs text-stone-500">
+                        <div className="flex justify-between text-xs text-congo-brown/60">
                           <span>Objectif: {project.target.toLocaleString()}$</span>
                           <span>{project.supporters} contributeurs</span>
                         </div>
@@ -234,10 +234,10 @@ const Support = () => {
               </div>
 
               {/* Budget Transparency */}
-              <Card>
+              <Card className="bg-congo-beige border-congo-brown/20">
                 <CardHeader>
-                  <CardTitle>Transparence budgétaire</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-congo-brown">Transparence budgétaire</CardTitle>
+                  <CardDescription className="text-congo-brown/70">
                     Découvrez comment vos dons sont utilisés
                   </CardDescription>
                 </CardHeader>
@@ -246,8 +246,8 @@ const Support = () => {
                     {expenses.map((expense, index) => (
                       <div key={index} className="space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span className="font-medium">{expense.category}</span>
-                          <span>{expense.percentage}% - {expense.amount.toLocaleString()}$</span>
+                          <span className="font-medium text-congo-brown">{expense.category}</span>
+                          <span className="text-congo-brown/80">{expense.percentage}% - {expense.amount.toLocaleString()}$</span>
                         </div>
                         <Progress value={expense.percentage} className="h-2" />
                       </div>
@@ -259,20 +259,20 @@ const Support = () => {
 
             {/* Right Column - Donation Form */}
             <div className="space-y-6">
-              <Card>
+              <Card className="bg-congo-beige border-congo-brown/20">
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Heart className="h-6 w-6 mr-2 text-red-500" />
+                  <CardTitle className="flex items-center text-congo-brown">
+                    <Heart className="h-6 w-6 mr-2 text-congo-green" />
                     Faire un don
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-congo-brown/70">
                     Soutenez le projet sélectionné : {projects.find(p => p.id === selectedProject)?.title}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   {/* Donation Amount */}
                   <div>
-                    <label className="block text-sm font-medium text-stone-700 mb-3">
+                    <label className="block text-sm font-medium text-congo-brown mb-3">
                       Montant du don (USD)
                     </label>
                     <div className="grid grid-cols-3 gap-2 mb-4">
@@ -282,7 +282,6 @@ const Support = () => {
                           variant={donationAmount === amount.toString() ? "default" : "outline"}
                           size="sm"
                           onClick={() => setDonationAmount(amount.toString())}
-                          className={donationAmount === amount.toString() ? "bg-green-600 hover:bg-green-700" : ""}
                         >
                           ${amount}
                         </Button>
@@ -294,26 +293,27 @@ const Support = () => {
                       value={donationAmount}
                       onChange={(e) => setDonationAmount(e.target.value)}
                       min="1"
+                      className="bg-congo-beige border-congo-brown/30 text-congo-brown placeholder:text-congo-brown/50"
                     />
                   </div>
 
                   {/* Payment Methods */}
                   <div>
-                    <label className="block text-sm font-medium text-stone-700 mb-3">
+                    <label className="block text-sm font-medium text-congo-brown mb-3">
                       Méthode de paiement
                     </label>
                     <div className="space-y-2">
                       {paymentMethods.map((method, index) => (
                         <div 
                           key={index}
-                          className={`p-3 border rounded-lg cursor-pointer hover:bg-stone-50 ${
+                          className={`p-3 border border-congo-brown/20 rounded-lg cursor-pointer hover:bg-congo-brown/5 ${
                             method.available ? '' : 'opacity-50 cursor-not-allowed'
                           }`}
                         >
                           <div className="flex items-center space-x-3">
-                            {method.icon}
+                            <div className="text-congo-brown">{method.icon}</div>
                             <div>
-                              <div className="font-medium text-stone-900">
+                              <div className="font-medium text-congo-brown">
                                 {method.name}
                                 {!method.available && (
                                   <Badge variant="secondary" className="ml-2">
@@ -321,7 +321,7 @@ const Support = () => {
                                   </Badge>
                                 )}
                               </div>
-                              <div className="text-sm text-stone-600">
+                              <div className="text-sm text-congo-brown/70">
                                 {method.description}
                               </div>
                             </div>
@@ -333,33 +333,33 @@ const Support = () => {
 
                   <Button 
                     onClick={handleDonation}
-                    className="w-full bg-green-600 hover:bg-green-700"
+                    className="w-full"
                     size="lg"
                   >
                     Faire un don de ${donationAmount || '0'}
                   </Button>
 
-                  <p className="text-xs text-stone-500 text-center">
+                  <p className="text-xs text-congo-brown/60 text-center">
                     Paiement sécurisé. Vos informations sont protégées.
                   </p>
                 </CardContent>
               </Card>
 
               {/* Other Ways to Help */}
-              <Card>
+              <Card className="bg-congo-beige border-congo-brown/20">
                 <CardHeader>
-                  <CardTitle>Autres façons d'aider</CardTitle>
+                  <CardTitle className="text-congo-brown">Autres façons d'aider</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <Button variant="outline" className="w-full justify-start">
+                  <Button variant="outline" className="w-full justify-start text-congo-brown border-congo-brown/30 hover:bg-congo-brown/5">
                     <Users className="h-4 w-4 mr-2" />
                     Devenir bénévole
                   </Button>
-                  <Button variant="outline" className="w-full justify-start">
+                  <Button variant="outline" className="w-full justify-start text-congo-brown border-congo-brown/30 hover:bg-congo-brown/5">
                     <Camera className="h-4 w-4 mr-2" />
                     Partager nos contenus
                   </Button>
-                  <Button variant="outline" className="w-full justify-start">
+                  <Button variant="outline" className="w-full justify-start text-congo-brown border-congo-brown/30 hover:bg-congo-brown/5">
                     <Laptop className="h-4 w-4 mr-2" />
                     Contribuer techniquement
                   </Button>
@@ -367,9 +367,9 @@ const Support = () => {
               </Card>
 
               {/* Recent Supporters */}
-              <Card>
+              <Card className="bg-congo-beige border-congo-brown/20">
                 <CardHeader>
-                  <CardTitle>Derniers soutiens</CardTitle>
+                  <CardTitle className="text-congo-brown">Derniers soutiens</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -381,14 +381,14 @@ const Support = () => {
                     ].map((supporter, index) => (
                       <div key={index} className="flex items-center justify-between text-sm">
                         <div className="flex items-center space-x-2">
-                          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                            <Heart className="h-4 w-4 text-green-600" />
+                          <div className="w-8 h-8 bg-congo-green/20 rounded-full flex items-center justify-center">
+                            <Heart className="h-4 w-4 text-congo-green" />
                           </div>
-                          <span className="font-medium">{supporter.name}</span>
+                          <span className="font-medium text-congo-brown">{supporter.name}</span>
                         </div>
                         <div className="text-right">
-                          <div className="font-medium">${supporter.amount}</div>
-                          <div className="text-stone-500">Il y a {supporter.time}</div>
+                          <div className="font-medium text-congo-brown">${supporter.amount}</div>
+                          <div className="text-congo-brown/60">Il y a {supporter.time}</div>
                         </div>
                       </div>
                     ))}
@@ -400,7 +400,7 @@ const Support = () => {
 
           {/* Testimonials from supporters */}
           <div className="mt-16">
-            <h2 className="text-2xl font-bold text-stone-900 text-center mb-8">
+            <h2 className="text-2xl font-bold text-congo-brown text-center mb-8">
               Témoignages de nos soutiens
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -424,7 +424,7 @@ const Support = () => {
                   image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
                 }
               ].map((testimonial, index) => (
-                <Card key={index}>
+                <Card key={index} className="bg-congo-beige border-congo-brown/20">
                   <CardContent className="pt-6">
                     <div className="text-center">
                       <img
@@ -432,14 +432,14 @@ const Support = () => {
                         alt={testimonial.name}
                         className="w-16 h-16 rounded-full mx-auto mb-4"
                       />
-                      <p className="text-stone-600 italic mb-4">
+                      <p className="text-congo-brown/80 italic mb-4">
                         "{testimonial.quote}"
                       </p>
                       <div>
-                        <p className="font-semibold text-stone-900">
+                        <p className="font-semibold text-congo-brown">
                           {testimonial.name}
                         </p>
-                        <p className="text-sm text-stone-500">
+                        <p className="text-sm text-congo-brown/60">
                           {testimonial.role}
                         </p>
                       </div>
