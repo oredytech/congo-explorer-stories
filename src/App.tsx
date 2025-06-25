@@ -33,38 +33,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/explorer" element={<Explorer />} />
-          
-          {/* Routes individuelles pour toutes les provinces */}
-          <Route path="/province/kinshasa" element={<ProvinceDetail />} />
-          <Route path="/province/kongo-central" element={<ProvinceDetail />} />
-          <Route path="/province/kwilu" element={<ProvinceDetail />} />
-          <Route path="/province/kwango" element={<ProvinceDetail />} />
-          <Route path="/province/mai-ndombe" element={<ProvinceDetail />} />
-          <Route path="/province/kasai" element={<ProvinceDetail />} />
-          <Route path="/province/kasai-oriental" element={<ProvinceDetail />} />
-          <Route path="/province/kasai-central" element={<ProvinceDetail />} />
-          <Route path="/province/lomami" element={<ProvinceDetail />} />
-          <Route path="/province/sankuru" element={<ProvinceDetail />} />
-          <Route path="/province/maniema" element={<ProvinceDetail />} />
-          <Route path="/province/sud-kivu" element={<ProvinceDetail />} />
-          <Route path="/province/nord-kivu" element={<ProvinceDetail />} />
-          <Route path="/province/ituri" element={<ProvinceDetail />} />
-          <Route path="/province/haut-uele" element={<ProvinceDetail />} />
-          <Route path="/province/bas-uele" element={<ProvinceDetail />} />
-          <Route path="/province/tshopo" element={<ProvinceDetail />} />
-          <Route path="/province/mongala" element={<ProvinceDetail />} />
-          <Route path="/province/nord-ubangi" element={<ProvinceDetail />} />
-          <Route path="/province/sud-ubangi" element={<ProvinceDetail />} />
-          <Route path="/province/equateur" element={<ProvinceDetail />} />
-          <Route path="/province/tshuapa" element={<ProvinceDetail />} />
-          <Route path="/province/haut-katanga" element={<ProvinceDetail />} />
-          <Route path="/province/lualaba" element={<ProvinceDetail />} />
-          <Route path="/province/haut-lomami" element={<ProvinceDetail />} />
-          <Route path="/province/tanganyika" element={<ProvinceDetail />} />
-          
-          {/* Route générale pour les provinces (fallback) */}
           <Route path="/province/:id" element={<ProvinceDetail />} />
-          
           <Route path="/documentaires" element={<Documentaries />} />
           <Route path="/galerie" element={<Gallery />} />
           <Route path="/articles" element={<Articles />} />
@@ -76,7 +45,6 @@ const App = () => (
           <Route path="/partenaires" element={<Partners />} />
           <Route path="/assistance" element={<Assistance />} />
           <Route path="/ajouter" element={<div className="min-h-screen flex items-center justify-center bg-congo-beige"><div className="text-center"><h1 className="text-2xl font-bold mb-4 text-congo-brown">Ajouter du contenu</h1><p className="text-congo-brown/70">Page en construction...</p></div></div>} />
-          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
