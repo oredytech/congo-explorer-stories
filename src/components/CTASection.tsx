@@ -52,7 +52,7 @@ const CTASection = () => {
   };
 
   return (
-    <section className="py-16 bg-stone-900 text-white">
+    <section className="py-16 bg-congo-brown text-congo-beige">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -60,10 +60,10 @@ const CTASection = () => {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl font-bold mb-4">
+          <h2 className="text-3xl font-bold mb-4 text-congo-beige">
             Participez à l'aventure
           </h2>
-          <p className="text-lg text-stone-300 max-w-2xl mx-auto">
+          <p className="text-lg text-congo-beige/80 max-w-2xl mx-auto">
             Ensemble, nous pouvons révéler au monde la beauté extraordinaire de la République Démocratique du Congo
           </p>
         </motion.div>
@@ -78,29 +78,29 @@ const CTASection = () => {
           {actions.map((action, index) => {
             const Icon = action.icon;
             const colorClasses = {
-              green: "text-green-400 bg-green-400/10",
+              green: "text-congo-green bg-congo-green/10",
               blue: "text-blue-400 bg-blue-400/10", 
               yellow: "text-yellow-400 bg-yellow-400/10"
             };
 
             return (
               <motion.div key={index} variants={itemVariants}>
-                <Card className="bg-stone-800 border-stone-700 hover:bg-stone-750 transition-all duration-300 group h-full">
+                <Card className="bg-congo-brown/50 border-congo-beige/20 hover:bg-congo-brown/70 transition-all duration-300 group h-full">
                   <CardContent className="p-8 text-center space-y-6">
                     <div className={`w-16 h-16 rounded-full ${colorClasses[action.color as keyof typeof colorClasses]} flex items-center justify-center mx-auto`}>
                       <Icon className="h-8 w-8" />
                     </div>
                     
                     <div>
-                      <h3 className="text-xl font-semibold mb-3 text-white">
+                      <h3 className="text-xl font-semibold mb-3 text-congo-beige">
                         {action.title}
                       </h3>
-                      <p className="text-stone-300 leading-relaxed">
+                      <p className="text-congo-beige/80 leading-relaxed">
                         {action.description}
                       </p>
                     </div>
 
-                    <Button asChild variant="outline" className="border-stone-600 text-white hover:bg-white hover:text-stone-900 group-hover:border-stone-500">
+                    <Button asChild variant="outline" className="border-congo-beige/60 text-congo-beige hover:bg-congo-beige hover:text-congo-brown group-hover:border-congo-beige/80">
                       <Link to={action.link} className="flex items-center space-x-2">
                         <span>{action.buttonText}</span>
                         <ArrowRight className="h-4 w-4" />

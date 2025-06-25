@@ -63,10 +63,10 @@ const FeaturedSection = () => {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl font-bold text-stone-900 mb-4">
+          <h2 className="text-3xl font-bold text-congo-brown mb-4">
             {t('home.featuredArticles')}
           </h2>
-          <p className="text-lg text-stone-600 max-w-2xl mx-auto">
+          <p className="text-lg text-congo-brown/70 max-w-2xl mx-auto">
             Découvrez nos dernières explorations et reportages sur les merveilles cachées de la RDC
           </p>
         </motion.div>
@@ -80,7 +80,7 @@ const FeaturedSection = () => {
         >
           {featuredArticles.map((article) => (
             <motion.div key={article.id} variants={itemVariants}>
-              <Card className="h-full hover:shadow-xl transition-all duration-300 group border-stone-200">
+              <Card className="h-full hover:shadow-xl transition-all duration-300 group border-congo-brown/20 bg-white">
                 <div className="relative overflow-hidden rounded-t-lg">
                   <img
                     src={article.image}
@@ -88,24 +88,24 @@ const FeaturedSection = () => {
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute top-4 left-4">
-                    <span className="bg-green-700 text-white px-2 py-1 rounded-full text-xs font-medium">
+                    <span className="bg-congo-green text-white px-2 py-1 rounded-full text-xs font-medium">
                       {article.category}
                     </span>
                   </div>
                 </div>
                 
                 <CardHeader>
-                  <CardTitle className="text-lg font-semibold text-stone-900 group-hover:text-green-700 transition-colors">
+                  <CardTitle className="text-lg font-semibold text-congo-brown group-hover:text-congo-green transition-colors">
                     {article.title}
                   </CardTitle>
                 </CardHeader>
                 
                 <CardContent>
-                  <p className="text-stone-600 text-sm leading-relaxed mb-4">
+                  <p className="text-congo-brown/70 text-sm leading-relaxed mb-4">
                     {article.excerpt}
                   </p>
                   
-                  <div className="flex items-center justify-between text-xs text-stone-500">
+                  <div className="flex items-center justify-between text-xs text-congo-brown/60">
                     <div className="flex items-center space-x-1">
                       <MapPin className="h-3 w-3" />
                       <span>{article.province}</span>
@@ -118,7 +118,7 @@ const FeaturedSection = () => {
                 </CardContent>
                 
                 <CardFooter>
-                  <Button variant="ghost" size="sm" className="w-full group-hover:bg-green-50 group-hover:text-green-700">
+                  <Button variant="ghost" size="sm" className="w-full group-hover:bg-congo-green/10 group-hover:text-congo-green text-congo-brown">
                     Lire l'article
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
@@ -129,7 +129,7 @@ const FeaturedSection = () => {
         </motion.div>
 
         <div className="text-center">
-          <Button asChild size="lg" variant="outline">
+          <Button asChild size="lg" variant="outline" className="border-congo-brown text-congo-brown hover:bg-congo-brown hover:text-congo-beige">
             <Link to="/articles" className="flex items-center space-x-2">
               <span>Voir tous les articles</span>
               <ArrowRight className="h-4 w-4" />

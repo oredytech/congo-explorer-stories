@@ -101,10 +101,10 @@ const Documentaries = () => {
         <div className="container mx-auto px-4">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-stone-900 mb-4">
+            <h1 className="text-4xl font-bold text-congo-brown mb-4">
               Nos Documentaires
             </h1>
-            <p className="text-lg text-stone-600 max-w-3xl mx-auto">
+            <p className="text-lg text-congo-brown/70 max-w-3xl mx-auto">
               Découvrez la RDC à travers nos documentaires authentiques. Des récits visuels 
               qui révèlent la beauté, la culture et l'histoire de notre pays.
             </p>
@@ -117,7 +117,7 @@ const Documentaries = () => {
                 key={category.id}
                 variant={selectedCategory === category.id ? "default" : "outline"}
                 onClick={() => setSelectedCategory(category.id)}
-                className={selectedCategory === category.id ? "bg-green-700 hover:bg-green-800" : ""}
+                className={selectedCategory === category.id ? "bg-congo-green hover:bg-congo-green/80 text-white" : "border-congo-brown text-congo-brown hover:bg-congo-brown hover:text-congo-beige"}
               >
                 {category.name}
               </Button>
@@ -127,7 +127,7 @@ const Documentaries = () => {
           {/* Documentary Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredDocumentaries.map((doc) => (
-              <div key={doc.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+              <div key={doc.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow border border-congo-brown/10">
                 <div className="relative">
                   <img
                     src={doc.thumbnail}
@@ -146,32 +146,32 @@ const Documentaries = () => {
                 
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-2">
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge variant="secondary" className="text-xs bg-congo-beige text-congo-brown">
                       {categories.find(cat => cat.id === doc.category)?.name}
                     </Badge>
-                    <div className="flex items-center text-sm text-stone-500">
+                    <div className="flex items-center text-sm text-congo-brown/70">
                       <Eye className="h-3 w-3 mr-1" />
                       {doc.views}
                     </div>
                   </div>
                   
-                  <h3 className="font-semibold text-stone-900 mb-2 line-clamp-2">
+                  <h3 className="font-semibold text-congo-brown mb-2 line-clamp-2">
                     {doc.title}
                   </h3>
                   
-                  <p className="text-stone-600 text-sm mb-4 line-clamp-3">
+                  <p className="text-congo-brown/70 text-sm mb-4 line-clamp-3">
                     {doc.description}
                   </p>
                   
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center text-sm text-stone-500">
+                    <div className="flex items-center text-sm text-congo-brown/60">
                       <Calendar className="h-3 w-3 mr-1" />
                       {new Date(doc.date).toLocaleDateString('fr-FR')}
                     </div>
                     <Button 
                       size="sm" 
                       onClick={() => handlePlayVideo(doc.videoId)}
-                      className="bg-green-700 hover:bg-green-800"
+                      className="bg-congo-green hover:bg-congo-green/80 text-white"
                     >
                       Regarder
                     </Button>
@@ -182,14 +182,14 @@ const Documentaries = () => {
           </div>
 
           {/* Call to Action */}
-          <div className="text-center mt-16 p-8 bg-green-50 rounded-lg">
-            <h2 className="text-2xl font-bold text-stone-900 mb-4">
+          <div className="text-center mt-16 p-8 bg-congo-beige/50 rounded-lg border border-congo-brown/10">
+            <h2 className="text-2xl font-bold text-congo-brown mb-4">
               Vous avez une histoire à raconter ?
             </h2>
-            <p className="text-stone-600 mb-6">
+            <p className="text-congo-brown/70 mb-6">
               Partagez vos découvertes et aidez-nous à documenter les merveilles de la RDC.
             </p>
-            <Button className="bg-green-700 hover:bg-green-800">
+            <Button className="bg-congo-green hover:bg-congo-green/80 text-white">
               Proposer un documentaire
             </Button>
           </div>

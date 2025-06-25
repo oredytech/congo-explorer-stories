@@ -19,7 +19,7 @@ const DiscoverySection = () => {
   };
 
   return (
-    <section className="py-16 bg-gradient-to-br from-stone-50 to-green-50">
+    <section className="py-16 bg-gradient-to-br from-congo-beige/50 to-congo-green/10">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -27,10 +27,10 @@ const DiscoverySection = () => {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl font-bold text-stone-900 mb-4">
+          <h2 className="text-3xl font-bold text-congo-brown mb-4">
             {t('home.discoverMonth')}
           </h2>
-          <p className="text-lg text-stone-600">
+          <p className="text-lg text-congo-brown/70">
             Chaque mois, nous mettons en lumière un lieu exceptionnel de la RDC
           </p>
         </motion.div>
@@ -42,7 +42,7 @@ const DiscoverySection = () => {
           transition={{ duration: 0.6 }}
           className="max-w-4xl mx-auto"
         >
-          <Card className="overflow-hidden shadow-2xl border-stone-200">
+          <Card className="overflow-hidden shadow-2xl border-congo-brown/20 bg-white">
             <div className="grid lg:grid-cols-2">
               {/* Image */}
               <div className="relative">
@@ -75,7 +75,7 @@ const DiscoverySection = () => {
 
                 {/* Type badge */}
                 <div className="absolute top-4 left-4">
-                  <span className="bg-green-700 text-white px-3 py-1 rounded-full text-sm font-medium">
+                  <span className="bg-congo-green text-white px-3 py-1 rounded-full text-sm font-medium">
                     {discovery.type}
                   </span>
                 </div>
@@ -85,22 +85,22 @@ const DiscoverySection = () => {
               <CardContent className="p-8 flex flex-col justify-center">
                 <div className="space-y-6">
                   <div>
-                    <p className="text-green-700 font-medium text-sm mb-2">
+                    <p className="text-congo-green font-medium text-sm mb-2">
                       {discovery.subtitle}
                     </p>
-                    <h3 className="text-2xl font-bold text-stone-900 mb-4">
+                    <h3 className="text-2xl font-bold text-congo-brown mb-4">
                       {discovery.title}
                     </h3>
-                    <p className="text-stone-600 leading-relaxed">
+                    <p className="text-congo-brown/70 leading-relaxed">
                       {discovery.description}
                     </p>
                   </div>
 
                   <div className="flex flex-wrap gap-3">
-                    <Button className="bg-green-700 hover:bg-green-800">
+                    <Button className="bg-congo-green hover:bg-congo-green/80 text-white">
                       Voir le documentaire
                     </Button>
-                    <Button variant="outline">
+                    <Button variant="outline" className="border-congo-brown text-congo-brown hover:bg-congo-brown hover:text-congo-beige">
                       Explorer la région
                     </Button>
                   </div>
