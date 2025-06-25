@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Layout from '@/components/Layout';
@@ -148,14 +147,14 @@ const Articles = () => {
 
   return (
     <Layout>
-      <div className="py-16">
+      <div className="py-16 bg-congo-beige">
         <div className="container mx-auto px-4">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-stone-900 mb-4">
+            <h1 className="text-4xl font-bold text-congo-brown mb-4">
               Nos Articles
             </h1>
-            <p className="text-lg text-stone-600 max-w-3xl mx-auto">
+            <p className="text-lg text-congo-brown/70 max-w-3xl mx-auto">
               Plongez dans nos récits d'exploration, nos analyses culturelles et nos découvertes 
               sur les richesses méconnues de la République Démocratique du Congo.
             </p>
@@ -170,7 +169,7 @@ const Articles = () => {
                 placeholder="Rechercher un article..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full"
+                className="w-full border-congo-brown/30 focus:border-congo-green text-congo-brown placeholder:text-congo-brown/50"
               />
             </div>
 
@@ -182,7 +181,7 @@ const Articles = () => {
                   variant={selectedCategory === category.id ? "default" : "outline"}
                   size="sm"
                   onClick={() => setSelectedCategory(category.id)}
-                  className={selectedCategory === category.id ? "bg-green-700 hover:bg-green-800" : ""}
+                  className={selectedCategory === category.id ? "bg-congo-green hover:bg-congo-green/80 text-congo-beige" : "border-congo-brown/30 text-congo-brown hover:bg-congo-brown/10"}
                 >
                   {category.name}
                 </Button>
@@ -197,7 +196,7 @@ const Articles = () => {
                   variant={selectedYear === year ? "default" : "outline"}
                   size="sm"
                   onClick={() => setSelectedYear(year)}
-                  className={selectedYear === year ? "bg-green-700 hover:bg-green-800" : ""}
+                  className={selectedYear === year ? "bg-congo-green hover:bg-congo-green/80 text-congo-beige" : "border-congo-brown/30 text-congo-brown hover:bg-congo-brown/10"}
                 >
                   {year === 'all' ? 'Toutes les années' : year}
                 </Button>
@@ -208,12 +207,12 @@ const Articles = () => {
           {/* Featured Articles */}
           {featuredArticles.length > 0 && (
             <div className="mb-16">
-              <h2 className="text-2xl font-bold text-stone-900 mb-8 text-center">
+              <h2 className="text-2xl font-bold text-congo-brown mb-8 text-center">
                 Articles à la une
               </h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {featuredArticles.map((article) => (
-                  <div key={article.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                  <div key={article.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow border border-congo-brown/10">
                     <img
                       src={article.image}
                       alt={article.title}
@@ -221,40 +220,40 @@ const Articles = () => {
                     />
                     <div className="p-6">
                       <div className="flex items-center justify-between mb-3">
-                        <Badge className="bg-green-100 text-green-800">
+                        <Badge className="bg-congo-green/10 text-congo-green border-congo-green/20">
                           {categories.find(cat => cat.id === article.category)?.name}
                         </Badge>
-                        <div className="flex items-center text-sm text-stone-500">
+                        <div className="flex items-center text-sm text-congo-brown/60">
                           <Clock className="h-4 w-4 mr-1" />
                           {article.readTime}
                         </div>
                       </div>
                       
-                      <h3 className="text-xl font-bold text-stone-900 mb-3">
+                      <h3 className="text-xl font-bold text-congo-brown mb-3">
                         {article.title}
                       </h3>
                       
-                      <p className="text-stone-600 mb-4">
+                      <p className="text-congo-brown/70 mb-4">
                         {article.excerpt}
                       </p>
                       
                       <div className="flex flex-wrap gap-2 mb-4">
                         {article.tags.slice(0, 3).map((tag) => (
-                          <Badge key={tag} variant="secondary" className="text-xs">
+                          <Badge key={tag} variant="secondary" className="text-xs bg-congo-brown/10 text-congo-brown">
                             #{tag}
                           </Badge>
                         ))}
                       </div>
                       
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center text-sm text-stone-500">
+                        <div className="flex items-center text-sm text-congo-brown/60">
                           <User className="h-4 w-4 mr-1" />
                           {article.author}
                           <span className="mx-2">•</span>
                           <Calendar className="h-4 w-4 mr-1" />
                           {new Date(article.date).toLocaleDateString('fr-FR')}
                         </div>
-                        <Button size="sm" className="bg-green-700 hover:bg-green-800">
+                        <Button size="sm" className="bg-congo-green hover:bg-congo-green/80 text-congo-beige">
                           Lire la suite
                           <ArrowRight className="h-4 w-4 ml-1" />
                         </Button>
@@ -269,7 +268,7 @@ const Articles = () => {
           {/* Regular Articles */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {regularArticles.map((article) => (
-              <div key={article.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+              <div key={article.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow border border-congo-brown/10">
                 <img
                   src={article.image}
                   alt={article.title}
@@ -277,24 +276,24 @@ const Articles = () => {
                 />
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-3">
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge variant="secondary" className="text-xs bg-congo-brown/10 text-congo-brown">
                       {categories.find(cat => cat.id === article.category)?.name}
                     </Badge>
-                    <div className="flex items-center text-sm text-stone-500">
+                    <div className="flex items-center text-sm text-congo-brown/60">
                       <Clock className="h-3 w-3 mr-1" />
                       {article.readTime}
                     </div>
                   </div>
                   
-                  <h3 className="font-semibold text-stone-900 mb-2 line-clamp-2">
+                  <h3 className="font-semibold text-congo-brown mb-2 line-clamp-2">
                     {article.title}
                   </h3>
                   
-                  <p className="text-stone-600 text-sm mb-4 line-clamp-3">
+                  <p className="text-congo-brown/70 text-sm mb-4 line-clamp-3">
                     {article.excerpt}
                   </p>
                   
-                  <div className="flex items-center justify-between text-xs text-stone-500 mb-3">
+                  <div className="flex items-center justify-between text-xs text-congo-brown/60 mb-3">
                     <div className="flex items-center">
                       <User className="h-3 w-3 mr-1" />
                       {article.author}
@@ -305,7 +304,7 @@ const Articles = () => {
                     </div>
                   </div>
                   
-                  <Button size="sm" variant="outline" className="w-full">
+                  <Button size="sm" variant="outline" className="w-full border-congo-brown/30 text-congo-brown hover:bg-congo-brown/10">
                     Lire l'article
                   </Button>
                 </div>
@@ -316,7 +315,7 @@ const Articles = () => {
           {/* No Results */}
           {filteredArticles.length === 0 && (
             <div className="text-center py-16">
-              <p className="text-stone-500 text-lg">
+              <p className="text-congo-brown/60 text-lg">
                 Aucun article ne correspond à vos critères de recherche.
               </p>
               <Button 
@@ -325,7 +324,7 @@ const Articles = () => {
                   setSelectedYear('all');
                   setSearchTerm('');
                 }}
-                className="mt-4 bg-green-700 hover:bg-green-800"
+                className="mt-4 bg-congo-green hover:bg-congo-green/80 text-congo-beige"
               >
                 Réinitialiser les filtres
               </Button>
@@ -333,20 +332,20 @@ const Articles = () => {
           )}
 
           {/* Newsletter Signup */}
-          <div className="text-center mt-16 p-8 bg-green-50 rounded-lg">
-            <h2 className="text-2xl font-bold text-stone-900 mb-4">
+          <div className="text-center mt-16 p-8 bg-white rounded-lg border border-congo-brown/10">
+            <h2 className="text-2xl font-bold text-congo-brown mb-4">
               Ne manquez aucun article
             </h2>
-            <p className="text-stone-600 mb-6">
+            <p className="text-congo-brown/70 mb-6">
               Inscrivez-vous à notre newsletter pour recevoir nos dernières découvertes.
             </p>
             <div className="flex max-w-md mx-auto gap-2">
               <Input
                 type="email"
                 placeholder="Votre adresse email"
-                className="flex-1"
+                className="flex-1 border-congo-brown/30 focus:border-congo-green text-congo-brown placeholder:text-congo-brown/50"
               />
-              <Button className="bg-green-700 hover:bg-green-800">
+              <Button className="bg-congo-green hover:bg-congo-green/80 text-congo-beige">
                 S'abonner
               </Button>
             </div>

@@ -60,14 +60,14 @@ const Explorer = () => {
   ];
 
   const colorClasses = {
-    green: "border-green-200 hover:border-green-300 bg-green-50",
-    blue: "border-blue-200 hover:border-blue-300 bg-blue-50",
-    yellow: "border-yellow-200 hover:border-yellow-300 bg-yellow-50"
+    green: "border-congo-green/30 hover:border-congo-green/50 bg-congo-green/5",
+    blue: "border-blue-300/50 hover:border-blue-400/70 bg-blue-50/70",
+    yellow: "border-yellow-300/50 hover:border-yellow-400/70 bg-yellow-50/70"
   };
 
   return (
     <Layout>
-      <div className="py-16 bg-gradient-to-br from-stone-50 to-green-50 min-h-screen">
+      <div className="py-16 bg-congo-beige min-h-screen">
         <div className="container mx-auto px-4">
           {/* Header */}
           <motion.div
@@ -75,10 +75,10 @@ const Explorer = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-12"
           >
-            <h1 className="text-4xl font-bold text-stone-900 mb-4">
+            <h1 className="text-4xl font-bold text-congo-brown mb-4">
               {t('explore.title')}
             </h1>
-            <p className="text-lg text-stone-600 max-w-2xl mx-auto">
+            <p className="text-lg text-congo-brown/70 max-w-2xl mx-auto">
               {t('explore.subtitle')}
             </p>
           </motion.div>
@@ -93,10 +93,10 @@ const Explorer = () => {
                 transition={{ delay: index * 0.1 }}
               >
                 <Card 
-                  className={`cursor-pointer transition-all duration-300 ${
+                  className={`cursor-pointer transition-all duration-300 border-congo-brown/20 bg-white hover:shadow-lg ${
                     selectedProvince === province.name 
                       ? colorClasses[province.color as keyof typeof colorClasses]
-                      : 'border-stone-200 hover:border-stone-300'
+                      : ''
                   }`}
                   onClick={() => setSelectedProvince(
                     selectedProvince === province.name ? null : province.name
@@ -105,19 +105,19 @@ const Explorer = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                       <div className="flex items-center space-x-3">
-                        <MapPin className="h-5 w-5 text-green-700" />
-                        <span className="text-xl">{province.name}</span>
+                        <MapPin className="h-5 w-5 text-congo-green" />
+                        <span className="text-xl text-congo-brown">{province.name}</span>
                       </div>
                       {selectedProvince === province.name ? (
-                        <ChevronUp className="h-5 w-5" />
+                        <ChevronUp className="h-5 w-5 text-congo-brown" />
                       ) : (
-                        <ChevronDown className="h-5 w-5" />
+                        <ChevronDown className="h-5 w-5 text-congo-brown" />
                       )}
                     </CardTitle>
                   </CardHeader>
                   
                   <CardContent>
-                    <p className="text-stone-600 mb-4">
+                    <p className="text-congo-brown/70 mb-4">
                       {province.description}
                     </p>
 
@@ -130,8 +130,8 @@ const Explorer = () => {
                           className="space-y-6"
                         >
                           {/* Full Description */}
-                          <div className="bg-white p-6 rounded-lg">
-                            <p className="text-stone-700 leading-relaxed mb-4">
+                          <div className="bg-congo-beige/50 p-6 rounded-lg">
+                            <p className="text-congo-brown leading-relaxed mb-4">
                               {expandedDescription === province.name 
                                 ? province.fullDescription 
                                 : province.fullDescription.substring(0, 200) + '...'
@@ -146,6 +146,7 @@ const Explorer = () => {
                                   expandedDescription === province.name ? null : province.name
                                 );
                               }}
+                              className="text-congo-brown hover:bg-congo-brown/10"
                             >
                               {expandedDescription === province.name ? 'Voir moins' : 'Continuer à lire'}
                             </Button>
@@ -153,13 +154,13 @@ const Explorer = () => {
 
                           {/* Places */}
                           <div>
-                            <h4 className="font-semibold text-stone-900 mb-4 flex items-center space-x-2">
+                            <h4 className="font-semibold text-congo-brown mb-4 flex items-center space-x-2">
                               <Camera className="h-4 w-4" />
                               <span>Lieux d'intérêt</span>
                             </h4>
                             <div className="grid md:grid-cols-2 gap-4">
                               {province.places.map((place, placeIndex) => (
-                                <Card key={placeIndex} className="overflow-hidden">
+                                <Card key={placeIndex} className="overflow-hidden border-congo-brown/20 bg-white">
                                   <div className="relative h-32">
                                     <img
                                       src={place.image}
@@ -172,10 +173,10 @@ const Explorer = () => {
                                     </div>
                                   </div>
                                   <CardContent className="p-4">
-                                    <p className="text-sm text-stone-600">
+                                    <p className="text-sm text-congo-brown/70">
                                       {place.description}
                                     </p>
-                                    <Button variant="ghost" size="sm" className="mt-2 p-0">
+                                    <Button variant="ghost" size="sm" className="mt-2 p-0 text-congo-brown hover:bg-congo-brown/10">
                                       Voir plus
                                     </Button>
                                   </CardContent>
@@ -197,15 +198,15 @@ const Explorer = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="text-center mt-12 p-8 bg-white rounded-lg shadow-sm"
+            className="text-center mt-12 p-8 bg-white rounded-lg shadow-sm border-congo-brown/20"
           >
-            <h3 className="text-2xl font-semibold text-stone-900 mb-4">
+            <h3 className="text-2xl font-semibold text-congo-brown mb-4">
               Vous connaissez d'autres lieux extraordinaires ?
             </h3>
-            <p className="text-stone-600 mb-6">
+            <p className="text-congo-brown/70 mb-6">
               Partagez vos découvertes avec notre communauté d'explorateurs
             </p>
-            <Button size="lg" className="bg-green-700 hover:bg-green-800">
+            <Button size="lg" className="bg-congo-green hover:bg-congo-green/80 text-congo-beige">
               Ajouter une découverte
             </Button>
           </motion.div>

@@ -100,7 +100,7 @@ const CTASection = () => {
                       </p>
                     </div>
 
-                    <Button asChild variant="outline" className="border-congo-beige/60 text-congo-beige hover:bg-congo-beige hover:text-congo-brown group-hover:border-congo-beige/80">
+                    <Button asChild variant="outline" className="border-congo-beige/60 text-congo-beige hover:bg-congo-beige hover:text-congo-brown group-hover:border-congo-beige/80 bg-transparent">
                       <Link to={action.link} className="flex items-center space-x-2">
                         <span>{action.buttonText}</span>
                         <ArrowRight className="h-4 w-4" />

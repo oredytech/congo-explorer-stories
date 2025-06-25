@@ -44,7 +44,7 @@ const Assistance = () => {
               </p>
             </div>
 
-            <Card className="border-congo-brown/20">
+            <Card className="border-congo-brown/20 bg-white">
               <CardHeader>
                 <CardTitle className="text-congo-brown">Comment pouvons-nous vous aider ?</CardTitle>
               </CardHeader>
@@ -59,7 +59,7 @@ const Assistance = () => {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="border-congo-brown/30 focus:border-congo-green"
+                        className="border-congo-brown/30 focus:border-congo-green text-congo-brown"
                       />
                     </div>
                     <div>
@@ -71,7 +71,7 @@ const Assistance = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="border-congo-brown/30 focus:border-congo-green"
+                        className="border-congo-brown/30 focus:border-congo-green text-congo-brown"
                       />
                     </div>
                   </div>
@@ -84,7 +84,7 @@ const Assistance = () => {
                       value={formData.subject}
                       onChange={handleChange}
                       required
-                      className="border-congo-brown/30 focus:border-congo-green"
+                      className="border-congo-brown/30 focus:border-congo-green text-congo-brown"
                     />
                   </div>
                   
@@ -97,11 +97,11 @@ const Assistance = () => {
                       onChange={handleChange}
                       required
                       rows={6}
-                      className="border-congo-brown/30 focus:border-congo-green resize-none"
+                      className="border-congo-brown/30 focus:border-congo-green resize-none text-congo-brown"
                     />
                   </div>
                   
-                  <Button type="submit" size="lg" className="w-full bg-congo-green hover:bg-congo-green/80">
+                  <Button type="submit" size="lg" className="w-full bg-congo-green hover:bg-congo-green/80 text-congo-beige">
                     <Send className="h-4 w-4 mr-2" />
                     Envoyer le message
                   </Button>

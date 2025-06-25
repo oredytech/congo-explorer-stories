@@ -21,7 +21,7 @@ const Contact = () => {
                 <h2 className="text-2xl font-semibold text-congo-brown mb-6">Nos Coordonnées</h2>
                 
                 <div className="space-y-6">
-                  <Card className="border-congo-brown/20">
+                  <Card className="border-congo-brown/20 bg-white">
                     <CardContent className="p-6">
                       <div className="flex items-start space-x-4">
                         <MapPin className="h-6 w-6 text-congo-green mt-1" />
@@ -33,7 +33,7 @@ const Contact = () => {
                     </CardContent>
                   </Card>
 
-                  <Card className="border-congo-brown/20">
+                  <Card className="border-congo-brown/20 bg-white">
                     <CardContent className="p-6">
                       <div className="flex items-start space-x-4">
                         <Phone className="h-6 w-6 text-congo-green mt-1" />
@@ -45,7 +45,7 @@ const Contact = () => {
                     </CardContent>
                   </Card>
 
-                  <Card className="border-congo-brown/20">
+                  <Card className="border-congo-brown/20 bg-white">
                     <CardContent className="p-6">
                       <div className="flex items-start space-x-4">
                         <Mail className="h-6 w-6 text-congo-green mt-1" />
@@ -57,7 +57,7 @@ const Contact = () => {
                     </CardContent>
                   </Card>
 
-                  <Card className="border-congo-brown/20">
+                  <Card className="border-congo-brown/20 bg-white">
                     <CardContent className="p-6">
                       <div className="flex items-start space-x-4">
                         <Clock className="h-6 w-6 text-congo-green mt-1" />
@@ -76,7 +76,7 @@ const Contact = () => {
 
               <div>
                 <h2 className="text-2xl font-semibold text-congo-brown mb-6">À propos de VISITE CONGO</h2>
-                <Card className="border-congo-brown/20">
+                <Card className="border-congo-brown/20 bg-white">
                   <CardContent className="p-6">
                     <p className="text-congo-brown/70 leading-relaxed mb-4">
                       VISITE CONGO est une plateforme dédiée à la promotion et à la valorisation du patrimoine touristique de la République Démocratique du Congo.

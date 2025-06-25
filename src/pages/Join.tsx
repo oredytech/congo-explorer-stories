@@ -35,22 +35,22 @@ const Join = () => {
 
   const benefits = [
     {
-      icon: <Camera className="h-8 w-8 text-green-600" />,
+      icon: <Camera className="h-8 w-8 text-congo-green" />,
       title: "Formation en photographie",
       description: "Techniques de photographie de paysage et documentaire"
     },
     {
-      icon: <FileText className="h-8 w-8 text-blue-600" />,
+      icon: <FileText className="h-8 w-8 text-congo-green" />,
       title: "Rédaction d'articles",
       description: "Apprenez à raconter les histoires de nos découvertes"
     },
     {
-      icon: <MapPin className="h-8 w-8 text-yellow-600" />,
+      icon: <MapPin className="h-8 w-8 text-congo-green" />,
       title: "Exploration guidée",
       description: "Participez à nos expéditions dans toute la RDC"
     },
     {
-      icon: <Users className="h-8 w-8 text-purple-600" />,
+      icon: <Users className="h-8 w-8 text-congo-green" />,
       title: "Réseau communautaire",
       description: "Rejoignez une communauté passionnée d'explorateurs"
     }
@@ -107,14 +107,14 @@ const Join = () => {
 
   return (
     <Layout>
-      <div className="py-16">
+      <div className="py-16 bg-congo-beige">
         <div className="container mx-auto px-4">
           {/* Header */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl font-bold text-stone-900 mb-4">
+            <h1 className="text-4xl font-bold text-congo-brown mb-4">
               Rejoindre les Explorateurs
             </h1>
-            <p className="text-lg text-stone-600 max-w-3xl mx-auto">
+            <p className="text-lg text-congo-brown/70 max-w-3xl mx-auto">
               Devenez ambassadeur de la beauté congolaise. Rejoignez notre équipe d'explorateurs 
               passionnés et contribuez à révéler les trésors cachés de la RDC.
             </p>
@@ -124,15 +124,15 @@ const Join = () => {
             {/* Left Column - Information */}
             <div className="space-y-8">
               {/* Mission */}
-              <Card>
+              <Card className="border-congo-brown/20 bg-white">
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Users className="h-6 w-6 mr-2 text-green-600" />
+                  <CardTitle className="flex items-center text-congo-brown">
+                    <Users className="h-6 w-6 mr-2 text-congo-green" />
                     Notre Mission
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-stone-600">
+                  <p className="text-congo-brown/70">
                     Nous sommes un collectif de jeunes Congolais déterminés à changer la perception 
                     du monde sur notre pays. À travers nos explorations, nous documentons et partageons 
                     les merveilles naturelles, culturelles et humaines de la RDC.
@@ -141,9 +141,9 @@ const Join = () => {
               </Card>
 
               {/* Benefits */}
-              <Card>
+              <Card className="border-congo-brown/20 bg-white">
                 <CardHeader>
-                  <CardTitle>Ce que nous vous offrons</CardTitle>
+                  <CardTitle className="text-congo-brown">Ce que nous vous offrons</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -151,10 +151,10 @@ const Join = () => {
                       <div key={index} className="flex items-start space-x-3">
                         {benefit.icon}
                         <div>
-                          <h4 className="font-semibold text-stone-900 mb-1">
+                          <h4 className="font-semibold text-congo-brown mb-1">
                             {benefit.title}
                           </h4>
-                          <p className="text-sm text-stone-600">
+                          <p className="text-sm text-congo-brown/70">
                             {benefit.description}
                           </p>
                         </div>
@@ -165,16 +165,16 @@ const Join = () => {
               </Card>
 
               {/* Responsibilities */}
-              <Card>
+              <Card className="border-congo-brown/20 bg-white">
                 <CardHeader>
-                  <CardTitle>Vos responsabilités</CardTitle>
+                  <CardTitle className="text-congo-brown">Vos responsabilités</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2">
                     {responsibilities.map((responsibility, index) => (
                       <li key={index} className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
-                        <span className="text-stone-600">{responsibility}</span>
+                        <CheckCircle className="h-5 w-5 text-congo-green mr-2 mt-0.5 flex-shrink-0" />
+                        <span className="text-congo-brown/70">{responsibility}</span>
                       </li>
                     ))}
                   </ul>
@@ -182,23 +182,23 @@ const Join = () => {
               </Card>
 
               {/* Documents */}
-              <Card>
+              <Card className="border-congo-brown/20 bg-white">
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Download className="h-6 w-6 mr-2 text-blue-600" />
+                  <CardTitle className="flex items-center text-congo-brown">
+                    <Download className="h-6 w-6 mr-2 text-congo-green" />
                     Documents à télécharger
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Button variant="outline" className="w-full justify-start">
+                  <Button variant="outline" className="w-full justify-start border-congo-brown/30 text-congo-brown hover:bg-congo-brown/10">
                     <FileText className="h-4 w-4 mr-2" />
                     Charte de l'explorateur (PDF)
                   </Button>
-                  <Button variant="outline" className="w-full justify-start">
+                  <Button variant="outline" className="w-full justify-start border-congo-brown/30 text-congo-brown hover:bg-congo-brown/10">
                     <FileText className="h-4 w-4 mr-2" />
                     Guide de photographie terrain (PDF)
                   </Button>
-                  <Button variant="outline" className="w-full justify-start">
+                  <Button variant="outline" className="w-full justify-start border-congo-brown/30 text-congo-brown hover:bg-congo-brown/10">
                     <FileText className="h-4 w-4 mr-2" />
                     Protocole d'accord bénévole (PDF)
                   </Button>
@@ -208,10 +208,10 @@ const Join = () => {
 
             {/* Right Column - Form */}
             <div>
-              <Card>
+              <Card className="border-congo-brown/20 bg-white">
                 <CardHeader>
-                  <CardTitle>Candidature d'explorateur</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-congo-brown">Candidature d'explorateur</CardTitle>
+                  <CardDescription className="text-congo-brown/70">
                     Remplissez ce formulaire pour rejoindre notre équipe. 
                     Tous les champs marqués d'un * sont obligatoires.
                   </CardDescription>
@@ -221,7 +221,7 @@ const Join = () => {
                     {/* Personal Info */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-stone-700 mb-2">
+                        <label className="block text-sm font-medium text-congo-brown mb-2">
                           Prénom *
                         </label>
                         <Input
@@ -229,10 +229,11 @@ const Join = () => {
                           value={formData.firstName}
                           onChange={handleInputChange}
                           required
+                          className="border-congo-brown/30 focus:border-congo-green text-congo-brown"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-stone-700 mb-2">
+                        <label className="block text-sm font-medium text-congo-brown mb-2">
                           Nom *
                         </label>
                         <Input
@@ -240,6 +241,7 @@ const Join = () => {
                           value={formData.lastName}
                           onChange={handleInputChange}
                           required
+                          className="border-congo-brown/30 focus:border-congo-green text-congo-brown"
                         />
                       </div>
                     </div>
@@ -247,7 +249,7 @@ const Join = () => {
                     {/* Contact */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-stone-700 mb-2">
+                        <label className="block text-sm font-medium text-congo-brown mb-2">
                           Email *
                         </label>
                         <Input
@@ -256,10 +258,11 @@ const Join = () => {
                           value={formData.email}
                           onChange={handleInputChange}
                           required
+                          className="border-congo-brown/30 focus:border-congo-green text-congo-brown"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-stone-700 mb-2">
+                        <label className="block text-sm font-medium text-congo-brown mb-2">
                           Téléphone
                         </label>
                         <Input
@@ -267,6 +270,7 @@ const Join = () => {
                           value={formData.phone}
                           onChange={handleInputChange}
                           placeholder="+243..."
+                          className="border-congo-brown/30 focus:border-congo-green text-congo-brown"
                         />
                       </div>
                     </div>
@@ -274,24 +278,25 @@ const Join = () => {
                     {/* Location */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-stone-700 mb-2">
+                        <label className="block text-sm font-medium text-congo-brown mb-2">
                           Ville
                         </label>
                         <Input
                           name="city"
                           value={formData.city}
                           onChange={handleInputChange}
+                          className="border-congo-brown/30 focus:border-congo-green text-congo-brown"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-stone-700 mb-2">
+                        <label className="block text-sm font-medium text-congo-brown mb-2">
                           Province
                         </label>
                         <select
                           name="province"
                           value={formData.province}
                           onChange={handleInputChange}
-                          className="w-full px-3 py-2 border border-stone-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                          className="w-full px-3 py-2 border border-congo-brown/30 rounded-md focus:outline-none focus:ring-2 focus:ring-congo-green focus:border-transparent text-congo-brown bg-white"
                         >
                           <option value="">Sélectionnez une province</option>
                           {provinces.map((province) => (
@@ -305,7 +310,7 @@ const Join = () => {
 
                     {/* Motivation */}
                     <div>
-                      <label className="block text-sm font-medium text-stone-700 mb-2">
+                      <label className="block text-sm font-medium text-congo-brown mb-2">
                         Pourquoi voulez-vous rejoindre VISITE CONGO ? *
                       </label>
                       <Textarea
@@ -315,12 +320,13 @@ const Join = () => {
                         rows={4}
                         placeholder="Partagez votre motivation et votre vision..."
                         required
+                        className="border-congo-brown/30 focus:border-congo-green resize-none text-congo-brown"
                       />
                     </div>
 
                     {/* Skills */}
                     <div>
-                      <label className="block text-sm font-medium text-stone-700 mb-2">
+                      <label className="block text-sm font-medium text-congo-brown mb-2">
                         Compétences particulières
                       </label>
                       <Textarea
@@ -329,12 +335,13 @@ const Join = () => {
                         onChange={handleInputChange}
                         rows={3}
                         placeholder="Photographie, vidéo, rédaction, connaissances locales..."
+                        className="border-congo-brown/30 focus:border-congo-green resize-none text-congo-brown"
                       />
                     </div>
 
                     {/* Availability */}
                     <div>
-                      <label className="block text-sm font-medium text-stone-700 mb-2">
+                      <label className="block text-sm font-medium text-congo-brown mb-2">
                         Disponibilité
                       </label>
                       <Textarea
@@ -343,18 +350,19 @@ const Join = () => {
                         onChange={handleInputChange}
                         rows={2}
                         placeholder="Weekends, vacances, temps libre..."
+                        className="border-congo-brown/30 focus:border-congo-green resize-none text-congo-brown"
                       />
                     </div>
 
                     <Button 
                       type="submit" 
-                      className="w-full bg-green-700 hover:bg-green-800"
+                      className="w-full bg-congo-green hover:bg-congo-green/80 text-congo-beige"
                       size="lg"
                     >
                       Envoyer ma candidature
                     </Button>
 
-                    <p className="text-xs text-stone-500 text-center">
+                    <p className="text-xs text-congo-brown/60 text-center">
                       En soumettant ce formulaire, vous acceptez notre charte de l'explorateur 
                       et nos conditions d'utilisation.
                     </p>
@@ -363,18 +371,18 @@ const Join = () => {
               </Card>
 
               {/* Contact Info */}
-              <div className="mt-8 p-6 bg-stone-50 rounded-lg">
-                <h3 className="font-semibold text-stone-900 mb-4">
+              <div className="mt-8 p-6 bg-congo-brown/10 rounded-lg">
+                <h3 className="font-semibold text-congo-brown mb-4">
                   Questions ? Contactez-nous
                 </h3>
                 <div className="space-y-2">
-                  <div className="flex items-center text-stone-600">
+                  <div className="flex items-center text-congo-brown/70">
                     <Mail className="h-4 w-4 mr-2" />
                     explorateurs@visitecongo.com
                   </div>
-                  <div className="flex items-center text-stone-600">
+                  <div className="flex items-center text-congo-brown/70">
                     <Phone className="h-4 w-4 mr-2" />
-                    +243 XXX XXX XXX
+                    +243 991 478 206
                   </div>
                 </div>
               </div>
@@ -383,7 +391,7 @@ const Join = () => {
 
           {/* Success Stories */}
           <div className="mt-16">
-            <h2 className="text-2xl font-bold text-stone-900 text-center mb-8">
+            <h2 className="text-2xl font-bold text-congo-brown text-center mb-8">
               Témoignages d'explorateurs
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -407,7 +415,7 @@ const Join = () => {
                   image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
                 }
               ].map((testimonial, index) => (
-                <Card key={index}>
+                <Card key={index} className="border-congo-brown/20 bg-white">
                   <CardContent className="pt-6">
                     <div className="text-center">
                       <img
@@ -415,14 +423,14 @@ const Join = () => {
                         alt={testimonial.name}
                         className="w-16 h-16 rounded-full mx-auto mb-4"
                       />
-                      <p className="text-stone-600 italic mb-4">
+                      <p className="text-congo-brown/70 italic mb-4">
                         "{testimonial.quote}"
                       </p>
                       <div>
-                        <p className="font-semibold text-stone-900">
+                        <p className="font-semibold text-congo-brown">
                           {testimonial.name}
                         </p>
-                        <p className="text-sm text-stone-500">
+                        <p className="text-sm text-congo-brown/60">
                           {testimonial.location}
                         </p>
                       </div>
