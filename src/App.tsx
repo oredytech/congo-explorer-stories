@@ -9,6 +9,7 @@ import './i18n/config';
 // Pages
 import Home from "./pages/Home";
 import Explorer from "./pages/Explorer";
+import ProvinceDetail from "./pages/ProvinceDetail";
 import Documentaries from "./pages/Documentaries";
 import Gallery from "./pages/Gallery";
 import Articles from "./pages/Articles";
@@ -32,6 +33,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/explorer" element={<Explorer />} />
+          <Route path="/province/:id" element={<ProvinceDetail />} />
           <Route path="/documentaires" element={<Documentaries />} />
           <Route path="/galerie" element={<Gallery />} />
           <Route path="/articles" element={<Articles />} />
