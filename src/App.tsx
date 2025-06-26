@@ -18,6 +18,7 @@ import Support from "./pages/Support";
 import Contact from "./pages/Contact";
 import LegalNotices from "./pages/LegalNotices";
 import Privacy from "./pages/Privacy";
+import VolunteerProtocol from "./pages/VolunteerProtocol";
 import Partners from "./pages/Partners";
 import Assistance from "./pages/Assistance";
 import NotFound from "./pages/NotFound";
@@ -42,6 +43,7 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/mentions-legales" element={<LegalNotices />} />
           <Route path="/confidentialite" element={<Privacy />} />
+          <Route path="/protocole-benevoles" element={<VolunteerProtocol />} />
           <Route path="/partenaires" element={<Partners />} />
           <Route path="/assistance" element={<Assistance />} />
           <Route path="/ajouter" element={<div className="min-h-screen flex items-center justify-center bg-congo-beige"><div className="text-center"><h1 className="text-2xl font-bold mb-4 text-congo-brown">Ajouter du contenu</h1><p className="text-congo-brown/70">Page en construction...</p></div></div>} />
