@@ -5,6 +5,7 @@ import HeroSection from '@/components/HeroSection';
 import FeaturedSection from '@/components/FeaturedSection';
 import DiscoverySection from '@/components/DiscoverySection';
 import CTASection from '@/components/CTASection';
+import TestimonialsSection from '@/components/TestimonialsSection';
 
 const Home = () => {
   const { t } = useTranslation();
@@ -13,8 +14,9 @@ const Home = () => {
     <Layout>
       <div className="space-y-0">
         <HeroSection />
-        <FeaturedSection />
         <DiscoverySection />
+        <FeaturedSection />
+        <TestimonialsSection />
         <CTASection />
         
         {/* About Mission Section */}

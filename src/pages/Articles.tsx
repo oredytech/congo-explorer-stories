@@ -1,7 +1,8 @@
+
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Layout from '@/components/Layout';
-import { Calendar, User, Tag, Clock, ArrowRight } from 'lucide-react';
+import { Calendar, User, Tag, Clock, ArrowRight, ThumbsUp, Heart, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -24,7 +25,7 @@ const Articles = () => {
 
   const years = ['all', '2024', '2023', '2022'];
 
-  const articles = [
+  const [articles, setArticles] = useState([
     {
       id: 1,
       title: "Les Trésors Cachés du Parc National de Kahuzi-Biega",
@@ -36,7 +37,12 @@ const Articles = () => {
       readTime: "8 min",
       image: "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=800&h=400&fit=crop",
       tags: ["parc national", "gorilles", "biodiversité", "sud-kivu"],
-      featured: true
+      featured: true,
+      likes: 142,
+      rating: 4.8,
+      totalRatings: 36,
+      userReaction: null,
+      userRating: 0
     },
     {
       id: 2,
@@ -49,7 +55,12 @@ const Articles = () => {
       readTime: "12 min",
       image: "https://images.unsplash.com/photo-1517022812141-23620dba5c23?w=800&h=400&fit=crop",
       tags: ["art", "kuba", "tradition", "kasaï"],
-      featured: false
+      featured: false,
+      likes: 89,
+      rating: 4.6,
+      totalRatings: 24,
+      userReaction: null,
+      userRating: 0
     },
     {
       id: 3,
@@ -62,7 +73,12 @@ const Articles = () => {
       readTime: "15 min",
       image: "https://images.unsplash.com/photo-1466442929976-97f336a657be?w=800&h=400&fit=crop",
       tags: ["royaume", "histoire", "précolonial", "patrimoine"],
-      featured: true
+      featured: true,
+      likes: 156,
+      rating: 4.9,
+      totalRatings: 42,
+      userReaction: null,
+      userRating: 0
     },
     {
       id: 4,
@@ -75,7 +91,12 @@ const Articles = () => {
       readTime: "10 min",
       image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&h=400&fit=crop",
       tags: ["grottes", "exploration", "géologie", "katanga"],
-      featured: false
+      featured: false,
+      likes: 73,
+      rating: 4.4,
+      totalRatings: 18,
+      userReaction: null,
+      userRating: 0
     },
     {
       id: 5,
@@ -88,7 +109,12 @@ const Articles = () => {
       readTime: "7 min",
       image: "https://images.unsplash.com/photo-1517022812141-23620dba5c23?w=800&h=400&fit=crop",
       tags: ["femmes", "entrepreneuriat", "goma", "innovation"],
-      featured: false
+      featured: false,
+      likes: 94,
+      rating: 4.7,
+      totalRatings: 28,
+      userReaction: null,
+      userRating: 0
     },
     {
       id: 6,
@@ -101,7 +127,12 @@ const Articles = () => {
       readTime: "9 min",
       image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=800&h=400&fit=crop",
       tags: ["pêche", "lac tanganyika", "tradition", "katanga"],
-      featured: false
+      featured: false,
+      likes: 67,
+      rating: 4.3,
+      totalRatings: 15,
+      userReaction: null,
+      userRating: 0
     },
     {
       id: 7,
@@ -114,7 +145,12 @@ const Articles = () => {
       readTime: "11 min",
       image: "https://images.unsplash.com/photo-1466442929976-97f336a657be?w=800&h=400&fit=crop",
       tags: ["musique", "kinshasa", "rumba", "culture"],
-      featured: false
+      featured: false,
+      likes: 108,
+      rating: 4.5,
+      totalRatings: 31,
+      userReaction: null,
+      userRating: 0
     },
     {
       id: 8,
@@ -127,9 +163,14 @@ const Articles = () => {
       readTime: "13 min",
       image: "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=800&h=400&fit=crop",
       tags: ["conservation", "communauté", "forêt", "tayna"],
-      featured: false
+      featured: false,
+      likes: 82,
+      rating: 4.6,
+      totalRatings: 22,
+      userReaction: null,
+      userRating: 0
     }
-  ];
+  ]);
 
   const filteredArticles = articles.filter(article => {
     const matchesCategory = selectedCategory === 'all' || article.category === selectedCategory;
@@ -144,6 +185,68 @@ const Articles = () => {
 
   const featuredArticles = filteredArticles.filter(article => article.featured);
   const regularArticles = filteredArticles.filter(article => !article.featured);
+
+  const handleReaction = (articleId: number, reactionType: 'like') => {
+    setArticles(prevArticles =>
+      prevArticles.map(article => {
+        if (article.id === articleId) {
+          const newArticle = { ...article };
+          
+          if (article.userReaction === reactionType) {
+            newArticle.likes -= 1;
+            newArticle.userReaction = null;
+          } else {
+            if (article.userReaction === 'like') {
+              newArticle.likes -= 1;
+            }
+            newArticle.likes += 1;
+            newArticle.userReaction = reactionType;
+          }
+          
+          return newArticle;
+        }
+        return article;
+      })
+    );
+  };
+
+  const handleRating = (articleId: number, rating: number) => {
+    setArticles(prevArticles =>
+      prevArticles.map(article => {
+        if (article.id === articleId) {
+          const newArticle = { ...article };
+          
+          if (article.userRating === 0) {
+            // New rating
+            const newTotal = (article.rating * article.totalRatings + rating) / (article.totalRatings + 1);
+            newArticle.rating = Math.round(newTotal * 10) / 10;
+            newArticle.totalRatings += 1;
+          } else {
+            // Update existing rating
+            const oldTotal = article.rating * article.totalRatings - article.userRating + rating;
+            newArticle.rating = Math.round((oldTotal / article.totalRatings) * 10) / 10;
+          }
+          
+          newArticle.userRating = rating;
+          return newArticle;
+        }
+        return article;
+      })
+    );
+  };
+
+  const renderStars = (article: any, interactive = false) => {
+    return Array.from({ length: 5 }, (_, i) => (
+      <Star
+        key={i}
+        className={`h-4 w-4 ${interactive ? 'cursor-pointer' : ''} ${
+          i < Math.floor(article.rating) ? 'text-yellow-500 fill-current' : 
+          i < article.rating ? 'text-yellow-500 fill-current opacity-50' : 'text-gray-300'
+        } ${interactive && article.userRating > i ? 'text-yellow-600 fill-current' : ''}`}
+        onClick={interactive ? () => handleRating(article.id, i + 1) : undefined}
+      />
+    ));
+  };
 
   return (
     <Layout>
@@ -245,6 +348,28 @@ const Articles = () => {
                         ))}
                       </div>
                       
+                      {/* Rating and Reactions */}
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center space-x-4">
+                          <button
+                            onClick={() => handleReaction(article.id, 'like')}
+                            className={`flex items-center space-x-1 transition-colors ${
+                              article.userReaction === 'like' ? 'text-congo-green' : 'text-congo-brown/60 hover:text-congo-green'
+                            }`}
+                          >
+                            <ThumbsUp className="h-4 w-4" />
+                            <span>{article.likes}</span>
+                          </button>
+                          
+                          <div className="flex items-center space-x-1">
+                            {renderStars(article, true)}
+                            <span className="text-sm text-congo-brown/60 ml-1">
+                              ({article.totalRatings})
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      
                       <div className="flex items-center justify-between">
                         <div className="flex items-center text-sm text-congo-brown/60">
                           <User className="h-4 w-4 mr-1" />
@@ -292,6 +417,26 @@ const Articles = () => {
                   <p className="text-congo-brown/70 text-sm mb-4 line-clamp-3">
                     {article.excerpt}
                   </p>
+                  
+                  {/* Rating and Reactions */}
+                  <div className="flex items-center justify-between mb-3">
+                    <button
+                      onClick={() => handleReaction(article.id, 'like')}
+                      className={`flex items-center space-x-1 text-sm transition-colors ${
+                        article.userReaction === 'like' ? 'text-congo-green' : 'text-congo-brown/60 hover:text-congo-green'
+                      }`}
+                    >
+                      <ThumbsUp className="h-3 w-3" />
+                      <span>{article.likes}</span>
+                    </button>
+                    
+                    <div className="flex items-center space-x-1">
+                      {renderStars(article, true)}
+                      <span className="text-xs text-congo-brown/60 ml-1">
+                        ({article.totalRatings})
+                      </span>
+                    </div>
+                  </div>
                   
                   <div className="flex items-center justify-between text-xs text-congo-brown/60 mb-3">
                     <div className="flex items-center">

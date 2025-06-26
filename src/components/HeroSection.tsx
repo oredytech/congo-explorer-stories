@@ -21,9 +21,12 @@ const HeroSection = () => {
               className="space-y-8"
             >
               <div>
-                <h1 className="text-4xl lg:text-6xl font-bold text-congo-brown mb-6">
+                <h1 className="text-4xl lg:text-6xl font-bold text-congo-brown mb-4">
                   {t('home.title')}
                 </h1>
+                <p className="text-xl text-congo-green font-medium mb-6 italic">
+                  Premier site du tourisme en ligne pour vous faire découvrir la RDC dans toute sa splendeur.
+                </p>
                 <p className="text-xl text-congo-brown/80 leading-relaxed mb-8">
                   {t('home.subtitle')}
                 </p>

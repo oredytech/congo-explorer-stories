@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Layout from '@/components/Layout';
-import { Heart, Users, Camera, Laptop, Car, Plane, DollarSign, CreditCard, Phone } from 'lucide-react';
+import { Heart, Users, Camera, Laptop, Car, Plane, DollarSign, CreditCard, Phone, Copy, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,6 +14,36 @@ const Support = () => {
   const { toast } = useToast();
   const [donationAmount, setDonationAmount] = useState('');
   const [selectedProject, setSelectedProject] = useState('general');
+  const [copiedField, setCopiedField] = useState<string | null>(null);
+
+  // Mobile Money Information
+  const mobileMoneyInfo = {
+    orangeMoney: {
+      name: "Orange Money",
+      number: "+243 123 456 789",
+      nom: "VISITE CONGO"
+    },
+    airtelMoney: {
+      name: "Airtel Money", 
+      number: "+243 987 654 321",
+      nom: "VISITE CONGO"
+    },
+    mpesa: {
+      name: "M-Pesa",
+      number: "+243 555 666 777",
+      nom: "VISITE CONGO"
+    }
+  };
+
+  const copyToClipboard = (text: string, field: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(field);
+    toast({
+      title: "Copié !",
+      description: "L'information a été copiée dans le presse-papiers.",
+    });
+    setTimeout(() => setCopiedField(null), 2000);
+  };
 
   const projects = [
     {
@@ -32,7 +62,13 @@ const Support = () => {
       target: 30000,
       raised: 18200,
       supporters: 94,
-      image: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400&h=250&fit=crop'
+      image: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400&h=250&fit=crop',
+      needs: [
+        { item: 'Caméra professionnelle 4K', price: 1500 },
+        { item: 'Drone pour prises aériennes', price: 800 },
+        { item: 'Microphones de qualité', price: 300 },
+        { item: 'Équipement d\'éclairage', price: 400 }
+      ]
     },
     {
       id: 'expeditions',
@@ -41,7 +77,13 @@ const Support = () => {
       target: 75000,
       raised: 41300,
       supporters: 203,
-      image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=250&fit=crop'
+      image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=250&fit=crop',
+      needs: [
+        { item: 'Frais de transport inter-provinces', price: 2000 },
+        { item: 'Hébergement équipes', price: 800 },
+        { item: 'Guides locaux', price: 500 },
+        { item: 'Carburant véhicules', price: 600 }
+      ]
     },
     {
       id: 'platform',
@@ -50,32 +92,16 @@ const Support = () => {
       target: 25000,
       raised: 12800,
       supporters: 67,
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop'
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop',
+      needs: [
+        { item: 'Serveurs et hébergement', price: 200 },
+        { item: 'Outils de développement', price: 150 },
+        { item: 'Formation technique équipe', price: 500 }
+      ]
     }
   ];
 
   const donationOptions = [5, 10, 25, 50, 100, 250];
-
-  const paymentMethods = [
-    {
-      name: 'Mobile Money',
-      icon: <Phone className="h-6 w-6" />,
-      description: 'Orange Money, Airtel Money, M-Pesa',
-      available: true
-    },
-    {
-      name: 'PayPal',
-      icon: <DollarSign className="h-6 w-6" />,
-      description: 'Paiement sécurisé international',
-      available: true
-    },
-    {
-      name: 'Carte bancaire',
-      icon: <CreditCard className="h-6 w-6" />,
-      description: 'Visa, MasterCard',
-      available: true
-    }
-  ];
 
   const impacts = [
     {
@@ -127,7 +153,6 @@ const Support = () => {
       description: `Redirection vers le paiement de ${donationAmount}$ en cours...`,
     });
 
-    // Ici, on redirigerait vers la plateforme de paiement
     console.log(`Donation de ${donationAmount}$ pour le projet ${selectedProject}`);
   };
 
@@ -140,6 +165,9 @@ const Support = () => {
             <h1 className="text-4xl font-bold text-congo-brown mb-4">
               Soutenez Notre Mission
             </h1>
+            <p className="text-xl text-congo-green font-medium mb-4">
+              Soutenez notre mission de faire briller la RDC aux yeux du monde
+            </p>
             <p className="text-lg text-congo-brown/80 max-w-3xl mx-auto">
               Votre soutien nous permet de continuer à révéler les trésors cachés de la RDC 
               et de partager sa beauté avec le monde entier.
@@ -174,10 +202,10 @@ const Support = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Left Column - Projects */}
+            {/* Left Column - Projects and Needs */}
             <div className="lg:col-span-2 space-y-8">
               <h2 className="text-2xl font-bold text-congo-brown">
-                Projets à soutenir
+                Nos besoins réels et actuels
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -208,6 +236,21 @@ const Support = () => {
                       <p className="text-sm text-congo-brown/70 mb-4">
                         {project.description}
                       </p>
+                      
+                      {/* Specific Needs */}
+                      {project.needs && (
+                        <div className="mb-4">
+                          <h4 className="text-sm font-medium text-congo-brown mb-2">Besoins spécifiques :</h4>
+                          <ul className="text-xs text-congo-brown/60 space-y-1">
+                            {project.needs.map((need, index) => (
+                              <li key={index} className="flex justify-between">
+                                <span>• {need.item}</span>
+                                <span className="font-medium">${need.price}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                       
                       {/* Progress */}
                       <div className="space-y-2">
@@ -257,16 +300,75 @@ const Support = () => {
               </Card>
             </div>
 
-            {/* Right Column - Donation Form */}
+            {/* Right Column - Donation Methods */}
             <div className="space-y-6">
+              {/* Mobile Money Section */}
               <Card className="bg-congo-beige border-congo-brown/20">
                 <CardHeader>
                   <CardTitle className="flex items-center text-congo-brown">
-                    <Heart className="h-6 w-6 mr-2 text-congo-green" />
-                    Faire un don
+                    <Phone className="h-6 w-6 mr-2 text-congo-green" />
+                    Mobile Money
                   </CardTitle>
                   <CardDescription className="text-congo-brown/70">
-                    Soutenez le projet sélectionné : {projects.find(p => p.id === selectedProject)?.title}
+                    Soutenez-nous via Mobile Money
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {Object.entries(mobileMoneyInfo).map(([key, info]) => (
+                    <div key={key} className="p-3 bg-white rounded-lg border border-congo-brown/20">
+                      <h4 className="font-semibold text-congo-brown mb-2">{info.name}</h4>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex items-center justify-between">
+                          <span className="text-congo-brown/70">Numéro:</span>
+                          <div className="flex items-center space-x-2">
+                            <span className="font-mono text-congo-brown">{info.number}</span>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => copyToClipboard(info.number, `${key}-number`)}
+                              className="h-6 w-6 p-0"
+                            >
+                              {copiedField === `${key}-number` ? (
+                                <CheckCircle className="h-3 w-3 text-green-600" />
+                              ) : (
+                                <Copy className="h-3 w-3" />
+                              )}
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-congo-brown/70">Nom:</span>
+                          <div className="flex items-center space-x-2">
+                            <span className="font-medium text-congo-brown">{info.nom}</span>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => copyToClipboard(info.nom, `${key}-nom`)}
+                              className="h-6 w-6 p-0"
+                            >
+                              {copiedField === `${key}-nom` ? (
+                                <CheckCircle className="h-3 w-3 text-green-600" />
+                              ) : (
+                                <Copy className="h-3 w-3" />
+                              )}
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+
+              {/* Card Payment Section */}
+              <Card className="bg-congo-beige border-congo-brown/20">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-congo-brown">
+                    <CreditCard className="h-6 w-6 mr-2 text-congo-green" />
+                    Paiement par carte
+                  </CardTitle>
+                  <CardDescription className="text-congo-brown/70">
+                    Paiement sécurisé Visa/MasterCard
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -282,6 +384,7 @@ const Support = () => {
                           variant={donationAmount === amount.toString() ? "default" : "outline"}
                           size="sm"
                           onClick={() => setDonationAmount(amount.toString())}
+                          className={donationAmount === amount.toString() ? "bg-congo-green hover:bg-congo-green/80 text-congo-beige" : "border-congo-brown/30 text-congo-brown hover:bg-congo-brown/10"}
                         >
                           ${amount}
                         </Button>
@@ -297,46 +400,12 @@ const Support = () => {
                     />
                   </div>
 
-                  {/* Payment Methods */}
-                  <div>
-                    <label className="block text-sm font-medium text-congo-brown mb-3">
-                      Méthode de paiement
-                    </label>
-                    <div className="space-y-2">
-                      {paymentMethods.map((method, index) => (
-                        <div 
-                          key={index}
-                          className={`p-3 border border-congo-brown/20 rounded-lg cursor-pointer hover:bg-congo-brown/5 ${
-                            method.available ? '' : 'opacity-50 cursor-not-allowed'
-                          }`}
-                        >
-                          <div className="flex items-center space-x-3">
-                            <div className="text-congo-brown">{method.icon}</div>
-                            <div>
-                              <div className="font-medium text-congo-brown">
-                                {method.name}
-                                {!method.available && (
-                                  <Badge variant="secondary" className="ml-2">
-                                    Bientôt
-                                  </Badge>
-                                )}
-                              </div>
-                              <div className="text-sm text-congo-brown/70">
-                                {method.description}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
                   <Button 
                     onClick={handleDonation}
-                    className="w-full"
+                    className="w-full bg-congo-green hover:bg-congo-green/80 text-congo-beige"
                     size="lg"
                   >
-                    Faire un don de ${donationAmount || '0'}
+                    Payer ${donationAmount || '0'} par carte
                   </Button>
 
                   <p className="text-xs text-congo-brown/60 text-center">
