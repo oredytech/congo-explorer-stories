@@ -4,6 +4,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { CheckCircle, ExternalLink } from 'lucide-react';
 
 const VolunteerProtocolSection = () => {
+  const handleProtocolClick = () => {
+    // Scroll to top of the page to show the protocol section
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="mb-16">
       <Card className="border-congo-brown/20 bg-white">
@@ -121,10 +126,10 @@ const VolunteerProtocolSection = () => {
             <Button 
               variant="outline" 
               className="border-congo-brown/30 text-congo-brown hover:bg-congo-brown/10"
-              onClick={() => window.open('/protocole-benevoles', '_blank')}
+              onClick={handleProtocolClick}
             >
               <ExternalLink className="h-4 w-4 mr-2" />
-              Lire le protocole complet
+              Relire le protocole
             </Button>
           </div>
         </CardContent>

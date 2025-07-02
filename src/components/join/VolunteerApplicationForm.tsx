@@ -42,6 +42,17 @@ const VolunteerApplicationForm = () => {
       return;
     }
 
+    // Validation email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez entrer une adresse email valide.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     // Simulation d'envoi
     toast({
       title: "Candidature envoyée !",
@@ -63,10 +74,11 @@ const VolunteerApplicationForm = () => {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   return (
@@ -183,7 +195,7 @@ const VolunteerApplicationForm = () => {
                 rows={4}
                 placeholder="Partagez votre motivation et votre vision..."
                 required
-                className="border-congo-brown/30 focus:border-congo-green resize-none text-congo-brown"
+                className="border-congo-brown/30 focus:border-congo-green resize-none"
               />
             </div>
 
@@ -198,7 +210,7 @@ const VolunteerApplicationForm = () => {
                 onChange={handleInputChange}
                 rows={3}
                 placeholder="Photographie, vidéo, rédaction, connaissances locales..."
-                className="border-congo-brown/30 focus:border-congo-green resize-none text-congo-brown"
+                className="border-congo-brown/30 focus:border-congo-green resize-none"
               />
             </div>
 
@@ -213,7 +225,7 @@ const VolunteerApplicationForm = () => {
                 onChange={handleInputChange}
                 rows={2}
                 placeholder="Weekends, vacances, temps libre..."
-                className="border-congo-brown/30 focus:border-congo-green resize-none text-congo-brown"
+                className="border-congo-brown/30 focus:border-congo-green resize-none"
               />
             </div>
 
