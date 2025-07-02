@@ -51,7 +51,7 @@ const TestimonialsSection = () => {
                 </div>
               </div>
             </CardContent>
-          </div>
+          </Card>
         ))}
       </div>
     </div>
