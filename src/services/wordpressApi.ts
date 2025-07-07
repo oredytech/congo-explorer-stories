@@ -51,7 +51,7 @@ export interface FormattedArticle {
   likes: number;
   rating: number;
   totalRatings: number;
-  userReaction: null;
+  userReaction: 'like' | null;
   userRating: number;
   slug: string;
   link: string;
