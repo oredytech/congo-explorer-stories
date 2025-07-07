@@ -4,9 +4,27 @@ import { ArrowRight, Camera, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import { useWordPressArticles } from '@/hooks/useWordPressArticles';
+import { useEffect, useState } from 'react';
 
 const HeroSection = () => {
   const { t } = useTranslation();
+  const { articles, isLoading } = useWordPressArticles(3);
+  const [api, setApi] = useState<any>();
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (!api) return;
+
+    const interval = setInterval(() => {
+      api.scrollNext();
+    }, 4000); // Change slide every 4 seconds
+
+    return () => clearInterval(interval);
+  }, [api]);
+
+  const featuredArticles = articles.slice(0, 3);
 
   return (
     <section className="relative bg-gradient-to-br from-congo-beige via-congo-beige/80 to-congo-beige/60 py-20">
@@ -68,21 +86,71 @@ const HeroSection = () => {
               </div>
             </motion.div>
 
-            {/* Right Content - Image */}
+            {/* Right Content - Articles Carousel */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative"
             >
-              <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-                <img
-                  src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&h=600&fit=crop"
-                  alt="Paysage de la République Démocratique du Congo"
-                  className="w-full h-96 object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-              </div>
+              {isLoading ? (
+                <div className="relative overflow-hidden rounded-2xl shadow-2xl h-96 bg-gray-200 animate-pulse flex items-center justify-center">
+                  <div className="text-congo-brown/60">Chargement des articles...</div>
+                </div>
+              ) : (
+                <Carousel 
+                  setApi={setApi}
+                  opts={{
+                    align: "start",
+                    loop: true,
+                  }}
+                  className="relative overflow-hidden rounded-2xl shadow-2xl"
+                >
+                  <CarouselContent>
+                    {featuredArticles.length > 0 ? (
+                      featuredArticles.map((article) => (
+                        <CarouselItem key={article.id}>
+                          <div className="relative">
+                            <img
+                              src={article.image}
+                              alt={article.title}
+                              className="w-full h-96 object-cover"
+                              onError={(e) => {
+                                e.currentTarget.src = "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&h=600&fit=crop";
+                              }}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                            
+                            {/* Article info overlay */}
+                            <div className="absolute bottom-4 left-4 right-4 text-white">
+                              <div className="bg-congo-green text-white px-3 py-1 rounded-full text-xs font-medium mb-2 inline-block">
+                                {article.category}
+                              </div>
+                              <h3 className="text-lg font-bold mb-2 line-clamp-2">
+                                {article.title}
+                              </h3>
+                              <p className="text-sm opacity-90 line-clamp-2">
+                                {article.excerpt}
+                              </p>
+                            </div>
+                          </div>
+                        </CarouselItem>
+                      ))
+                    ) : (
+                      <CarouselItem>
+                        <div className="relative">
+                          <img
+                            src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&h=600&fit=crop"
+                            alt="Paysage de la République Démocratique du Congo"
+                            className="w-full h-96 object-cover"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                        </div>
+                      </CarouselItem>
+                    )}
+                  </CarouselContent>
+                </Carousel>
+              )}
               
               {/* Floating badges */}
               <div className="absolute -top-4 -right-4 bg-congo-beige rounded-full p-4 shadow-lg border border-congo-brown/10">
