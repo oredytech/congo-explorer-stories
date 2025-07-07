@@ -18,11 +18,10 @@ const Join = () => {
           {/* Header */}
           <div className="text-center mb-16">
             <h1 className="text-4xl font-bold text-congo-brown mb-4">
-              Rejoindre les Explorateurs
+              {t('join.title')}
             </h1>
             <p className="text-lg text-congo-brown max-w-3xl mx-auto">
-              Devenez ambassadeur de la beauté congolaise. Rejoignez notre équipe d'explorateurs 
-              passionnés et contribuez à révéler les trésors cachés de la RDC.
+              {t('join.subtitle')}
             </p>
           </div>
 
