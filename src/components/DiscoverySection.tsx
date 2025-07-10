@@ -1,12 +1,15 @@
+
 import { useTranslation } from 'react-i18next';
 import { Play, Clock, Eye, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { useYouTubeVideos } from '@/hooks/useYouTubeVideos';
 
 const DiscoverySection = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { featuredVideo, isLoading, error } = useYouTubeVideos();
 
   // Données par défaut si aucune vidéo n'est disponible
@@ -28,12 +31,14 @@ const DiscoverySection = () => {
     duration: featuredVideo.duration,
     views: featuredVideo.views,
     type: "Documentaire YouTube",
-    videoUrl: featuredVideo.videoUrl
+    videoUrl: featuredVideo.videoUrl,
+    videoId: featuredVideo.id
   } : defaultDiscovery;
 
   const handleWatchVideo = () => {
-    if (featuredVideo?.videoUrl) {
-      window.open(featuredVideo.videoUrl, '_blank');
+    if (featuredVideo?.id) {
+      // Rediriger vers la page de lecture vidéo interne
+      navigate(`/watch/${featuredVideo.id}`);
     }
   };
 

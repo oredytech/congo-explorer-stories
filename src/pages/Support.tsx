@@ -18,19 +18,14 @@ const Support = () => {
 
   // Mobile Money Information
   const mobileMoneyInfo = {
-    orangeMoney: {
-      name: "Orange Money",
-      number: "+243 123 456 789",
+    mpesa: {
+      name: "M-Pesa",
+      number: "+243 849 538 279",
       nom: "VISITE CONGO"
     },
     airtelMoney: {
       name: "Airtel Money", 
-      number: "+243 987 654 321",
-      nom: "VISITE CONGO"
-    },
-    mpesa: {
-      name: "M-Pesa",
-      number: "+243 555 666 777",
+      number: "+243 991 478 206",
       nom: "VISITE CONGO"
     }
   };
@@ -357,6 +352,10 @@ const Support = () => {
                       </div>
                     </div>
                   ))}
+                  <div className="p-3 bg-gray-100 rounded-lg border border-congo-brown/20 opacity-60">
+                    <h4 className="font-semibold text-congo-brown mb-2">Orange Money</h4>
+                    <p className="text-sm text-congo-brown/60">Bientôt disponible</p>
+                  </div>
                 </CardContent>
               </Card>
 
