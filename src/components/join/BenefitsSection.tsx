@@ -27,20 +27,22 @@ const BenefitsSection = () => {
   ];
 
   return (
-    <Card className="border-congo-brown/20 bg-white">
-      <CardHeader>
+    <Card className="border-congo-brown/20 bg-white/95 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow">
+      <CardHeader className="bg-congo-green/5 border-b border-congo-brown/10">
         <CardTitle className="text-congo-brown">Ce que nous vous offrons</CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <CardContent className="p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {benefits.map((benefit, index) => (
-            <div key={index} className="flex items-start space-x-3">
-              {benefit.icon}
-              <div>
-                <h4 className="font-semibold text-congo-brown mb-1">
+            <div key={index} className="flex items-start space-x-3 p-4 rounded-lg bg-congo-beige/20 hover:bg-congo-beige/30 transition-colors">
+              <div className="flex-shrink-0">
+                {benefit.icon}
+              </div>
+              <div className="flex-1 min-w-0">
+                <h4 className="font-semibold text-congo-brown mb-2">
                   {benefit.title}
                 </h4>
-                <p className="text-sm text-congo-brown">
+                <p className="text-sm text-congo-brown/80 leading-relaxed">
                   {benefit.description}
                 </p>
               </div>

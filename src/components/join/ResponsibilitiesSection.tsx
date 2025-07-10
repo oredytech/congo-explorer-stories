@@ -13,16 +13,16 @@ const ResponsibilitiesSection = () => {
   ];
 
   return (
-    <Card className="border-congo-brown/20 bg-white">
-      <CardHeader>
+    <Card className="border-congo-brown/20 bg-white/95 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow">
+      <CardHeader className="bg-congo-green/5 border-b border-congo-brown/10">
         <CardTitle className="text-congo-brown">Vos responsabilités</CardTitle>
       </CardHeader>
-      <CardContent>
-        <ul className="space-y-2">
+      <CardContent className="p-6">
+        <ul className="space-y-4">
           {responsibilities.map((responsibility, index) => (
-            <li key={index} className="flex items-start">
-              <CheckCircle className="h-5 w-5 text-congo-green mr-2 mt-0.5 flex-shrink-0" />
-              <span className="text-congo-brown">{responsibility}</span>
+            <li key={index} className="flex items-start p-3 rounded-lg bg-congo-beige/20 hover:bg-congo-beige/30 transition-colors">
+              <CheckCircle className="h-5 w-5 text-congo-green mr-3 mt-0.5 flex-shrink-0" />
+              <span className="text-congo-brown/90 leading-relaxed">{responsibility}</span>
             </li>
           ))}
         </ul>
