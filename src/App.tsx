@@ -11,6 +11,7 @@ import Home from "./pages/Home";
 import Explorer from "./pages/Explorer";
 import ProvinceDetail from "./pages/ProvinceDetail";
 import Documentaries from "./pages/Documentaries";
+import WatchVideo from "./pages/WatchVideo";
 import Gallery from "./pages/Gallery";
 import Articles from "./pages/Articles";
 import Join from "./pages/Join";
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/explorer" element={<Explorer />} />
           <Route path="/province/:id" element={<ProvinceDetail />} />
           <Route path="/documentaires" element={<Documentaries />} />
+          <Route path="/watch/:videoId" element={<WatchVideo />} />
           <Route path="/galerie" element={<Gallery />} />
           <Route path="/articles" element={<Articles />} />
           <Route path="/rejoindre" element={<Join />} />
