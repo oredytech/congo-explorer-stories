@@ -14,6 +14,7 @@ import Documentaries from "./pages/Documentaries";
 import WatchVideo from "./pages/WatchVideo";
 import Gallery from "./pages/Gallery";
 import Articles from "./pages/Articles";
+import ArticleDetail from "./pages/ArticleDetail";
 import Join from "./pages/Join";
 import Support from "./pages/Support";
 import Contact from "./pages/Contact";
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/watch/:videoId" element={<WatchVideo />} />
           <Route path="/galerie" element={<Gallery />} />
           <Route path="/articles" element={<Articles />} />
+          <Route path="/article/:slug" element={<ArticleDetail />} />
           <Route path="/rejoindre" element={<Join />} />
           <Route path="/soutenir" element={<Support />} />
           <Route path="/contact" element={<Contact />} />

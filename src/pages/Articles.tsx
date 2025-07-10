@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { Calendar, User, Tag, Clock, ArrowRight, ThumbsUp, Heart, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -217,10 +218,12 @@ const Articles = () => {
                             <Button 
                               size="sm" 
                               className="bg-congo-green hover:bg-congo-green/80 text-congo-beige"
-                              onClick={() => window.open(article.link, '_blank')}
+                              asChild
                             >
-                              Lire la suite
-                              <ArrowRight className="h-4 w-4 ml-1" />
+                              <Link to={`/article/${article.slug}`}>
+                                Lire la suite
+                                <ArrowRight className="h-4 w-4 ml-1" />
+                              </Link>
                             </Button>
                           </div>
                         </div>
@@ -296,9 +299,11 @@ const Articles = () => {
                         size="sm" 
                         variant="outline" 
                         className="w-full border-congo-brown/30 text-congo-brown hover:bg-congo-brown/10"
-                        onClick={() => window.open(article.link, '_blank')}
+                        asChild
                       >
-                        Lire l'article
+                        <Link to={`/article/${article.slug}`}>
+                          Lire l'article
+                        </Link>
                       </Button>
                     </div>
                   </div>

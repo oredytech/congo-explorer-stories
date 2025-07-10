@@ -116,10 +116,12 @@ const FeaturedSection = () => {
                       variant="ghost" 
                       size="sm" 
                       className="w-full group-hover:bg-congo-green/10 group-hover:text-congo-green text-congo-brown"
-                      onClick={() => window.open(article.link, '_blank')}
+                      asChild
                     >
-                      Lire l'article
-                      <ArrowRight className="h-4 w-4 ml-2" />
+                      <Link to={`/article/${article.slug}`}>
+                        Lire l'article
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </Link>
                     </Button>
                   </CardFooter>
                 </Card>
