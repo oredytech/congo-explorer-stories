@@ -57,7 +57,7 @@ export interface FormattedArticle {
   link: string;
 }
 
-const WORDPRESS_API_URL = 'https://visitecongo.net/wp-json/wp/v2';
+const WORDPRESS_API_URL = 'https://visitcongo.net/wp-json/wp/v2';
 
 export const fetchWordPressArticles = async (limit = 10): Promise<WordPressArticle[]> => {
   try {
