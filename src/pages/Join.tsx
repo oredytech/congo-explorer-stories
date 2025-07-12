@@ -13,14 +13,14 @@ const Join = () => {
 
   return (
     <Layout>
-      <div className="py-8 md:py-16 bg-gradient-to-br from-congo-beige/30 to-white min-h-screen">
+      <div className="py-8 md:py-16 bg-gradient-to-br from-background to-congo-beige/20 min-h-screen">
         <div className="container mx-auto px-4 max-w-7xl">
           {/* Header */}
           <div className="text-center mb-12 md:mb-16">
-            <h1 className="text-3xl md:text-4xl font-bold text-congo-brown mb-4 px-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 px-4 break-words">
               {t('join.title')}
             </h1>
-            <p className="text-base md:text-lg text-congo-brown/80 max-w-3xl mx-auto px-4 leading-relaxed">
+            <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto px-4 leading-relaxed break-words">
               {t('join.subtitle')}
             </p>
           </div>
@@ -30,9 +30,9 @@ const Join = () => {
             <VolunteerProtocolSection />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 xl:gap-12 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 xl:gap-12 items-start w-full overflow-hidden">
             {/* Left Column - Information */}
-            <div className="space-y-6 md:space-y-8 order-2 lg:order-1">
+            <div className="space-y-6 md:space-y-8 order-2 lg:order-1 w-full min-w-0">
               {/* Mission */}
               <MissionSection />
 
@@ -44,7 +44,7 @@ const Join = () => {
             </div>
 
             {/* Right Column - Form */}
-            <div className="lg:sticky lg:top-8 order-1 lg:order-2">
+            <div className="lg:sticky lg:top-8 order-1 lg:order-2 w-full min-w-0">
               <VolunteerApplicationForm />
             </div>
           </div>

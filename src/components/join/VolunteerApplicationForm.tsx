@@ -83,10 +83,10 @@ const VolunteerApplicationForm = () => {
 
   return (
     <div>
-      <Card className="border-congo-brown/20 bg-white">
+      <Card className="border-border bg-card shadow-lg w-full">
         <CardHeader>
-          <CardTitle className="text-congo-brown">Candidature d'explorateur</CardTitle>
-          <CardDescription className="text-congo-brown">
+          <CardTitle className="text-card-foreground break-words">Candidature d'explorateur</CardTitle>
+          <CardDescription className="text-muted-foreground break-words">
             Remplissez ce formulaire pour rejoindre notre équipe. 
             Tous les champs marqués d'un * sont obligatoires.
           </CardDescription>
@@ -96,7 +96,7 @@ const VolunteerApplicationForm = () => {
             {/* Personal Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-congo-brown mb-2">
+                <label className="block text-sm font-medium text-card-foreground mb-2">
                   Prénom *
                 </label>
                 <Input
@@ -104,11 +104,11 @@ const VolunteerApplicationForm = () => {
                   value={formData.firstName}
                   onChange={handleInputChange}
                   required
-                  className="border-congo-brown/30 focus:border-congo-green"
+                  className="border-border focus:border-primary focus:ring-primary"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-congo-brown mb-2">
+                <label className="block text-sm font-medium text-card-foreground mb-2">
                   Nom *
                 </label>
                 <Input
@@ -116,7 +116,7 @@ const VolunteerApplicationForm = () => {
                   value={formData.lastName}
                   onChange={handleInputChange}
                   required
-                  className="border-congo-brown/30 focus:border-congo-green"
+                  className="border-border focus:border-primary focus:ring-primary"
                 />
               </div>
             </div>
@@ -124,7 +124,7 @@ const VolunteerApplicationForm = () => {
             {/* Contact */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-congo-brown mb-2">
+                <label className="block text-sm font-medium text-card-foreground mb-2">
                   Email *
                 </label>
                 <Input
@@ -133,11 +133,11 @@ const VolunteerApplicationForm = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className="border-congo-brown/30 focus:border-congo-green"
+                  className="border-border focus:border-primary focus:ring-primary"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-congo-brown mb-2">
+                <label className="block text-sm font-medium text-card-foreground mb-2">
                   Téléphone
                 </label>
                 <Input
@@ -145,7 +145,7 @@ const VolunteerApplicationForm = () => {
                   value={formData.phone}
                   onChange={handleInputChange}
                   placeholder="+243..."
-                  className="border-congo-brown/30 focus:border-congo-green"
+                  className="border-border focus:border-primary focus:ring-primary"
                 />
               </div>
             </div>
@@ -153,25 +153,25 @@ const VolunteerApplicationForm = () => {
             {/* Location */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-congo-brown mb-2">
+                <label className="block text-sm font-medium text-card-foreground mb-2">
                   Ville
                 </label>
                 <Input
                   name="city"
                   value={formData.city}
                   onChange={handleInputChange}
-                  className="border-congo-brown/30 focus:border-congo-green"
+                  className="border-border focus:border-primary focus:ring-primary"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-congo-brown mb-2">
+                <label className="block text-sm font-medium text-card-foreground mb-2">
                   Province
                 </label>
                 <select
                   name="province"
                   value={formData.province}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-congo-brown/30 rounded-md focus:outline-none focus:ring-2 focus:ring-congo-green focus:border-transparent text-congo-brown bg-white"
+                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-card-foreground bg-card"
                 >
                   <option value="">Sélectionnez une province</option>
                   {provinces.map((province) => (
@@ -185,7 +185,7 @@ const VolunteerApplicationForm = () => {
 
             {/* Motivation */}
             <div>
-              <label className="block text-sm font-medium text-congo-brown mb-2">
+              <label className="block text-sm font-medium text-card-foreground mb-2">
                 Pourquoi voulez-vous rejoindre VISITE CONGO ? *
               </label>
               <Textarea
@@ -195,13 +195,13 @@ const VolunteerApplicationForm = () => {
                 rows={4}
                 placeholder="Partagez votre motivation et votre vision..."
                 required
-                className="border-congo-brown/30 focus:border-congo-green resize-none"
+                className="border-border focus:border-primary focus:ring-primary resize-none"
               />
             </div>
 
             {/* Skills */}
             <div>
-              <label className="block text-sm font-medium text-congo-brown mb-2">
+              <label className="block text-sm font-medium text-card-foreground mb-2">
                 Compétences particulières
               </label>
               <Textarea
@@ -210,13 +210,13 @@ const VolunteerApplicationForm = () => {
                 onChange={handleInputChange}
                 rows={3}
                 placeholder="Photographie, vidéo, rédaction, connaissances locales..."
-                className="border-congo-brown/30 focus:border-congo-green resize-none"
+                className="border-border focus:border-primary focus:ring-primary resize-none"
               />
             </div>
 
             {/* Availability */}
             <div>
-              <label className="block text-sm font-medium text-congo-brown mb-2">
+              <label className="block text-sm font-medium text-card-foreground mb-2">
                 Disponibilité
               </label>
               <Textarea
@@ -225,19 +225,19 @@ const VolunteerApplicationForm = () => {
                 onChange={handleInputChange}
                 rows={2}
                 placeholder="Weekends, vacances, temps libre..."
-                className="border-congo-brown/30 focus:border-congo-green resize-none"
+                className="border-border focus:border-primary focus:ring-primary resize-none"
               />
             </div>
 
             <Button 
               type="submit" 
-              className="w-full bg-congo-green hover:bg-congo-green/80 text-congo-beige"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
               size="lg"
             >
               Envoyer ma candidature
             </Button>
 
-            <p className="text-xs text-congo-brown text-center">
+            <p className="text-xs text-muted-foreground text-center break-words">
               En soumettant ce formulaire, vous acceptez notre protocole d'accord pour explorateurs bénévoles 
               et nos conditions d'utilisation.
             </p>
@@ -246,18 +246,18 @@ const VolunteerApplicationForm = () => {
       </Card>
 
       {/* Contact Info */}
-      <div className="mt-8 p-6 bg-congo-brown/10 rounded-lg">
-        <h3 className="font-semibold text-congo-brown mb-4">
+      <div className="mt-8 p-6 bg-muted rounded-lg w-full">
+        <h3 className="font-semibold text-card-foreground mb-4 break-words">
           Questions ? Contactez-nous
         </h3>
         <div className="space-y-2">
-          <div className="flex items-center text-congo-brown">
-            <Mail className="h-4 w-4 mr-2" />
-            explorateurs@visitecongo.com
+          <div className="flex items-center text-card-foreground break-all">
+            <Mail className="h-4 w-4 mr-2 flex-shrink-0" />
+            <span className="break-all">explorateurs@visitecongo.com</span>
           </div>
-          <div className="flex items-center text-congo-brown">
-            <Phone className="h-4 w-4 mr-2" />
-            +243 991 478 206
+          <div className="flex items-center text-card-foreground">
+            <Phone className="h-4 w-4 mr-2 flex-shrink-0" />
+            <span>+243 991 478 206</span>
           </div>
         </div>
       </div>
