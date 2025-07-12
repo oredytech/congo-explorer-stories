@@ -8,7 +8,7 @@ interface ArticleHeaderProps {
     id: number;
     title: string;
     excerpt: string;
-    featured_image: string;
+    image: string;
     date: string;
     author: string;
   };
@@ -17,12 +17,15 @@ interface ArticleHeaderProps {
 const ArticleHeader = ({ article }: ArticleHeaderProps) => {
   return (
     <div className="relative">
-      {article.featured_image && (
+      {article.image && (
         <div className="w-full h-64 md:h-80 overflow-hidden">
           <img
-            src={article.featured_image}
+            src={article.image}
             alt={article.title}
             className="w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.src = "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=800&h=400&fit=crop";
+            }}
           />
         </div>
       )}
