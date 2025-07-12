@@ -10,7 +10,6 @@ import { useEffect, useState } from 'react';
 
 const HeroSection = () => {
   const { t } = useTranslation();
-  const { articles, isLoading } = useWordPressArticles(3);
   const [api, setApi] = useState<any>();
 
   // Auto-play functionality
@@ -24,7 +23,38 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, [api]);
 
-  const featuredArticles = articles.slice(0, 3);
+  const heroImages = [
+    {
+      id: 1,
+      src: "/lovable-uploads/d38e11a5-2582-4112-9081-f71ffb6fa529.png",
+      title: "Marché de poissons - Vie locale congolaise",
+      description: "Découvrez les marchés traditionnels et la richesse des produits locaux"
+    },
+    {
+      id: 2,
+      src: "/lovable-uploads/5f88bb86-33ae-4ea4-bdca-011b28287006.png",
+      title: "Paysages montagneux - Beauté naturelle",
+      description: "Explorez les magnifiques montagnes et vallées verdoyantes du Congo"
+    },
+    {
+      id: 3,
+      src: "/lovable-uploads/f38062f9-69ca-453e-8012-fce6e2980367.png",
+      title: "Rivière forestière - Écosystème tropical",
+      description: "Plongez dans la biodiversité exceptionnelle des forêts congolaises"
+    },
+    {
+      id: 4,
+      src: "/lovable-uploads/043d4709-0530-4195-80dd-52dfe9b46c31.png",
+      title: "Rivière cristalline - Ressources naturelles",
+      description: "Admirez la pureté des cours d'eau dans les régions préservées"
+    },
+    {
+      id: 5,
+      src: "/lovable-uploads/638a6482-2147-4b93-a2a1-2502becb4810.png",
+      title: "Vue panoramique - Horizons infinis",
+      description: "Contemplez les vastes étendues et panoramas à couper le souffle"
+    }
+  ];
 
   return (
     <section className="relative bg-gradient-to-br from-congo-beige via-congo-beige/80 to-congo-beige/60 py-20">
@@ -93,64 +123,45 @@ const HeroSection = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative"
             >
-              {isLoading ? (
-                <div className="relative overflow-hidden rounded-2xl shadow-2xl h-96 bg-gray-200 animate-pulse flex items-center justify-center">
-                  <div className="text-congo-brown/60">Chargement des articles...</div>
-                </div>
-              ) : (
-                <Carousel 
-                  setApi={setApi}
-                  opts={{
-                    align: "start",
-                    loop: true,
-                  }}
-                  className="relative overflow-hidden rounded-2xl shadow-2xl"
-                >
-                  <CarouselContent>
-                    {featuredArticles.length > 0 ? (
-                      featuredArticles.map((article) => (
-                        <CarouselItem key={article.id}>
-                          <div className="relative">
-                            <img
-                              src={article.image}
-                              alt={article.title}
-                              className="w-full h-96 object-cover"
-                              onError={(e) => {
-                                e.currentTarget.src = "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&h=600&fit=crop";
-                              }}
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                            
-                            {/* Article info overlay */}
-                            <div className="absolute bottom-4 left-4 right-4 text-white">
-                              <div className="bg-congo-green text-white px-3 py-1 rounded-full text-xs font-medium mb-2 inline-block">
-                                {article.category}
-                              </div>
-                              <h3 className="text-lg font-bold mb-2 line-clamp-2">
-                                {article.title}
-                              </h3>
-                              <p className="text-sm opacity-90 line-clamp-2">
-                                {article.excerpt}
-                              </p>
-                            </div>
+              <Carousel 
+                setApi={setApi}
+                opts={{
+                  align: "start",
+                  loop: true,
+                }}
+                className="relative overflow-hidden rounded-2xl shadow-2xl"
+              >
+                <CarouselContent>
+                  {heroImages.map((image) => (
+                    <CarouselItem key={image.id}>
+                      <div className="relative">
+                        <img
+                          src={image.src}
+                          alt={image.title}
+                          className="w-full h-96 object-cover"
+                          onError={(e) => {
+                            e.currentTarget.src = "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&h=600&fit=crop";
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        
+                        {/* Image info overlay */}
+                        <div className="absolute bottom-4 left-4 right-4 text-white">
+                          <div className="bg-congo-green text-white px-3 py-1 rounded-full text-xs font-medium mb-2 inline-block">
+                            Découverte
                           </div>
-                        </CarouselItem>
-                      ))
-                    ) : (
-                      <CarouselItem>
-                        <div className="relative">
-                          <img
-                            src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&h=600&fit=crop"
-                            alt="Paysage de la République Démocratique du Congo"
-                            className="w-full h-96 object-cover"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                          <h3 className="text-lg font-bold mb-2 line-clamp-2">
+                            {image.title}
+                          </h3>
+                          <p className="text-sm opacity-90 line-clamp-2">
+                            {image.description}
+                          </p>
                         </div>
-                      </CarouselItem>
-                    )}
-                  </CarouselContent>
-                </Carousel>
-              )}
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
               
               {/* Floating badges */}
               <div className="absolute -top-4 -right-4 bg-congo-beige rounded-full p-4 shadow-lg border border-congo-brown/10">
