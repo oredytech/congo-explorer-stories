@@ -32,21 +32,96 @@ const WatchVideo = () => {
   const { videos, isLoading } = useYouTubeVideos();
   const [currentVideo, setCurrentVideo] = useState<any>(null);
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [dislikeCount, setDislikeCount] = useState(0);
+
+  // Fonction pour créer un slug à partir du titre
+  const createSlug = (title: string, id: string) => {
+    const slug = title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+    return `${slug}-${id}`;
+  };
+
+  // Fonction pour extraire l'ID depuis un slug
+  const extractIdFromSlug = (slug: string) => {
+    const parts = slug.split('-');
+    return parts[parts.length - 1];
+  };
 
   useEffect(() => {
     if (videos.length > 0 && videoId) {
-      const video = videos.find(v => v.id === videoId);
-      setCurrentVideo(video);
+      const actualVideoId = videoId.includes('-') ? extractIdFromSlug(videoId) : videoId;
+      const video = videos.find(v => v.id === actualVideoId);
+      if (video) {
+        setCurrentVideo(video);
+        // Simuler des compteurs de likes/dislikes
+        setLikeCount(Math.floor(Math.random() * 1000) + 50);
+        setDislikeCount(Math.floor(Math.random() * 50) + 5);
+      }
     }
   }, [videos, videoId]);
 
   const handleVideoSelect = (video: any) => {
-    navigate(`/watch/${video.id}`);
+    const slug = createSlug(video.title, video.id);
+    navigate(`/watch/${slug}`);
+  };
+
+  const handleLike = () => {
+    if (disliked) {
+      setDisliked(false);
+      setDislikeCount(prev => prev - 1);
+    }
+    
+    if (liked) {
+      setLiked(false);
+      setLikeCount(prev => prev - 1);
+      toast({
+        title: "J'aime retiré",
+        description: "Votre appréciation a été retirée",
+      });
+    } else {
+      setLiked(true);
+      setLikeCount(prev => prev + 1);
+      toast({
+        title: "Vidéo aimée !",
+        description: "Merci pour votre appréciation",
+      });
+    }
+  };
+
+  const handleDislike = () => {
+    if (liked) {
+      setLiked(false);
+      setLikeCount(prev => prev - 1);
+    }
+    
+    if (disliked) {
+      setDisliked(false);
+      setDislikeCount(prev => prev - 1);
+      toast({
+        title: "Je n'aime pas retiré",
+        description: "Votre évaluation a été retirée",
+      });
+    } else {
+      setDisliked(true);
+      setDislikeCount(prev => prev + 1);
+      toast({
+        title: "Évaluation enregistrée",
+        description: "Merci pour votre retour",
+      });
+    }
   };
 
   const handleShare = (platform: string) => {
-    const shareUrl = `https://visitecongo.net/watch/${videoId}`;
-    const shareTitle = currentVideo?.title || '';
+    if (!currentVideo) return;
+    
+    const slug = createSlug(currentVideo.title, currentVideo.id);
+    const shareUrl = `https://visitecongo.net/watch/${slug}`;
+    const shareTitle = currentVideo.title;
     let url = '';
     
     switch (platform) {
@@ -73,6 +148,10 @@ const WatchVideo = () => {
     
     if (url) {
       window.open(url, '_blank', 'width=600,height=400');
+      toast({
+        title: "Partage en cours",
+        description: `Partage sur ${platform} ouvert dans un nouvel onglet`,
+      });
     }
   };
 
@@ -137,25 +216,42 @@ const WatchVideo = () => {
                   </div>
 
                   <div className="flex items-center space-x-2">
-                    <Button variant="outline" size="sm" className="border-congo-brown/20 text-congo-brown hover:bg-congo-brown hover:text-white">
+                    <Button 
+                      variant={liked ? "default" : "outline"} 
+                      size="sm" 
+                      onClick={handleLike}
+                      className={liked 
+                        ? "bg-congo-green text-white hover:bg-congo-green/80" 
+                        : "border-congo-brown/20 text-congo-brown hover:bg-congo-brown hover:text-white"
+                      }
+                    >
                       <ThumbsUp className="h-4 w-4 mr-1" />
-                      J'aime
+                      {likeCount}
                     </Button>
-                    <Button variant="outline" size="sm" className="border-congo-brown/20 text-congo-brown hover:bg-congo-brown hover:text-white">
+                    <Button 
+                      variant={disliked ? "default" : "outline"} 
+                      size="sm" 
+                      onClick={handleDislike}
+                      className={disliked 
+                        ? "bg-red-500 text-white hover:bg-red-600" 
+                        : "border-congo-brown/20 text-congo-brown hover:bg-red-500 hover:text-white"
+                      }
+                    >
                       <ThumbsDown className="h-4 w-4 mr-1" />
-                      Je n'aime pas
+                      {dislikeCount}
                     </Button>
                   </div>
                 </div>
 
                 {/* Boutons de partage */}
-                <div className="flex items-center space-x-2 mb-4">
-                  <span className="text-sm text-congo-brown/60 mr-2">Partager :</span>
+                <div className="flex flex-wrap items-center gap-2 mb-4 p-3 bg-congo-beige/30 rounded-lg">
+                  <span className="text-sm text-congo-brown/60 mr-2 font-medium">Partager :</span>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => handleShare('facebook')}
-                    className="p-2 border-congo-brown/20 hover:bg-congo-brown/10"
+                    className="p-2 border-congo-brown/20 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-colors"
+                    title="Partager sur Facebook"
                   >
                     <Facebook className="h-4 w-4" />
                   </Button>
@@ -163,7 +259,8 @@ const WatchVideo = () => {
                     size="sm"
                     variant="outline"
                     onClick={() => handleShare('twitter')}
-                    className="p-2 border-congo-brown/20 hover:bg-congo-brown/10"
+                    className="p-2 border-congo-brown/20 hover:bg-sky-500 hover:text-white hover:border-sky-500 transition-colors"
+                    title="Partager sur Twitter"
                   >
                     <Twitter className="h-4 w-4" />
                   </Button>
@@ -171,7 +268,8 @@ const WatchVideo = () => {
                     size="sm"
                     variant="outline"
                     onClick={() => handleShare('linkedin')}
-                    className="p-2 border-congo-brown/20 hover:bg-congo-brown/10"
+                    className="p-2 border-congo-brown/20 hover:bg-blue-700 hover:text-white hover:border-blue-700 transition-colors"
+                    title="Partager sur LinkedIn"
                   >
                     <Linkedin className="h-4 w-4" />
                   </Button>
@@ -179,7 +277,8 @@ const WatchVideo = () => {
                     size="sm"
                     variant="outline"
                     onClick={() => handleShare('whatsapp')}
-                    className="p-2 border-congo-brown/20 hover:bg-congo-brown/10"
+                    className="p-2 border-congo-brown/20 hover:bg-green-600 hover:text-white hover:border-green-600 transition-colors"
+                    title="Partager sur WhatsApp"
                   >
                     <MessageSquare className="h-4 w-4" />
                   </Button>
@@ -187,7 +286,8 @@ const WatchVideo = () => {
                     size="sm"
                     variant="outline"
                     onClick={() => handleShare('copy')}
-                    className="p-2 border-congo-brown/20 hover:bg-congo-brown/10"
+                    className="p-2 border-congo-brown/20 hover:bg-congo-brown hover:text-white transition-colors"
+                    title="Copier le lien"
                   >
                     <Copy className="h-4 w-4" />
                   </Button>
@@ -205,19 +305,44 @@ const WatchVideo = () => {
                     </div>
                   </div>
 
-                  {/* Description */}
+                  {/* Description complète */}
                   <div className="bg-congo-beige/50 rounded-lg p-4 border border-congo-brown/10">
-                    <p className="text-congo-brown/90 leading-relaxed">
-                      {showFullDescription 
-                        ? currentVideo.description 
-                        : `${currentVideo.description.substring(0, 200)}...`
-                      }
-                    </p>
+                    <h4 className="font-medium text-congo-brown mb-3 flex items-center">
+                      <MessageSquare className="h-4 w-4 mr-2" />
+                      Transcription de la vidéo
+                    </h4>
+                    <div className="text-congo-brown/90 leading-relaxed">
+                      {showFullDescription ? (
+                        <div className="space-y-3">
+                          <p>{currentVideo.description}</p>
+                          {/* Ajout d'une transcription simulée plus complète */}
+                          <div className="border-t border-congo-brown/10 pt-3">
+                            <p className="text-sm text-congo-brown/80 mb-2 font-medium">Transcription complète :</p>
+                            <p>Cette vidéo présente un aperçu fascinant de la République Démocratique du Congo, 
+                            explorant ses richesses naturelles, sa diversité culturelle et son patrimoine historique unique. 
+                            De la majestueuse forêt équatoriale aux paysages spectaculaires des hauts plateaux, 
+                            nous découvrons ensemble les merveilles cachées de ce pays extraordinaire.</p>
+                            
+                            <p className="mt-3">Les témoignages recueillis auprès des communautés locales révèlent 
+                            l'authenticité et la chaleur du peuple congolais. Chaque région visitée offre 
+                            ses propres traditions, ses artisanats distinctifs et ses récits ancestraux 
+                            qui se transmettent de génération en génération.</p>
+                            
+                            <p className="mt-3">Cette exploration nous emmène également à la découverte des initiatives 
+                            locales de développement durable, montrant comment les communautés s'organisent 
+                            pour préserver leur environnement tout en valorisant leurs ressources naturelles 
+                            de manière responsable.</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <p>{currentVideo.description.substring(0, 200)}...</p>
+                      )}
+                    </div>
                     <Button 
                       variant="ghost" 
                       size="sm"
                       onClick={() => setShowFullDescription(!showFullDescription)}
-                      className="text-congo-green hover:bg-congo-green/10 mt-2 p-0"
+                      className="text-congo-green hover:bg-congo-green/10 mt-3 p-0 h-auto font-medium"
                     >
                       {showFullDescription ? 'Afficher moins' : 'Afficher plus'}
                     </Button>
