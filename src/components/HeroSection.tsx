@@ -1,4 +1,3 @@
-
 import { useTranslation } from 'react-i18next';
 import { ArrowRight, Camera, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,8 +10,9 @@ import { useEffect, useState } from 'react';
 const HeroSection = () => {
   const { t } = useTranslation();
   const [api, setApi] = useState<any>();
+  const [backgroundApi, setBackgroundApi] = useState<any>();
 
-  // Auto-play functionality
+  // Auto-play functionality for main carousel
   useEffect(() => {
     if (!api) return;
 
@@ -22,6 +22,17 @@ const HeroSection = () => {
 
     return () => clearInterval(interval);
   }, [api]);
+
+  // Auto-play functionality for background carousel (slower)
+  useEffect(() => {
+    if (!backgroundApi) return;
+
+    const interval = setInterval(() => {
+      backgroundApi.scrollNext();
+    }, 6000); // Change background slide every 6 seconds
+
+    return () => clearInterval(interval);
+  }, [backgroundApi]);
 
   const heroImages = [
     {
@@ -57,8 +68,42 @@ const HeroSection = () => {
   ];
 
   return (
-    <section className="relative bg-gradient-to-br from-congo-beige via-congo-beige/80 to-congo-beige/60 py-20">
-      <div className="container mx-auto px-4">
+    <section className="relative overflow-hidden py-20">
+      {/* Background Image Slider with very low opacity */}
+      <div className="absolute inset-0 z-0">
+        <Carousel 
+          setApi={setBackgroundApi}
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="h-full"
+        >
+          <CarouselContent className="h-full">
+            {heroImages.map((image) => (
+              <CarouselItem key={`bg-${image.id}`} className="h-full">
+                <div className="relative h-full">
+                  <img
+                    src={image.src}
+                    alt={image.title}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.src = "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=1920&h=1080&fit=crop";
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-congo-beige/95"></div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </div>
+
+      {/* Gradient overlay for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-br from-congo-beige/90 via-congo-beige/85 to-congo-beige/80 z-10"></div>
+
+      {/* Main content */}
+      <div className="container mx-auto px-4 relative z-20">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
