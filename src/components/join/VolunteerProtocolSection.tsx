@@ -73,31 +73,31 @@ const VolunteerProtocolSection = () => {
   ];
 
   return (
-    <section className="space-y-12">
+    <section className="space-y-12 bg-congo-beige min-h-screen py-8">
       {/* Header */}
       <div className="text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-congo-brown mb-4">
           Protocole d'Accord Explorateurs
         </h2>
-        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+        <p className="text-lg text-congo-brown/80 max-w-3xl mx-auto">
           Engagements réciproques pour une collaboration réussie
         </p>
       </div>
 
       {/* Values Section */}
       <div className="mb-12">
-        <h3 className="text-2xl font-bold text-foreground mb-8 text-center">
+        <h3 className="text-2xl font-bold text-congo-brown mb-8 text-center">
           Nos Valeurs Fondamentales
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {values.map((value, index) => {
             const IconComponent = value.icon;
             return (
-              <Card key={index} className="text-center border-border hover:shadow-lg transition-shadow bg-card">
+              <Card key={index} className="text-center border-congo-brown/20 hover:shadow-lg transition-shadow bg-white">
                 <CardContent className="pt-6">
-                  <IconComponent className="h-12 w-12 text-primary mx-auto mb-4" />
-                  <h4 className="font-semibold text-card-foreground mb-2">{value.title}</h4>
-                  <p className="text-muted-foreground text-sm">{value.description}</p>
+                  <IconComponent className="h-12 w-12 text-congo-green mx-auto mb-4" />
+                  <h4 className="font-semibold text-congo-brown mb-2">{value.title}</h4>
+                  <p className="text-congo-brown/70 text-sm">{value.description}</p>
                 </CardContent>
               </Card>
             );
@@ -110,22 +110,22 @@ const VolunteerProtocolSection = () => {
         {protocolSections.map((section, index) => {
           const IconComponent = section.icon;
           return (
-            <Card key={index} className="border-border bg-card shadow-sm hover:shadow-md transition-shadow">
+            <Card key={index} className="border-congo-brown/20 bg-white shadow-sm hover:shadow-md transition-shadow">
               <CardHeader className="pb-4">
-                <CardTitle className="flex items-center text-card-foreground text-lg">
-                  <IconComponent className="h-6 w-6 mr-3 text-primary" />
+                <CardTitle className="flex items-center text-congo-brown text-lg">
+                  <IconComponent className="h-6 w-6 mr-3 text-congo-green" />
                   {section.title}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 {section.content ? (
-                  <p className="text-muted-foreground leading-relaxed">{section.content}</p>
+                  <p className="text-congo-brown/80 leading-relaxed">{section.content}</p>
                 ) : (
                   <ul className="space-y-3">
                     {section.points?.map((point, pointIndex) => (
                       <li key={pointIndex} className="flex items-start">
-                        <CheckCircle className="h-4 w-4 text-primary mt-0.5 mr-3 flex-shrink-0" />
-                        <span className="text-muted-foreground text-sm leading-relaxed">{point}</span>
+                        <CheckCircle className="h-4 w-4 text-congo-green mt-0.5 mr-3 flex-shrink-0" />
+                        <span className="text-congo-brown/80 text-sm leading-relaxed">{point}</span>
                       </li>
                     ))}
                   </ul>
@@ -137,36 +137,36 @@ const VolunteerProtocolSection = () => {
       </div>
 
       {/* Duration and Termination */}
-      <Card className="border-border bg-card">
+      <Card className="border-congo-brown/20 bg-white">
         <CardHeader>
-          <CardTitle className="flex items-center text-card-foreground">
-            <Clock className="h-6 w-6 mr-3 text-primary" />
+          <CardTitle className="flex items-center text-congo-brown">
+            <Clock className="h-6 w-6 mr-3 text-congo-green" />
             7. Durée et résiliation
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center">
-              <Badge variant="outline" className="mb-3 bg-primary/10 text-primary border-primary/20">
+              <Badge variant="outline" className="mb-3 bg-congo-green/10 text-congo-green border-congo-green/20">
                 Durée indéterminée
               </Badge>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-congo-brown/70">
                 Protocole valable sans limite de temps
               </p>
             </div>
             <div className="text-center">
-              <Badge variant="outline" className="mb-3 bg-primary/10 text-primary border-primary/20">
+              <Badge variant="outline" className="mb-3 bg-congo-green/10 text-congo-green border-congo-green/20">
                 Résiliation libre
               </Badge>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-congo-brown/70">
                 Arrêt possible à tout moment par les deux parties
               </p>
             </div>
             <div className="text-center">
-              <Badge variant="outline" className="mb-3 bg-primary/10 text-primary border-primary/20">
+              <Badge variant="outline" className="mb-3 bg-congo-green/10 text-congo-green border-congo-green/20">
                 Contenus conservés
               </Badge>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-congo-brown/70">
                 Les publications restent propriété du site
               </p>
             </div>
@@ -175,15 +175,15 @@ const VolunteerProtocolSection = () => {
       </Card>
 
       {/* Acceptance Notice */}
-      <Card className="border-primary/30 bg-primary/5">
+      <Card className="border-congo-green/30 bg-congo-green/5">
         <CardContent className="p-8">
           <div className="flex items-start space-x-4">
-            <CheckCircle className="h-8 w-8 text-primary mt-1 flex-shrink-0" />
+            <CheckCircle className="h-8 w-8 text-congo-green mt-1 flex-shrink-0" />
             <div>
-              <h4 className="text-lg font-semibold text-card-foreground mb-3">
+              <h4 className="text-lg font-semibold text-congo-brown mb-3">
                 Acceptation automatique
               </h4>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-congo-brown/80 leading-relaxed">
                 En contribuant activement à la plateforme VISITE CONGO, vous acceptez automatiquement 
                 les termes de ce protocole d'accord pour explorateurs bénévoles.
               </p>
