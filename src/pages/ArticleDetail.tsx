@@ -9,6 +9,7 @@ import ArticleHeader from '@/components/article/ArticleHeader';
 import ArticleActions from '@/components/article/ArticleActions';
 import ArticleSidebar from '@/components/article/ArticleSidebar';
 import CommentForm from '@/components/article/CommentForm';
+import WordPressViewTracker from '@/components/WordPressViewTracker';
 
 const ArticleDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -79,6 +80,11 @@ const ArticleDetail = () => {
 
                 {/* Header de l'article */}
                 <ArticleHeader article={article} />
+
+                {/* Tracking des vues WordPress */}
+                <div className="px-6 pb-2">
+                  <WordPressViewTracker />
+                </div>
 
                 <div className="p-6 md:p-8">
                   {/* Actions et partage */}
