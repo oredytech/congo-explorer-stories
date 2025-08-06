@@ -6,65 +6,19 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Heart, ThumbsUp, ThumbsDown, Upload, X } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Heart, ThumbsUp, ThumbsDown, Upload, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
-
-interface GalleryItem {
-  id: number;
-  type: 'photo' | 'video';
-  src: string;
-  caption: string;
-  reactions: {
-    like: number;
-    love: number;
-    dislike: number;
-  };
-}
+import { useWordPressGallery } from '@/hooks/useWordPressGallery';
+import type { FormattedGalleryItem } from '@/services/wordpressMedia';
 
 const Gallery = () => {
   const { t } = useTranslation();
-  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
+  const [selectedItem, setSelectedItem] = useState<FormattedGalleryItem | null>(null);
   const [newCaption, setNewCaption] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   
-  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([
-    {
-      id: 1,
-      type: 'photo',
-      src: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&h=600&fit=crop',
-      caption: 'Magnifique paysage du Kivu',
-      reactions: { like: 15, love: 8, dislike: 1 }
-    },
-    {
-      id: 2,
-      type: 'photo', 
-      src: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&h=600&fit=crop',
-      caption: 'Forêt tropicale congolaise',
-      reactions: { like: 23, love: 12, dislike: 0 }
-    },
-    {
-      id: 3,
-      type: 'photo',
-      src: 'https://images.unsplash.com/photo-1571771019784-3ff35f4f4277?w=800&h=600&fit=crop',
-      caption: 'Fleuve Congo au coucher du soleil',
-      reactions: { like: 31, love: 18, dislike: 2 }
-    }
-  ]);
-
-  const handleReaction = (itemId: number, reactionType: 'like' | 'love' | 'dislike') => {
-    setGalleryItems(prev => prev.map(item => 
-      item.id === itemId 
-        ? {
-            ...item,
-            reactions: {
-              ...item.reactions,
-              [reactionType]: item.reactions[reactionType] + 1
-            }
-          }
-        : item
-    ));
-  };
+  const { galleryItems, isLoading, error, handleReaction, addLocalItem } = useWordPressGallery();
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -75,20 +29,26 @@ const Gallery = () => {
 
   const handleSubmitUpload = () => {
     if (selectedFile && newCaption) {
-      const newItem: GalleryItem = {
+      const newItem: FormattedGalleryItem = {
         id: Date.now(),
         type: selectedFile.type.startsWith('video/') ? 'video' : 'photo',
         src: URL.createObjectURL(selectedFile),
         caption: newCaption,
-        reactions: { like: 0, love: 0, dislike: 0 }
+        reactions: { like: 0, love: 0, dislike: 0 },
+        date: new Date().toISOString(),
+        alt: newCaption
       };
       
-      setGalleryItems(prev => [newItem, ...prev]);
+      addLocalItem(newItem);
       setSelectedFile(null);
       setNewCaption('');
-      toast.success('Contenu ajouté avec succès!');
+      toast.success('Contenu ajouté avec succès! (Local - utilisez le plugin WordPress pour un ajout permanent)');
     }
   };
+
+  if (error) {
+    console.error('Erreur de chargement de la galerie:', error);
+  }
 
   return (
     <Layout>
@@ -98,14 +58,36 @@ const Gallery = () => {
             {t('nav.gallery')}
           </h1>
           <p className="text-xl text-congo-brown/80 max-w-2xl mx-auto">
-            Découvrez la beauté de la République Démocratique du Congo à travers notre collection de photos et vidéos
+            Découvrez la beauté de la République Démocratique du Congo à travers notre collection de photos et vidéos synchronisées avec WordPress
           </p>
+        </div>
+
+        {/* Status et rechargement */}
+        <div className="mb-6 flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            {isLoading && (
+              <div className="flex items-center space-x-2 text-congo-brown/70">
+                <RefreshCw className="h-4 w-4 animate-spin" />
+                <span className="text-sm">Synchronisation avec WordPress...</span>
+              </div>
+            )}
+            {galleryItems.length > 0 && (
+              <p className="text-sm text-congo-brown/70">
+                {galleryItems.length} élément(s) dans la galerie
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Upload Section */}
         <Card className="mb-8 border-congo-brown/20">
           <CardContent className="p-6">
-            <h3 className="text-xl font-semibold text-congo-brown mb-4">Ajouter une photo/vidéo</h3>
+            <h3 className="text-xl font-semibold text-congo-brown mb-4">Ajouter une photo/vidéo (Local)</h3>
+            <div className="bg-congo-beige/30 p-4 rounded-lg mb-4">
+              <p className="text-sm text-congo-brown/70">
+                💡 <strong>Conseil :</strong> Pour ajouter des médias de façon permanente, utilisez le plugin WordPress "OT Gallery Manager" dans votre tableau de bord WordPress.
+              </p>
+            </div>
             <div className="space-y-4">
               <div>
                 <Input
@@ -127,69 +109,98 @@ const Gallery = () => {
                 className="bg-congo-green hover:bg-congo-green/90"
               >
                 <Upload className="h-4 w-4 mr-2" />
-                Publier
+                Publier (Local)
               </Button>
             </div>
           </CardContent>
         </Card>
 
+        {/* Loading State */}
+        {isLoading && galleryItems.length === 0 && (
+          <div className="text-center py-12">
+            <RefreshCw className="h-12 w-12 animate-spin mx-auto text-congo-green mb-4" />
+            <p className="text-congo-brown/70">Chargement des médias depuis WordPress...</p>
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!isLoading && galleryItems.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-congo-brown/70 text-lg mb-4">
+              Aucun élément dans la galerie pour le moment.
+            </p>
+            <p className="text-congo-brown/60 text-sm">
+              Utilisez le plugin WordPress pour ajouter des médias à la galerie.
+            </p>
+          </div>
+        )}
+
         {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {galleryItems.map((item) => (
-            <Card key={item.id} className="overflow-hidden border-congo-brown/20 hover:shadow-lg transition-shadow">
-              <div 
-                className="relative cursor-pointer"
-                onClick={() => setSelectedItem(item)}
-              >
-                {item.type === 'photo' ? (
-                  <img
-                    src={item.src}
-                    alt={item.caption}
-                    className="w-full h-64 object-cover"
-                  />
-                ) : (
-                  <video
-                    src={item.src}
-                    className="w-full h-64 object-cover"
-                    controls={false}
-                  />
-                )}
-              </div>
-              <CardContent className="p-4">
-                <p className="text-congo-brown font-medium mb-3">{item.caption}</p>
-                
-                {/* Reaction Buttons */}
-                <div className="flex items-center justify-between">
-                  <div className="flex space-x-4">
-                    <button
-                      onClick={() => handleReaction(item.id, 'like')}
-                      className="flex items-center space-x-1 text-congo-brown/70 hover:text-congo-green transition-colors"
-                    >
-                      <ThumbsUp className="h-4 w-4" />
-                      <span className="text-sm">{item.reactions.like}</span>
-                    </button>
-                    
-                    <button
-                      onClick={() => handleReaction(item.id, 'love')}
-                      className="flex items-center space-x-1 text-congo-brown/70 hover:text-red-500 transition-colors"
-                    >
-                      <Heart className="h-4 w-4" />
-                      <span className="text-sm">{item.reactions.love}</span>
-                    </button>
-                    
-                    <button
-                      onClick={() => handleReaction(item.id, 'dislike')}
-                      className="flex items-center space-x-1 text-congo-brown/70 hover:text-congo-brown transition-colors"
-                    >
-                      <ThumbsDown className="h-4 w-4" />
-                      <span className="text-sm">{item.reactions.dislike}</span>
-                    </button>
-                  </div>
+        {galleryItems.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {galleryItems.map((item) => (
+              <Card key={item.id} className="overflow-hidden border-congo-brown/20 hover:shadow-lg transition-shadow">
+                <div 
+                  className="relative cursor-pointer"
+                  onClick={() => setSelectedItem(item)}
+                >
+                  {item.type === 'photo' ? (
+                    <img
+                      src={item.src}
+                      alt={item.alt}
+                      className="w-full h-64 object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = "https://images.unsplash.com/photo-1493962853295-0fd70327578a?w=800&h=400&fit=crop";
+                      }}
+                    />
+                  ) : (
+                    <video
+                      src={item.src}
+                      className="w-full h-64 object-cover"
+                      controls={false}
+                    />
+                  )}
                 </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                <CardContent className="p-4">
+                  <p className="text-congo-brown font-medium mb-3 line-clamp-2">{item.caption}</p>
+                  
+                  {/* Reaction Buttons */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex space-x-4">
+                      <button
+                        onClick={() => handleReaction(item.id, 'like')}
+                        className="flex items-center space-x-1 text-congo-brown/70 hover:text-congo-green transition-colors"
+                      >
+                        <ThumbsUp className="h-4 w-4" />
+                        <span className="text-sm">{item.reactions.like}</span>
+                      </button>
+                      
+                      <button
+                        onClick={() => handleReaction(item.id, 'love')}
+                        className="flex items-center space-x-1 text-congo-brown/70 hover:text-red-500 transition-colors"
+                      >
+                        <Heart className="h-4 w-4" />
+                        <span className="text-sm">{item.reactions.love}</span>
+                      </button>
+                      
+                      <button
+                        onClick={() => handleReaction(item.id, 'dislike')}
+                        className="flex items-center space-x-1 text-congo-brown/70 hover:text-congo-brown transition-colors"
+                      >
+                        <ThumbsDown className="h-4 w-4" />
+                        <span className="text-sm">{item.reactions.dislike}</span>
+                      </button>
+                    </div>
+                    
+                    <span className="text-xs text-congo-brown/50">
+                      {new Date(item.date).toLocaleDateString('fr-FR')}
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
 
         {/* Lightbox Modal */}
         {selectedItem && (
@@ -202,7 +213,7 @@ const Gallery = () => {
                 {selectedItem.type === 'photo' ? (
                   <img
                     src={selectedItem.src}
-                    alt={selectedItem.caption}
+                    alt={selectedItem.alt}
                     className="w-full max-h-96 object-contain"
                   />
                 ) : (
