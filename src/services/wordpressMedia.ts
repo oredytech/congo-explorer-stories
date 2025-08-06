@@ -53,33 +53,32 @@ const WORDPRESS_API_URL = 'https://visitcongo.net/wp-json/wp/v2';
 
 export const fetchWordPressGalleryMedia = async (): Promise<WordPressMedia[]> => {
   try {
+    // Première tentative : récupérer directement les médias avec gallery_enabled
     const response = await fetch(
-      `${WORDPRESS_API_URL}/media?per_page=50&status=inherit&media_type=image,video&meta_key=gallery_enabled&meta_value=1&_fields=id,title,caption,alt_text,media_type,mime_type,source_url,media_details,date,slug,meta&orderby=date&order=desc`
+      `${WORDPRESS_API_URL}/media?per_page=50&status=inherit&_fields=id,title,caption,alt_text,media_type,mime_type,source_url,media_details,date,slug,meta&orderby=date&order=desc`
     );
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
-    const media = await response.json();
-    return media;
+    const allMedia = await response.json();
+    console.log('Médias récupérés depuis WordPress:', allMedia.length);
+    
+    // Filtrer côté client pour ne garder que ceux avec gallery_enabled = true
+    const galleryMedia = allMedia.filter((item: WordPressMedia) => {
+      const isEnabled = item.meta?.gallery_enabled === true || item.meta?.gallery_enabled === 1 || item.meta?.gallery_enabled === '1';
+      if (isEnabled) {
+        console.log('Média activé pour la galerie:', item.id, item.title?.rendered);
+      }
+      return isEnabled;
+    });
+    
+    console.log('Médias filtrés pour la galerie:', galleryMedia.length);
+    return galleryMedia;
   } catch (error) {
     console.error('Erreur lors de la récupération des médias WordPress:', error);
-    // Fallback: récupérer tous les médias et filtrer côté client
-    try {
-      const fallbackResponse = await fetch(
-        `${WORDPRESS_API_URL}/media?per_page=50&status=inherit&media_type=image,video&_fields=id,title,caption,alt_text,media_type,mime_type,source_url,media_details,date,slug,meta&orderby=date&order=desc`
-      );
-      
-      if (fallbackResponse.ok) {
-        const allMedia = await fallbackResponse.json();
-        return allMedia.filter((item: WordPressMedia) => item.meta?.gallery_enabled);
-      }
-    } catch (fallbackError) {
-      console.error('Erreur de fallback:', fallbackError);
-    }
-    
-    throw error;
+    return [];
   }
 };
 
@@ -122,7 +121,8 @@ export const fetchArticleImages = async (): Promise<WordPressMedia[]> => {
     );
     
     if (!mediaResponse.ok) {
-      throw new Error(`HTTP error! status: ${mediaResponse.status}`);
+      console.warn('Erreur lors de la récupération des images d\'articles, fallback vers liste vide');
+      return [];
     }
     
     return await mediaResponse.json();
@@ -133,23 +133,30 @@ export const fetchArticleImages = async (): Promise<WordPressMedia[]> => {
 };
 
 export const formatMediaForGallery = (mediaItems: WordPressMedia[]): FormattedGalleryItem[] => {
-  return mediaItems.map((item) => ({
-    id: item.id,
-    type: item.media_type === 'video' ? 'video' : 'photo',
-    src: item.source_url,
-    caption: item.meta?.gallery_caption || 
-             (item.caption?.rendered ? stripHtml(item.caption.rendered) : '') ||
-             (item.title?.rendered ? stripHtml(item.title.rendered) : '') ||
-             item.alt_text ||
-             'Image de la galerie',
-    reactions: item.meta?.gallery_reactions || {
-      like: Math.floor(Math.random() * 20) + 5,
-      love: Math.floor(Math.random() * 10) + 2,
-      dislike: Math.floor(Math.random() * 3)
-    },
-    date: item.date,
-    alt: item.alt_text || item.title?.rendered || 'Image'
-  }));
+  console.log('Formatage des médias pour la galerie:', mediaItems.length);
+  
+  return mediaItems.map((item) => {
+    const formattedItem = {
+      id: item.id,
+      type: item.media_type === 'video' ? 'video' as const : 'photo' as const,
+      src: item.source_url,
+      caption: item.meta?.gallery_caption || 
+               (item.caption?.rendered ? stripHtml(item.caption.rendered) : '') ||
+               (item.title?.rendered ? stripHtml(item.title.rendered) : '') ||
+               item.alt_text ||
+               'Image de la galerie',
+      reactions: item.meta?.gallery_reactions || {
+        like: Math.floor(Math.random() * 20) + 5,
+        love: Math.floor(Math.random() * 10) + 2,
+        dislike: Math.floor(Math.random() * 3)
+      },
+      date: item.date,
+      alt: item.alt_text || item.title?.rendered || 'Image'
+    };
+    
+    console.log('Média formaté:', formattedItem.id, formattedItem.caption.substring(0, 50));
+    return formattedItem;
+  });
 };
 
 const stripHtml = (html: string): string => {
