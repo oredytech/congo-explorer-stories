@@ -25,7 +25,7 @@ export interface WordPressMedia {
   date: string;
   slug: string;
   meta: {
-    gallery_enabled?: boolean;
+    gallery_enabled?: boolean | number | string;
     gallery_caption?: string;
     gallery_reactions?: {
       like: number;
@@ -53,7 +53,7 @@ const WORDPRESS_API_URL = 'https://visitcongo.net/wp-json/wp/v2';
 
 export const fetchWordPressGalleryMedia = async (): Promise<WordPressMedia[]> => {
   try {
-    // Première tentative : récupérer directement les médias avec gallery_enabled
+    // Récupérer les médias depuis WordPress
     const response = await fetch(
       `${WORDPRESS_API_URL}/media?per_page=50&status=inherit&_fields=id,title,caption,alt_text,media_type,mime_type,source_url,media_details,date,slug,meta&orderby=date&order=desc`
     );
@@ -67,7 +67,12 @@ export const fetchWordPressGalleryMedia = async (): Promise<WordPressMedia[]> =>
     
     // Filtrer côté client pour ne garder que ceux avec gallery_enabled = true
     const galleryMedia = allMedia.filter((item: WordPressMedia) => {
-      const isEnabled = item.meta?.gallery_enabled === true || item.meta?.gallery_enabled === 1 || item.meta?.gallery_enabled === '1';
+      const galleryEnabled = item.meta?.gallery_enabled;
+      const isEnabled = galleryEnabled === true || 
+                       galleryEnabled === 1 || 
+                       galleryEnabled === '1' || 
+                       galleryEnabled === 'true';
+      
       if (isEnabled) {
         console.log('Média activé pour la galerie:', item.id, item.title?.rendered);
       }
