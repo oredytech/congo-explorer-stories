@@ -89,9 +89,35 @@
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
   }
 
-  body {
+  html, body {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
     @apply bg-congo-beige text-congo-brown;
+  }
+
+  #root {
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  main {
+    width: 100%;
+  }
+
+  section {
+    width: 100%;
   }
 }

@@ -14,7 +14,7 @@ function App() {
   return (
     <QueryClientProvider client={new QueryClient()}>
       <BrowserRouter>
-        <div className="App">
+        <div className="App min-h-screen w-full">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/rejoindre" element={<Join />} />
