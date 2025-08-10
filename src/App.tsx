@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
@@ -7,28 +6,22 @@ import Home from './pages/Home';
 import Join from './pages/Join';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
-import ArticleDetail from './pages/ArticleDetail';
+import Article from './pages/Article';
 import Add from './pages/Add';
-import Articles from './pages/Articles';
 
 function App() {
-  const queryClient = new QueryClient();
-
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={new QueryClient()}>
       <BrowserRouter>
-        <div className="App min-h-screen w-full overflow-x-hidden center-content flex-col">
-          <div className="w-full max-w-[1400px] mx-auto">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/rejoindre" element={<Join />} />
-              <Route path="/galerie" element={<Gallery />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/articles" element={<Articles />} />
-              <Route path="/article/:id" element={<ArticleDetail />} />
-              <Route path="/ajouter" element={<Add />} />
-            </Routes>
-          </div>
+        <div className="App">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/rejoindre" element={<Join />} />
+            <Route path="/galerie" element={<Gallery />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/article/:id" element={<Article />} />
+            <Route path="/ajouter" element={<Add />} />
+          </Routes>
         </div>
       </BrowserRouter>
     </QueryClientProvider>
