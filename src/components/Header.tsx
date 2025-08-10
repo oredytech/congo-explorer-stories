@@ -26,27 +26,27 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-congo-beige/95 backdrop-blur-sm border-b border-congo-brown/20 w-full">
-      <div className="w-full px-4">
+      <div className="container mx-auto">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
             <img 
               src="/lovable-uploads/6e6e2617-c740-49d9-aa02-a6a00c1b0e2b.png" 
               alt="VISITE CONGO" 
               className="h-10 w-10 rounded-full"
             />
-            <span className="text-xl font-bold text-congo-brown">
+            <span className="text-xl font-bold text-congo-brown truncate">
               {t('home.title')}
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1">
+          <nav className="hidden lg:flex items-center space-x-1 flex-1 justify-center">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
                   isActive(item.href)
                     ? 'text-congo-beige bg-congo-brown'
                     : 'text-congo-brown hover:text-congo-beige hover:bg-congo-green'
@@ -58,7 +58,7 @@ const Header = () => {
           </nav>
 
           {/* Right side */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-shrink-0">
             <LanguageSelector />
             
             {/* Mobile menu button */}

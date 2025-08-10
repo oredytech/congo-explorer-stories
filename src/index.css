@@ -90,30 +90,30 @@
   * {
     @apply border-border;
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
   }
 
   html, body {
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
     margin: 0;
     padding: 0;
     @apply bg-congo-beige text-congo-brown;
+    overflow-x: hidden;
   }
 
   #root {
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
   }
 
   .container {
     width: 100%;
-    max-width: none;
-    margin: 0;
-    padding: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
   }
 
   main {

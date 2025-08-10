@@ -393,8 +393,8 @@ const Add = () => {
   if (!isLoggedIn) {
     return (
       <Layout>
-        <div className="py-16 bg-background min-h-screen">
-          <div className="container mx-auto px-4 max-w-md">
+        <div className="py-16 bg-congo-beige min-h-screen">
+          <div className="container mx-auto max-w-md">
             <Card className="bg-card border-border">
               <CardHeader className="text-center">
                 <CardTitle className="text-2xl text-card-foreground">Connexion requise</CardTitle>
@@ -442,11 +442,11 @@ const Add = () => {
   return (
     <Layout>
       <div className="py-8 bg-congo-beige min-h-screen">
-        <div className="w-full px-4 max-w-6xl mx-auto">
+        <div className="container mx-auto">
           {/* Header avec navigation */}
           <div className="mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-              <div className="min-w-0">
+              <div className="min-w-0 flex-1">
                 <h1 className="text-2xl sm:text-3xl font-bold text-congo-brown break-words">
                   Tableau de bord Contributeur
                 </h1>
@@ -486,9 +486,11 @@ const Add = () => {
           </div>
 
           {/* Contenu selon l'onglet actif */}
-          {activeTab === 'dashboard' && renderDashboard()}
-          {activeTab === 'add' && renderAddContent()}
-          {activeTab === 'profile' && renderProfile()}
+          <div className="w-full">
+            {activeTab === 'dashboard' && renderDashboard()}
+            {activeTab === 'add' && renderAddContent()}
+            {activeTab === 'profile' && renderProfile()}
+          </div>
         </div>
       </div>
     </Layout>
