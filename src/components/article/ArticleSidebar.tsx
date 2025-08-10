@@ -30,7 +30,7 @@ const ArticleSidebar = ({ currentArticleId }: ArticleSidebarProps) => {
                 {recentArticles.map((recentArticle) => (
                   <div key={recentArticle.id} className="group">
                     <Link 
-                      to={`/article/${recentArticle.slug}`}
+                      to={`/article/${recentArticle.id}`}
                       className="flex space-x-3 p-3 rounded-lg hover:bg-congo-beige/30 transition-all duration-200 group-hover:shadow-md"
                     >
                       <img

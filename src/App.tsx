@@ -17,16 +17,18 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <div className="App min-h-screen w-full overflow-x-hidden">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/rejoindre" element={<Join />} />
-            <Route path="/galerie" element={<Gallery />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/articles" element={<Articles />} />
-            <Route path="/article/:id" element={<ArticleDetail />} />
-            <Route path="/ajouter" element={<Add />} />
-          </Routes>
+        <div className="App min-h-screen w-full overflow-x-hidden center-content flex-col">
+          <div className="w-full max-w-[1400px] mx-auto">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/rejoindre" element={<Join />} />
+              <Route path="/galerie" element={<Gallery />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/articles" element={<Articles />} />
+              <Route path="/article/:id" element={<ArticleDetail />} />
+              <Route path="/ajouter" element={<Add />} />
+            </Routes>
+          </div>
         </div>
       </BrowserRouter>
     </QueryClientProvider>

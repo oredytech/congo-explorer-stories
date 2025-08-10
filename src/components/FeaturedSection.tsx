@@ -118,7 +118,7 @@ const FeaturedSection = () => {
                       className="w-full group-hover:bg-congo-green/10 group-hover:text-congo-green text-congo-brown"
                       asChild
                     >
-                      <Link to={`/article/${article.slug}`}>
+                      <Link to={`/article/${article.id}`}>
                         Lire l'article
                         <ArrowRight className="h-4 w-4 ml-2" />
                       </Link>

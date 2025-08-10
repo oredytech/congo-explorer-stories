@@ -12,11 +12,13 @@ import CommentForm from '@/components/article/CommentForm';
 import WordPressViewTracker from '@/components/WordPressViewTracker';
 
 const ArticleDetail = () => {
-  const { slug } = useParams<{ slug: string }>();
+  const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
-  const { articles } = useWordPressArticles(50);
+  const { articles, isLoading } = useWordPressArticles(50);
 
-  const article = articles.find(a => a.slug === slug);
+  // Convertir l'ID en nombre et trouver l'article
+  const articleId = id ? parseInt(id, 10) : null;
+  const article = articleId ? articles.find(a => a.id === articleId) : null;
 
   const formatContent = (content: string) => {
     const cleanContent = content
@@ -33,6 +35,19 @@ const ArticleDetail = () => {
     
     return cleanContent;
   };
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="py-16 bg-gradient-to-br from-congo-beige/30 to-white min-h-screen">
+          <div className="container mx-auto px-4 text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-congo-green mx-auto mb-4"></div>
+            <p className="text-congo-brown/70">Chargement de l'article...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   if (!article) {
     return (
