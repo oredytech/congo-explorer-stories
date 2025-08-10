@@ -9,17 +9,21 @@ import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
 import ArticleDetail from './pages/ArticleDetail';
 import Add from './pages/Add';
+import Articles from './pages/Articles';
 
 function App() {
+  const queryClient = new QueryClient();
+
   return (
-    <QueryClientProvider client={new QueryClient()}>
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <div className="App min-h-screen w-full">
+        <div className="App min-h-screen w-full overflow-x-hidden">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/rejoindre" element={<Join />} />
             <Route path="/galerie" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/articles" element={<Articles />} />
             <Route path="/article/:id" element={<ArticleDetail />} />
             <Route path="/ajouter" element={<Add />} />
           </Routes>

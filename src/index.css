@@ -125,5 +125,40 @@
   section {
     width: 100%;
     margin: 0;
+    padding: 0;
+  }
+
+  /* Fix pour éviter les débordements */
+  .grid {
+    width: 100%;
+  }
+
+  /* Assurer que les images ne débordent pas */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Fix pour les cards */
+  .card {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Utilitaires pour limiter les lignes de texte */
+@layer utilities {
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 }

@@ -14,19 +14,17 @@ const Header = () => {
 
   const navigation = [
     { name: t('nav.home'), href: '/' },
-    { name: t('nav.explore'), href: '/explorer' },
-    { name: t('nav.documentaries'), href: '/documentaires' },
+    { name: 'Articles', href: '/articles' },
     { name: t('nav.gallery'), href: '/galerie' },
-    { name: t('nav.articles'), href: '/articles' },
     { name: t('nav.join'), href: '/rejoindre' },
-    { name: t('nav.support'), href: '/soutenir' },
+    { name: 'Contact', href: '/contact' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
     <header className="sticky top-0 z-50 bg-congo-beige/95 backdrop-blur-sm border-b border-congo-brown/20 w-full">
-      <div className="container mx-auto">
+      <div className="w-full max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
@@ -36,7 +34,7 @@ const Header = () => {
               className="h-10 w-10 rounded-full"
             />
             <span className="text-xl font-bold text-congo-brown truncate">
-              {t('home.title')}
+              VISITE CONGO
             </span>
           </Link>
 
