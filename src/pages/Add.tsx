@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Layout from '@/components/Layout';
@@ -442,29 +441,29 @@ const Add = () => {
 
   return (
     <Layout>
-      <div className="py-8 bg-background min-h-screen">
-        <div className="container mx-auto px-4 max-w-6xl">
+      <div className="py-8 bg-congo-beige min-h-screen">
+        <div className="w-full px-4 max-w-6xl mx-auto">
           {/* Header avec navigation */}
           <div className="mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
               <div className="min-w-0">
-                <h1 className="text-2xl sm:text-3xl font-bold text-foreground break-words">
+                <h1 className="text-2xl sm:text-3xl font-bold text-congo-brown break-words">
                   Tableau de bord Contributeur
                 </h1>
-                <p className="text-muted-foreground mt-1 break-words">
+                <p className="text-congo-brown/80 mt-1 break-words">
                   Bienvenue, {userProfile?.name} - 
                   {userProfile?.type === 'photographer' ? ' Photographe' :
                    userProfile?.type === 'videographer' ? ' Vidéaste' : ' Blogueur'}
                 </p>
               </div>
               <div className="text-right flex-shrink-0">
-                <div className="text-xl sm:text-2xl font-bold text-primary">{userProfile?.points} pts</div>
-                <div className="text-sm text-muted-foreground">Classement #{userProfile?.rank}</div>
+                <div className="text-xl sm:text-2xl font-bold text-congo-green">{userProfile?.points} pts</div>
+                <div className="text-sm text-congo-brown/70">Classement #{userProfile?.rank}</div>
               </div>
             </div>
 
             {/* Navigation tabs */}
-            <div className="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-1 bg-card rounded-lg p-1 border border-border">
+            <div className="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-1 bg-congo-beige-dark rounded-lg p-1 border border-congo-brown/20">
               {[
                 { key: 'dashboard', label: 'Tableau de bord', icon: Trophy },
                 { key: 'add', label: 'Ajouter contenu', icon: Upload },
@@ -475,8 +474,8 @@ const Add = () => {
                   onClick={() => setActiveTab(key as any)}
                   className={`flex items-center justify-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
                     activeTab === key
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-foreground hover:bg-muted'
+                      ? 'bg-congo-green text-congo-beige'
+                      : 'text-congo-brown hover:bg-congo-beige'
                   }`}
                 >
                   <Icon className="h-4 w-4" />
