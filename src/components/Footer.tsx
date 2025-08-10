@@ -1,12 +1,14 @@
+
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Heart } from 'lucide-react';
+
 const Footer = () => {
-  const {
-    t
-  } = useTranslation();
-  return <footer className="bg-congo-brown text-congo-beige border-t border-congo-brown/20">
-      <div className="container mx-auto px-4 py-12">
+  const { t } = useTranslation();
+
+  return (
+    <footer className="bg-congo-brown text-congo-beige border-t border-congo-brown/20 w-full">
+      <div className="w-full px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Contact */}
           <div>
@@ -70,6 +72,8 @@ const Footer = () => {
           <p>&copy; 2024 VISITE CONGO. Tous droits réservés. Fièrement conçu par <a href="https://oredytech.com" target="_blank" rel="noopener noreferrer" className="text-congo-green hover:text-congo-green/80 transition-colors">Oredy TECHNOLOGIES</a>.</p>
         </div>
       </div>
-    </footer>;
+    </footer>
+  );
 };
+
 export default Footer;

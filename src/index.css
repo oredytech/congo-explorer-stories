@@ -90,10 +90,12 @@
   * {
     @apply border-border;
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
 
   html, body {
-    width: 100%;
+    width: 100vw;
     min-height: 100vh;
     margin: 0;
     padding: 0;
@@ -101,23 +103,27 @@
   }
 
   #root {
-    width: 100%;
+    width: 100vw;
     min-height: 100vh;
+    margin: 0;
+    padding: 0;
   }
 
   .container {
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    max-width: none;
+    margin: 0;
+    padding: 0;
   }
 
   main {
     width: 100%;
+    margin: 0;
+    padding: 0;
   }
 
   section {
     width: 100%;
+    margin: 0;
   }
 }
