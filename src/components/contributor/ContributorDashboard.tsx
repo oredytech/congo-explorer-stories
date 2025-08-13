@@ -60,8 +60,9 @@ export const ContributorDashboard: React.FC = () => {
 
         {/* Profile Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Mon Profil */}
           <Card className="bg-white border-congo-brown/20 shadow-sm">
-            <CardHeader className="text-center">
+            <CardHeader className="text-center bg-white">
               <div className="w-20 h-20 bg-congo-green/10 rounded-full mx-auto flex items-center justify-center mb-2">
                 <div className="text-congo-green">
                   {getTypeIcon(currentUser.type)}
@@ -72,7 +73,7 @@ export const ContributorDashboard: React.FC = () => {
                 {getTypeLabel(currentUser.type)}
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="space-y-2 bg-white">
               <div className="flex items-center text-sm text-congo-brown/70">
                 <MapPin className="h-4 w-4 mr-2" />
                 {currentUser.location}
@@ -94,14 +95,15 @@ export const ContributorDashboard: React.FC = () => {
             </CardContent>
           </Card>
 
+          {/* Points Totaux & Niveau */}
           <Card className="bg-white border-congo-brown/20 shadow-sm">
-            <CardHeader>
+            <CardHeader className="bg-white">
               <CardTitle className="text-congo-brown flex items-center">
                 <Trophy className="h-5 w-5 mr-2 text-congo-green" />
                 Points & Niveau
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 bg-white">
               <div className="text-center">
                 <div className="text-3xl font-bold text-congo-green">{currentUser.points}</div>
                 <div className="text-sm text-congo-brown/70">Points totaux</div>
@@ -116,14 +118,15 @@ export const ContributorDashboard: React.FC = () => {
             </CardContent>
           </Card>
 
+          {/* Statistiques & Contributions */}
           <Card className="bg-white border-congo-brown/20 shadow-sm">
-            <CardHeader>
+            <CardHeader className="bg-white">
               <CardTitle className="text-congo-brown flex items-center">
                 <Star className="h-5 w-5 mr-2 text-congo-green" />
                 Statistiques
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 bg-white">
               <div className="grid grid-cols-2 gap-4 text-center">
                 <div>
                   <div className="text-2xl font-bold text-congo-green">{contributions.length}</div>
@@ -139,7 +142,7 @@ export const ContributorDashboard: React.FC = () => {
                 className="w-full bg-congo-green hover:bg-congo-green/90 text-white"
               >
                 <Plus className="h-4 w-4 mr-2" />
-                Nouvelle contribution
+                Ajouter du contenu sur la RDC
               </Button>
             </CardContent>
           </Card>
@@ -149,13 +152,13 @@ export const ContributorDashboard: React.FC = () => {
         <Tabs defaultValue="contributions" className="space-y-4">
           <TabsList className="bg-white border border-congo-brown/20">
             <TabsTrigger value="contributions" className="text-congo-brown data-[state=active]:bg-congo-green data-[state=active]:text-white">
-              Mes contributions
+              Mes contributions récentes
             </TabsTrigger>
             <TabsTrigger value="rankings" className="text-congo-brown data-[state=active]:bg-congo-green data-[state=active]:text-white">
               Classements
             </TabsTrigger>
             <TabsTrigger value="profile" className="text-congo-brown data-[state=active]:bg-congo-green data-[state=active]:text-white">
-              Profil
+              Mon profil
             </TabsTrigger>
           </TabsList>
 
@@ -165,16 +168,16 @@ export const ContributorDashboard: React.FC = () => {
 
           <TabsContent value="rankings" className="space-y-4">
             <Card className="bg-white border-congo-brown/20 shadow-sm">
-              <CardHeader>
+              <CardHeader className="bg-white">
                 <CardTitle className="text-congo-brown">Classement mensuel</CardTitle>
                 <CardDescription className="text-congo-brown/70">
                   Découvrez les meilleurs contributeurs du mois
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="bg-white">
                 <div className="space-y-3">
                   {rankings.map((ranking) => (
-                    <div key={ranking.contributor.id} className="flex items-center justify-between p-3 bg-congo-beige/30 rounded-lg border border-congo-brown/10">
+                    <div key={ranking.contributor.id} className="flex items-center justify-between p-3 bg-white rounded-lg border border-congo-brown/10 shadow-sm">
                       <div className="flex items-center space-x-3">
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                           ranking.position === 1 ? 'bg-yellow-500 text-white' :
@@ -202,10 +205,10 @@ export const ContributorDashboard: React.FC = () => {
 
           <TabsContent value="profile" className="space-y-4">
             <Card className="bg-white border-congo-brown/20 shadow-sm">
-              <CardHeader>
+              <CardHeader className="bg-white">
                 <CardTitle className="text-congo-brown">Informations du profil</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 bg-white">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="text-sm font-medium text-congo-brown">Nom complet</label>
