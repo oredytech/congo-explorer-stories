@@ -2,41 +2,29 @@
 {
   "nav": {
     "home": "Home",
-    "discover": "Discover",
+    "explore": "Explore", 
+    "documentaries": "Documentaries",
     "gallery": "Gallery",
     "articles": "Articles",
     "join": "Join",
-    "contact": "Contact",
-    "add": "Add"
+    "contact": "Contact"
   },
   "home": {
-    "title": "Welcome to Visit Congo",
-    "subtitle": "Explore the hidden wonders of the Democratic Republic of Congo",
-    "description": "Discover the natural beauty, cultural richness and fascinating history of Congo through our collaborative platform.",
-    "hero": {
-      "title": "Explore the Wonders of Congo",
-      "subtitle": "Discover the natural beauty and cultural richness of the DRC",
-      "cta": "Start exploring"
-    },
-    "featuredArticles": "Featured Articles",
-    "exploreMore": "Explore more",
-    "joinCommunity": "Join the Community"
+    "title": "VISIT CONGO",
+    "subtitle": "Discover the authentic beauty of the Democratic Republic of Congo",
+    "welcome": "VISIT CONGO",
+    "heroDescription": "Dive into an extraordinary journey through the natural wonders, cultural richness and breathtaking landscapes of the DRC."
+  },
+  "hero": {
+    "title": "Discover DRC like never before",
+    "description": "Explore the natural wonders, rich culture and breathtaking landscapes of the Democratic Republic of Congo.",
+    "cta": "Start exploring"
   },
   "footer": {
-    "description": "Explore and share the wonders of the Democratic Republic of Congo",
+    "description": "Your guide to discovering the wonders of the Democratic Republic of Congo.",
     "quickLinks": "Quick Links",
     "contact": "Contact",
-    "followUs": "Follow us",
-    "rights": "All rights reserved"
-  },
-  "common": {
-    "loading": "Loading...",
-    "error": "Error",
-    "retry": "Retry",
-    "back": "Back",
-    "next": "Next",
-    "previous": "Previous",
-    "readMore": "Read more",
-    "viewAll": "View all"
+    "followUs": "Follow Us", 
+    "copyright": "© 2024 Visit Congo. All rights reserved."
   }
 }

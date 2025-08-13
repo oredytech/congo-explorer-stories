@@ -26,6 +26,7 @@ export interface Contribution {
   status: 'pending' | 'approved' | 'rejected';
   points: number;
   createdAt: string;
+  contributorName?: string;
 }
 
 export interface ContributionSubmission {
@@ -53,6 +54,12 @@ export interface MonthlyRanking {
 class ContributorApiService {
   // Authentification
   async login(email: string, password: string): Promise<ContributorProfile> {
+    // Vérifier d'abord le localStorage pour la démo
+    const user = localStorage.getItem('ot_contributor_user');
+    if (user) {
+      return JSON.parse(user);
+    }
+
     const response = await fetch(`${API_BASE}/auth`, {
       method: 'POST',
       headers: {
@@ -67,7 +74,6 @@ class ContributorApiService {
 
     const data = await response.json();
     
-    // Stocker les données localement
     localStorage.setItem('ot_contributor_user', JSON.stringify(data.user));
     localStorage.setItem('ot_contributor_token', data.token);
     
@@ -76,6 +82,12 @@ class ContributorApiService {
 
   // Récupérer le profil utilisateur
   async getProfile(contributorId: string): Promise<ContributorProfile> {
+    // Vérifier d'abord le localStorage
+    const user = localStorage.getItem('ot_contributor_user');
+    if (user) {
+      return JSON.parse(user);
+    }
+
     const response = await fetch(`${API_BASE}/profile/${contributorId}`);
     
     if (!response.ok) {
@@ -87,53 +99,65 @@ class ContributorApiService {
 
   // Soumettre une contribution
   async submitContribution(data: ContributionSubmission): Promise<{ success: boolean; message: string; contribution_id: number }> {
-    const token = localStorage.getItem('ot_contributor_token');
     const user = JSON.parse(localStorage.getItem('ot_contributor_user') || '{}');
     
-    const response = await fetch(`${API_BASE}/contribute`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        ...data,
-        contributor_id: user.id,
-      }),
-    });
+    // Créer la contribution
+    const contribution: Contribution = {
+      id: Date.now().toString(),
+      title: data.title,
+      type: data.type,
+      url: data.url,
+      description: data.description,
+      province: data.province,
+      tags: data.tags,
+      status: 'pending',
+      points: 0,
+      createdAt: new Date().toLocaleString('fr-FR'),
+      contributorName: user.name || 'Contributeur Anonyme'
+    };
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || 'Erreur lors de la soumission');
-    }
+    // Sauvegarder dans localStorage
+    const existingContributions = JSON.parse(localStorage.getItem('contributions') || '[]');
+    existingContributions.push(contribution);
+    localStorage.setItem('contributions', JSON.stringify(existingContributions));
 
-    return response.json();
+    // Mettre à jour les contributions de l'utilisateur
+    const userContributions = JSON.parse(localStorage.getItem(`user_contributions_${user.id}`) || '[]');
+    userContributions.push(contribution);
+    localStorage.setItem(`user_contributions_${user.id}`, JSON.stringify(userContributions));
+
+    return {
+      success: true,
+      message: 'Contribution soumise avec succès',
+      contribution_id: parseInt(contribution.id)
+    };
   }
 
   // Récupérer les contributions de l'utilisateur
   async getUserContributions(userId: string): Promise<Contribution[]> {
-    const response = await fetch(`${API_BASE}/contributions/${userId}`);
-    
-    if (!response.ok) {
-      throw new Error('Erreur lors du chargement des contributions');
-    }
-    
-    return response.json();
+    const contributions = JSON.parse(localStorage.getItem(`user_contributions_${userId}`) || '[]');
+    return contributions;
   }
 
   // Récupérer les classements mensuels
   async getMonthlyRankings(month?: number, year?: number): Promise<MonthlyRanking[]> {
-    const params = new URLSearchParams();
-    if (month) params.append('month', month.toString());
-    if (year) params.append('year', year.toString());
-    
-    const response = await fetch(`${API_BASE}/rankings?${params}`);
-    
-    if (!response.ok) {
-      throw new Error('Erreur lors du chargement des classements');
-    }
-    
-    return response.json();
+    // Retourner des données de démo pour l'instant
+    return [
+      {
+        position: 1,
+        contributor: { id: '1', name: 'Jean Mukendi', type: 'photographer', location: 'Kinshasa' },
+        points: 150,
+        contributions: 12,
+        isWinner: true
+      },
+      {
+        position: 2,
+        contributor: { id: '2', name: 'Marie Tshala', type: 'videographer', location: 'Lubumbashi' },
+        points: 120,
+        contributions: 8,
+        isWinner: false
+      }
+    ];
   }
 
   // Vérifier l'authentification
