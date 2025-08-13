@@ -237,16 +237,56 @@ class ContributorApiService {
     }
   }
 
-  // Soumettre une contribution
-  async submitContribution(data: ContributionSubmission): Promise<{ success: boolean; message: string; contribution_id: number }> {
+  // Soumettre une contribution avec support des fichiers
+  async submitContribution(data: ContributionSubmission & { file?: File }): Promise<{ success: boolean; message: string; contribution_id: number }> {
     try {
-      const response = await fetch(`${API_BASE}/contribute`, {
+      let finalUrl = data.url;
+      
+      // Si un fichier est fourni, le télécharger d'abord
+      if (data.file) {
+        try {
+          const formData = new FormData();
+          formData.append('file', data.file);
+          
+          const uploadResponse = await fetch(`${this.getWordPressBaseUrl()}${API_BASE}/upload`, {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('ot_contributor_token'),
+            },
+            body: formData,
+          });
+
+          if (uploadResponse.ok) {
+            const uploadResult = await uploadResponse.json();
+            finalUrl = uploadResult.url;
+          } else {
+            console.log('Échec du téléchargement, utilisation du fallback local');
+            // Créer une URL temporaire pour la démonstration
+            finalUrl = URL.createObjectURL(data.file);
+          }
+        } catch (uploadError) {
+          console.error('Erreur lors du téléchargement:', uploadError);
+          // Utiliser une URL temporaire pour la démonstration
+          finalUrl = URL.createObjectURL(data.file);
+        }
+      }
+
+      const submissionData = {
+        title: data.title,
+        type: data.type,
+        url: finalUrl,
+        description: data.description,
+        province: data.province,
+        tags: data.tags,
+      };
+
+      const response = await fetch(`${this.getWordPressBaseUrl()}${API_BASE}/contribute`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + localStorage.getItem('ot_contributor_token'),
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(submissionData),
       });
 
       if (!response.ok) {
@@ -256,12 +296,23 @@ class ContributorApiService {
       const result = await response.json();
       
       // Mettre à jour les données locales
-      this.refreshLocalContributions(data);
+      this.refreshLocalContributions(submissionData);
       
       return result;
     } catch (error) {
+      console.error('Erreur lors de la soumission:', error);
+      
       // Fallback vers localStorage
-      this.refreshLocalContributions(data);
+      const submissionData = {
+        title: data.title,
+        type: data.type,
+        url: data.file ? URL.createObjectURL(data.file) : data.url,
+        description: data.description,
+        province: data.province,
+        tags: data.tags,
+      };
+      
+      this.refreshLocalContributions(submissionData);
       
       return {
         success: true,

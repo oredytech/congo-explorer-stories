@@ -1,10 +1,10 @@
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Camera, Video, PenTool, ExternalLink, Calendar } from 'lucide-react';
-import { type Contribution } from '@/services/contributorApi';
+import { Camera, Video, PenTool, ExternalLink, Eye, Calendar } from 'lucide-react';
+import type { Contribution } from '@/services/contributorApi';
 
 interface ContributionHistoryProps {
   contributions: Contribution[];
@@ -16,7 +16,20 @@ export const ContributionHistory: React.FC<ContributionHistoryProps> = ({ contri
       case 'photo': return <Camera className="h-4 w-4" />;
       case 'video': return <Video className="h-4 w-4" />;
       case 'article': return <PenTool className="h-4 w-4" />;
-      default: return <Camera className="h-4 w-4" />;
+      default: return <Eye className="h-4 w-4" />;
+    }
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'pending':
+        return <Badge variant="secondary" className="bg-orange-100 text-orange-800 border-orange-200">En attente</Badge>;
+      case 'approved':
+        return <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">Approuvé</Badge>;
+      case 'rejected':
+        return <Badge variant="secondary" className="bg-red-100 text-red-800 border-red-200">Rejeté</Badge>;
+      default:
+        return <Badge variant="secondary">Inconnu</Badge>;
     }
   };
 
@@ -29,97 +42,91 @@ export const ContributionHistory: React.FC<ContributionHistoryProps> = ({ contri
     }
   };
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'pending':
-        return <Badge variant="secondary" className="bg-orange-100 text-orange-800">En attente</Badge>;
-      case 'approved':
-        return <Badge variant="secondary" className="bg-green-100 text-green-800">Approuvé</Badge>;
-      case 'rejected':
-        return <Badge variant="secondary" className="bg-red-100 text-red-800">Refusé</Badge>;
-      default:
-        return <Badge variant="secondary">Inconnu</Badge>;
-    }
-  };
-
-  if (contributions.length === 0) {
-    return (
-      <Card className="bg-white/95 backdrop-blur-sm border-congo-brown/20">
-        <CardContent className="text-center py-12">
-          <Camera className="h-12 w-12 text-congo-brown/40 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-congo-brown mb-2">Aucune contribution</h3>
-          <p className="text-congo-brown/80">Vous n'avez pas encore soumis de contribution. Commencez dès maintenant !</p>
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
-    <Card className="bg-white/95 backdrop-blur-sm border-congo-brown/20">
+    <Card className="bg-white border-congo-brown/20 shadow-sm">
       <CardHeader>
-        <CardTitle className="text-congo-brown">Mes contributions ({contributions.length})</CardTitle>
+        <CardTitle className="text-congo-brown">Mes contributions</CardTitle>
+        <CardDescription className="text-congo-brown/70">
+          Gérez et suivez vos contributions soumises
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          {contributions.map((contribution) => (
-            <div key={contribution.id} className="border border-congo-brown/20 rounded-lg p-4 bg-congo-brown/5">
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center space-x-2">
-                  {getTypeIcon(contribution.type)}
-                  <h3 className="font-medium text-congo-brown">{contribution.title}</h3>
-                </div>
-                <div className="flex items-center space-x-2">
-                  {getStatusBadge(contribution.status)}
-                  {contribution.points > 0 && (
-                    <Badge variant="secondary" className="bg-congo-green/20 text-congo-green">
-                      +{contribution.points} pts
-                    </Badge>
-                  )}
-                </div>
-              </div>
-
-              <p className="text-congo-brown/80 text-sm mb-3 line-clamp-2">
-                {contribution.description}
-              </p>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4 text-sm text-congo-brown/60">
-                  <span className="flex items-center">
-                    <Calendar className="h-4 w-4 mr-1" />
-                    {contribution.createdAt}
-                  </span>
-                  <Badge variant="outline" className="border-congo-brown/30 text-congo-brown">
-                    {getTypeLabel(contribution.type)}
-                  </Badge>
-                  {contribution.province && (
-                    <Badge variant="outline" className="border-congo-brown/30 text-congo-brown">
-                      {contribution.province}
-                    </Badge>
-                  )}
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => window.open(contribution.url, '_blank')}
-                  className="border-congo-brown/30 text-congo-brown hover:bg-congo-brown/10"
-                >
-                  <ExternalLink className="h-3 w-3 mr-1" />
-                  Voir
-                </Button>
-              </div>
-
-              {contribution.tags && (
-                <div className="mt-2 flex flex-wrap gap-1">
-                  {contribution.tags.split(',').map((tag, index) => (
-                    <Badge key={index} variant="secondary" className="bg-congo-yellow/20 text-congo-brown text-xs">
-                      {tag.trim()}
-                    </Badge>
-                  ))}
-                </div>
-              )}
+        {contributions.length === 0 ? (
+          <div className="text-center py-8">
+            <div className="text-congo-brown/50 mb-2">
+              <Camera className="h-12 w-12 mx-auto mb-4" />
             </div>
-          ))}
-        </div>
+            <p className="text-congo-brown/70 mb-4">Vous n'avez pas encore de contributions.</p>
+            <p className="text-sm text-congo-brown/60">
+              Commencez par soumettre votre première photo, vidéo ou article !
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {contributions.map((contribution) => (
+              <div
+                key={contribution.id}
+                className="border border-congo-brown/10 rounded-lg p-4 bg-congo-beige/20 hover:bg-congo-beige/30 transition-colors"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center space-x-3">
+                    <div className="text-congo-green">
+                      {getTypeIcon(contribution.type)}
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-congo-brown">{contribution.title}</h4>
+                      <div className="flex items-center space-x-2 mt-1">
+                        <span className="text-sm text-congo-brown/70">
+                          {getTypeLabel(contribution.type)} • {contribution.province}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    {getStatusBadge(contribution.status)}
+                    <div className="text-right">
+                      <div className="text-sm font-medium text-congo-green">{contribution.points} pts</div>
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-sm text-congo-brown/80 mb-3 line-clamp-2">
+                  {contribution.description}
+                </p>
+
+                {contribution.tags && (
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {contribution.tags.split(',').map((tag, index) => (
+                      <Badge
+                        key={index}
+                        variant="outline"
+                        className="text-xs border-congo-green/30 text-congo-green"
+                      >
+                        {tag.trim()}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center text-xs text-congo-brown/60">
+                    <Calendar className="h-3 w-3 mr-1" />
+                    Soumis le {contribution.createdAt}
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => window.open(contribution.url, '_blank')}
+                    className="border-congo-brown/30 text-congo-brown hover:bg-congo-brown/10"
+                  >
+                    <ExternalLink className="h-3 w-3 mr-1" />
+                    Voir
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
