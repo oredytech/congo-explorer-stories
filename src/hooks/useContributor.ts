@@ -19,11 +19,15 @@ export const useContributor = () => {
     }
   }, []);
 
-  // Fonction d'authentification
+  // Fonction d'authentification avec redirection vers le tableau de bord
   const login = async (email: string, password: string) => {
     const user = await contributorApi.login(email, password);
     setCurrentUser(user);
     setIsAuthenticated(true);
+    
+    // Rediriger vers le tableau de bord après connexion
+    window.location.href = '/dashboard-contributeur';
+    
     return user;
   };
 
@@ -33,6 +37,9 @@ export const useContributor = () => {
     setCurrentUser(null);
     setIsAuthenticated(false);
     queryClient.clear();
+    
+    // Rediriger vers la page d'accueil après déconnexion
+    window.location.href = '/';
   };
 
   // Hook pour récupérer le profil utilisateur

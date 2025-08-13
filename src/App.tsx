@@ -12,6 +12,7 @@ import ArticleDetail from './pages/ArticleDetail';
 import Articles from './pages/Articles';
 import Add from './pages/Add';
 import NotFound from './pages/NotFound';
+import ContributorDashboard from './pages/ContributorDashboard';
 
 // Créer une instance de QueryClient
 const queryClient = new QueryClient({
@@ -37,6 +38,7 @@ function App() {
             <Route path="/articles" element={<Articles />} />
             <Route path="/article/:slug" element={<ArticleDetail />} />
             <Route path="/ajouter" element={<Add />} />
+            <Route path="/dashboard-contributeur" element={<ContributorDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

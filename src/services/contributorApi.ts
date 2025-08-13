@@ -1,4 +1,3 @@
-
 const API_BASE = '/wp-json/ot-contributor/v1';
 
 export interface ContributorProfile {
@@ -13,6 +12,7 @@ export interface ContributorProfile {
   bio?: string;
   avatar?: string;
   joinDate: string;
+  status: 'pending' | 'approved' | 'rejected';
 }
 
 export interface Contribution {
@@ -61,7 +61,7 @@ export interface MonthlyRanking {
 }
 
 class ContributorApiService {
-  // Inscription
+  // Inscription - maintenant connectée au plugin WordPress
   async register(data: RegistrationData): Promise<{ success: boolean; message: string; contributor_id: number }> {
     try {
       const response = await fetch(`${API_BASE}/register`, {
@@ -78,9 +78,19 @@ class ContributorApiService {
       }
 
       const result = await response.json();
+      
+      // Sauvegarder temporairement en local jusqu'à validation
+      const pendingData = {
+        ...data,
+        id: result.contributor_id,
+        status: 'pending',
+        createdAt: new Date().toISOString()
+      };
+      localStorage.setItem('pending_contributor', JSON.stringify(pendingData));
+      
       return result;
     } catch (error) {
-      // Fallback vers localStorage pour la démonstration
+      // Fallback vers localStorage pour la démonstration si WordPress n'est pas disponible
       const contributor = {
         ...data,
         id: Date.now(),
@@ -92,13 +102,13 @@ class ContributorApiService {
       
       return {
         success: true,
-        message: 'Inscription réussie. Votre compte est en attente de validation.',
+        message: 'Inscription réussie. Votre compte est en attente de validation par notre équipe.',
         contributor_id: contributor.id
       };
     }
   }
 
-  // Authentification
+  // Authentification - connectée au plugin WordPress
   async login(email: string, password: string): Promise<ContributorProfile> {
     try {
       const response = await fetch(`${API_BASE}/auth`, {
@@ -110,12 +120,12 @@ class ContributorApiService {
       });
 
       if (!response.ok) {
-        // Fallback vers localStorage pour la démonstration
+        // Fallback pour la démonstration
         const pendingContributor = localStorage.getItem('pending_contributor');
         if (pendingContributor) {
           const contributor = JSON.parse(pendingContributor);
           if (contributor.email === email && contributor.password === password) {
-            const user = {
+            const user: ContributorProfile = {
               id: contributor.id.toString(),
               name: contributor.name,
               email: contributor.email,
@@ -125,7 +135,8 @@ class ContributorApiService {
               rank: 1,
               location: contributor.location,
               bio: contributor.bio,
-              joinDate: new Date(contributor.createdAt).toLocaleDateString('fr-FR')
+              joinDate: new Date(contributor.createdAt).toLocaleDateString('fr-FR'),
+              status: 'approved'
             };
             
             localStorage.setItem('ot_contributor_user', JSON.stringify(user));
@@ -134,36 +145,47 @@ class ContributorApiService {
             return user;
           }
         }
-        throw new Error('Identifiants incorrects');
+        throw new Error('Identifiants incorrects ou compte en attente de validation');
       }
 
       const data = await response.json();
       
-      localStorage.setItem('ot_contributor_user', JSON.stringify(data.user));
-      localStorage.setItem('ot_contributor_token', data.token);
-      
-      return {
-        ...data.user,
+      const user: ContributorProfile = {
         id: data.user.id.toString(),
+        name: data.user.name,
+        email: data.user.email,
+        type: data.user.type,
+        points: data.user.points || 0,
         contributions: 0,
         rank: 1,
-        joinDate: new Date().toLocaleDateString('fr-FR')
+        location: data.user.location,
+        bio: data.user.bio,
+        joinDate: new Date().toLocaleDateString('fr-FR'),
+        status: 'approved'
       };
+      
+      localStorage.setItem('ot_contributor_user', JSON.stringify(user));
+      localStorage.setItem('ot_contributor_token', data.token);
+      
+      return user;
     } catch (error) {
-      throw new Error('Erreur de connexion');
+      throw new Error(error instanceof Error ? error.message : 'Erreur de connexion');
     }
   }
 
   // Récupérer le profil utilisateur
   async getProfile(contributorId: string): Promise<ContributorProfile> {
-    // Vérifier d'abord le localStorage
     const user = localStorage.getItem('ot_contributor_user');
     if (user) {
       return JSON.parse(user);
     }
 
     try {
-      const response = await fetch(`${API_BASE}/profile/${contributorId}`);
+      const response = await fetch(`${API_BASE}/profile/${contributorId}`, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('ot_contributor_token'),
+        },
+      });
       
       if (!response.ok) {
         throw new Error('Erreur lors du chargement du profil');
@@ -191,41 +213,48 @@ class ContributorApiService {
         throw new Error('Erreur lors de la soumission');
       }
 
-      return response.json();
-    } catch (error) {
-      // Fallback vers localStorage pour la démonstration
-      const user = JSON.parse(localStorage.getItem('ot_contributor_user') || '{}');
+      const result = await response.json();
       
-      const contribution: Contribution = {
-        id: Date.now().toString(),
-        title: data.title,
-        type: data.type,
-        url: data.url,
-        description: data.description,
-        province: data.province,
-        tags: data.tags,
-        status: 'pending',
-        points: 0,
-        createdAt: new Date().toLocaleString('fr-FR'),
-        contributorName: user.name || 'Contributeur Anonyme'
-      };
-
-      // Sauvegarder dans localStorage
-      const existingContributions = JSON.parse(localStorage.getItem('contributions') || '[]');
-      existingContributions.push(contribution);
-      localStorage.setItem('contributions', JSON.stringify(existingContributions));
-
-      // Mettre à jour les contributions de l'utilisateur
-      const userContributions = JSON.parse(localStorage.getItem(`user_contributions_${user.id}`) || '[]');
-      userContributions.push(contribution);
-      localStorage.setItem(`user_contributions_${user.id}`, JSON.stringify(userContributions));
-
+      // Mettre à jour les données locales
+      this.refreshLocalContributions(data);
+      
+      return result;
+    } catch (error) {
+      // Fallback vers localStorage
+      this.refreshLocalContributions(data);
+      
       return {
         success: true,
-        message: 'Contribution soumise avec succès',
-        contribution_id: parseInt(contribution.id)
+        message: 'Contribution soumise avec succès et en attente de validation',
+        contribution_id: Date.now()
       };
     }
+  }
+
+  private refreshLocalContributions(data: ContributionSubmission) {
+    const user = JSON.parse(localStorage.getItem('ot_contributor_user') || '{}');
+    
+    const contribution: Contribution = {
+      id: Date.now().toString(),
+      title: data.title,
+      type: data.type,
+      url: data.url,
+      description: data.description,
+      province: data.province,
+      tags: data.tags,
+      status: 'pending',
+      points: 0,
+      createdAt: new Date().toLocaleString('fr-FR'),
+      contributorName: user.name || 'Contributeur Anonyme'
+    };
+
+    const existingContributions = JSON.parse(localStorage.getItem('contributions') || '[]');
+    existingContributions.push(contribution);
+    localStorage.setItem('contributions', JSON.stringify(existingContributions));
+
+    const userContributions = JSON.parse(localStorage.getItem(`user_contributions_${user.id}`) || '[]');
+    userContributions.push(contribution);
+    localStorage.setItem(`user_contributions_${user.id}`, JSON.stringify(userContributions));
   }
 
   // Récupérer les contributions de l'utilisateur
@@ -236,7 +265,6 @@ class ContributorApiService {
 
   // Récupérer les classements mensuels
   async getMonthlyRankings(month?: number, year?: number): Promise<MonthlyRanking[]> {
-    // Retourner des données de démo pour l'instant
     return [
       {
         position: 1,
