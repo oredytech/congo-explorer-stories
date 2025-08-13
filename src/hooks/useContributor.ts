@@ -1,44 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-
-interface ContributorProfile {
-  id: string;
-  name: string;
-  email: string;
-  type: 'photographer' | 'videographer' | 'blogger';
-  points: number;
-  contributions: number;
-  rank: number;
-  location: string;
-  bio?: string;
-  avatar?: string;
-  joinDate: string;
-}
-
-interface Contribution {
-  id: string;
-  title: string;
-  type: 'photo' | 'video' | 'article';
-  url: string;
-  description: string;
-  province: string;
-  tags?: string;
-  status: 'pending' | 'approved' | 'rejected';
-  points: number;
-  createdAt: string;
-}
-
-interface ContributionSubmission {
-  title: string;
-  type: 'photo' | 'video' | 'article';
-  url: string;
-  description: string;
-  province: string;
-  tags: string;
-}
-
-const API_BASE = '/wp-json/ot-contributor/v1';
+import { contributorApi, type ContributorProfile, type Contribution, type ContributionSubmission, type MonthlyRanking } from '../services/contributorApi';
 
 export const useContributor = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -47,44 +10,26 @@ export const useContributor = () => {
 
   // Vérifier l'authentification au chargement
   useEffect(() => {
-    const storedUser = localStorage.getItem('ot_contributor_user');
-    const token = localStorage.getItem('ot_contributor_token');
+    const isAuth = contributorApi.isAuthenticated();
+    const user = contributorApi.getCurrentUser();
     
-    if (storedUser && token) {
-      setCurrentUser(JSON.parse(storedUser));
+    if (isAuth && user) {
+      setCurrentUser(user);
       setIsAuthenticated(true);
     }
   }, []);
 
   // Fonction d'authentification
   const login = async (email: string, password: string) => {
-    const response = await fetch(`${API_BASE}/auth`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (!response.ok) {
-      throw new Error('Échec de l\'authentification');
-    }
-
-    const data = await response.json();
-    
-    localStorage.setItem('ot_contributor_user', JSON.stringify(data.user));
-    localStorage.setItem('ot_contributor_token', data.token);
-    
-    setCurrentUser(data.user);
+    const user = await contributorApi.login(email, password);
+    setCurrentUser(user);
     setIsAuthenticated(true);
-    
-    return data.user;
+    return user;
   };
 
   // Fonction de déconnexion
   const logout = () => {
-    localStorage.removeItem('ot_contributor_user');
-    localStorage.removeItem('ot_contributor_token');
+    contributorApi.logout();
     setCurrentUser(null);
     setIsAuthenticated(false);
     queryClient.clear();
@@ -95,11 +40,7 @@ export const useContributor = () => {
     queryKey: ['contributor-profile', currentUser?.id],
     queryFn: async () => {
       if (!currentUser?.id) return null;
-      
-      const response = await fetch(`${API_BASE}/profile/${currentUser.id}`);
-      if (!response.ok) throw new Error('Erreur lors du chargement du profil');
-      
-      return response.json();
+      return contributorApi.getProfile(currentUser.id);
     },
     enabled: !!currentUser?.id,
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -110,11 +51,7 @@ export const useContributor = () => {
     queryKey: ['user-contributions', currentUser?.id],
     queryFn: async () => {
       if (!currentUser?.id) return [];
-      
-      const response = await fetch(`${API_BASE}/contributions/${currentUser.id}`);
-      if (!response.ok) throw new Error('Erreur lors du chargement des contributions');
-      
-      return response.json();
+      return contributorApi.getUserContributions(currentUser.id);
     },
     enabled: !!currentUser?.id,
     staleTime: 2 * 60 * 1000, // 2 minutes
@@ -122,28 +59,7 @@ export const useContributor = () => {
 
   // Mutation pour soumettre une contribution
   const submitContribution = useMutation({
-    mutationFn: async (data: ContributionSubmission) => {
-      const token = localStorage.getItem('ot_contributor_token');
-      
-      const response = await fetch(`${API_BASE}/contribute`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ...data,
-          contributor_id: currentUser?.id,
-        }),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Erreur lors de la soumission');
-      }
-
-      return response.json();
-    },
+    mutationFn: (data: ContributionSubmission) => contributorApi.submitContribution(data),
     onSuccess: () => {
       // Actualiser les contributions après soumission
       queryClient.invalidateQueries({ queryKey: ['user-contributions'] });
@@ -154,12 +70,7 @@ export const useContributor = () => {
   // Hook pour récupérer les classements
   const { data: rankings = [] } = useQuery({
     queryKey: ['monthly-rankings'],
-    queryFn: async () => {
-      const response = await fetch(`${API_BASE}/rankings`);
-      if (!response.ok) throw new Error('Erreur lors du chargement des classements');
-      
-      return response.json();
-    },
+    queryFn: () => contributorApi.getMonthlyRankings(),
     staleTime: 10 * 60 * 1000, // 10 minutes
   });
 
@@ -192,6 +103,7 @@ export const useContributor = () => {
     refreshData: () => {
       queryClient.invalidateQueries({ queryKey: ['contributor-profile'] });
       queryClient.invalidateQueries({ queryKey: ['user-contributions'] });
+      queryClient.invalidateQueries({ queryKey: ['monthly-rankings'] });
     },
   };
 };
