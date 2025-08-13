@@ -13,12 +13,16 @@
   "home": {
     "title": "VISIT CONGO",
     "subtitle": "Discover the authentic beauty of the Democratic Republic of Congo",
-    "welcome": "VISIT CONGO",
+    "welcome": "Welcome to VISIT CONGO",
+    "heroText": "Dive into an extraordinary journey through the natural wonders, cultural richness and breathtaking landscapes of the Democratic Republic of Congo.",
     "heroDescription": "Dive into an extraordinary journey through the natural wonders, cultural richness and breathtaking landscapes of the DRC.",
     "aboutTitle": "Our Mission",
+    "about": "VISIT CONGO is a platform dedicated to promoting and enhancing the tourism heritage of the Democratic Republic of Congo. Our mission is to reveal to the world the extraordinary beauty of our country.",
     "aboutText": "VISIT CONGO is a platform dedicated to promoting and enhancing the tourism heritage of the Democratic Republic of Congo. Our mission is to reveal to the world the extraordinary beauty of our country.",
     "joinExplorers": "Join Explorers",
-    "addContent": "Add Content"
+    "addContent": "Add Content",
+    "discoverMore": "Discover more",
+    "exploreNow": "Explore now"
   },
   "hero": {
     "title": "Discover DRC like never before",
@@ -36,5 +40,30 @@
     "partners": "Partners",
     "becomePartner": "Become partner",
     "needHelp": "Need help"
+  },
+  "pages": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "portfolio": "Portfolio",
+    "blog": "Blog",
+    "contact": "Contact",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "common": {
+    "learnMore": "Learn more",
+    "readMore": "Read more",
+    "viewAll": "View all",
+    "backToHome": "Back to home",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close"
   }
 }

@@ -1,16 +1,18 @@
+
 import { useTranslation } from 'react-i18next';
 import { ArrowRight, Camera, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
-import { useWordPressArticles } from '@/hooks/useWordPressArticles';
+import { useWordPressGallery } from '@/hooks/useWordPressGallery';
 import { useEffect, useState } from 'react';
 
 const HeroSection = () => {
   const { t } = useTranslation();
   const [api, setApi] = useState<any>();
   const [backgroundApi, setBackgroundApi] = useState<any>();
+  const { galleryItems } = useWordPressGallery();
 
   // Auto-play functionality for main carousel
   useEffect(() => {
@@ -34,38 +36,46 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, [backgroundApi]);
 
-  const heroImages = [
-    {
-      id: 1,
-      src: "/lovable-uploads/d38e11a5-2582-4112-9081-f71ffb6fa529.png",
-      title: "Marché de poissons - Vie locale congolaise",
-      description: "Découvrez les marchés traditionnels et la richesse des produits locaux"
-    },
-    {
-      id: 2,
-      src: "/lovable-uploads/5f88bb86-33ae-4ea4-bdca-011b28287006.png",
-      title: "Paysages montagneux - Beauté naturelle",
-      description: "Explorez les magnifiques montagnes et vallées verdoyantes du Congo"
-    },
-    {
-      id: 3,
-      src: "/lovable-uploads/f38062f9-69ca-453e-8012-fce6e2980367.png",
-      title: "Rivière forestière - Écosystème tropical",
-      description: "Plongez dans la biodiversité exceptionnelle des forêts congolaises"
-    },
-    {
-      id: 4,
-      src: "/lovable-uploads/043d4709-0530-4195-80dd-52dfe9b46c31.png",
-      title: "Rivière cristalline - Ressources naturelles",
-      description: "Admirez la pureté des cours d'eau dans les régions préservées"
-    },
-    {
-      id: 5,
-      src: "/lovable-uploads/638a6482-2147-4b93-a2a1-2502becb4810.png",
-      title: "Vue panoramique - Horizons infinis",
-      description: "Contemplez les vastes étendues et panoramas à couper le souffle"
-    }
-  ];
+  // Utiliser les 20 dernières images de la galerie ou images par défaut
+  const displayImages = galleryItems.length > 0 
+    ? galleryItems.slice(0, 20).map(item => ({
+        id: item.id,
+        src: item.src,
+        title: item.caption,
+        description: item.caption
+      }))
+    : [
+        {
+          id: 1,
+          src: "/lovable-uploads/d38e11a5-2582-4112-9081-f71ffb6fa529.png",
+          title: "Marché de poissons - Vie locale congolaise",
+          description: "Découvrez les marchés traditionnels et la richesse des produits locaux"
+        },
+        {
+          id: 2,
+          src: "/lovable-uploads/5f88bb86-33ae-4ea4-bdca-011b28287006.png",
+          title: "Paysages montagneux - Beauté naturelle",
+          description: "Explorez les magnifiques montagnes et vallées verdoyantes du Congo"
+        },
+        {
+          id: 3,
+          src: "/lovable-uploads/f38062f9-69ca-453e-8012-fce6e2980367.png",
+          title: "Rivière forestière - Écosystème tropical",
+          description: "Plongez dans la biodiversité exceptionnelle des forêts congolaises"
+        },
+        {
+          id: 4,
+          src: "/lovable-uploads/043d4709-0530-4195-80dd-52dfe9b46c31.png",
+          title: "Rivière cristalline - Ressources naturelles",
+          description: "Admirez la pureté des cours d'eau dans les régions préservées"
+        },
+        {
+          id: 5,
+          src: "/lovable-uploads/638a6482-2147-4b93-a2a1-2502becb4810.png",
+          title: "Vue panoramique - Horizons infinis",
+          description: "Contemplez les vastes étendues et panoramas à couper le souffle"
+        }
+      ];
 
   return (
     <section className="relative overflow-hidden py-20">
@@ -80,7 +90,7 @@ const HeroSection = () => {
           className="h-full"
         >
           <CarouselContent className="h-full">
-            {heroImages.map((image) => (
+            {displayImages.map((image) => (
               <CarouselItem key={`bg-${image.id}`} className="h-full">
                 <div className="relative h-full">
                   <img
@@ -177,7 +187,7 @@ const HeroSection = () => {
                 className="relative overflow-hidden rounded-2xl shadow-2xl"
               >
                 <CarouselContent>
-                  {heroImages.map((image) => (
+                  {displayImages.map((image) => (
                     <CarouselItem key={image.id}>
                       <div className="relative">
                         <img

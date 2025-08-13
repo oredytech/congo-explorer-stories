@@ -13,12 +13,16 @@
   "home": {
     "title": "VISITE CONGO",
     "subtitle": "Découvrez la beauté authentique de la République Démocratique du Congo",
-    "welcome": "VISITE CONGO",
+    "welcome": "Bienvenue sur VISITE CONGO",
+    "heroText": "Plongez dans un voyage extraordinaire à travers les merveilles naturelles, la richesse culturelle et les paysages époustouflants de la République Démocratique du Congo.",
     "heroDescription": "Plongez dans un voyage extraordinaire à travers les merveilles naturelles, la richesse culturelle et les paysages époustouflants de la RDC.",
     "aboutTitle": "Notre Mission",
+    "about": "VISITE CONGO est une plateforme dédiée à la promotion et à la valorisation du patrimoine touristique de la République Démocratique du Congo. Notre mission est de révéler au monde la beauté extraordinaire de notre pays.",
     "aboutText": "VISITE CONGO est une plateforme dédiée à la promotion et à la valorisation du patrimoine touristique de la République Démocratique du Congo. Notre mission est de révéler au monde la beauté extraordinaire de notre pays.",
     "joinExplorers": "Rejoindre les Explorateurs",
-    "addContent": "Ajouter du Contenu"
+    "addContent": "Ajouter du Contenu",
+    "discoverMore": "Découvrir plus",
+    "exploreNow": "Explorer maintenant"
   },
   "hero": {
     "title": "Découvrez la RDC comme jamais auparavant",
@@ -36,5 +40,30 @@
     "partners": "Partenaires",
     "becomePartner": "Devenir partenaire",
     "needHelp": "Besoin d'aide"
+  },
+  "pages": {
+    "home": "Accueil",
+    "about": "À propos",
+    "services": "Services",
+    "portfolio": "Portfolio",
+    "blog": "Blog",
+    "contact": "Contact",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation"
+  },
+  "common": {
+    "learnMore": "En savoir plus",
+    "readMore": "Lire la suite",
+    "viewAll": "Voir tout",
+    "backToHome": "Retour à l'accueil",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "submit": "Envoyer",
+    "cancel": "Annuler",
+    "save": "Sauvegarder",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer"
   }
 }
