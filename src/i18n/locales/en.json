@@ -7,13 +7,18 @@
     "gallery": "Gallery",
     "articles": "Articles",
     "join": "Join",
-    "contact": "Contact"
+    "contact": "Contact",
+    "support": "Support"
   },
   "home": {
     "title": "VISIT CONGO",
     "subtitle": "Discover the authentic beauty of the Democratic Republic of Congo",
     "welcome": "VISIT CONGO",
-    "heroDescription": "Dive into an extraordinary journey through the natural wonders, cultural richness and breathtaking landscapes of the DRC."
+    "heroDescription": "Dive into an extraordinary journey through the natural wonders, cultural richness and breathtaking landscapes of the DRC.",
+    "aboutTitle": "Our Mission",
+    "aboutText": "VISIT CONGO is a platform dedicated to promoting and enhancing the tourism heritage of the Democratic Republic of Congo. Our mission is to reveal to the world the extraordinary beauty of our country.",
+    "joinExplorers": "Join Explorers",
+    "addContent": "Add Content"
   },
   "hero": {
     "title": "Discover DRC like never before",
@@ -25,6 +30,11 @@
     "quickLinks": "Quick Links",
     "contact": "Contact",
     "followUs": "Follow Us", 
-    "copyright": "© 2024 Visit Congo. All rights reserved."
+    "copyright": "© 2024 Visit Congo. All rights reserved.",
+    "legal": "Legal notices",
+    "privacy": "Privacy policy",
+    "partners": "Partners",
+    "becomePartner": "Become partner",
+    "needHelp": "Need help"
   }
 }

@@ -7,13 +7,18 @@
     "gallery": "Galerie",
     "articles": "Articles", 
     "join": "Rejoindre",
-    "contact": "Contact"
+    "contact": "Contact",
+    "support": "Soutenir"
   },
   "home": {
     "title": "VISITE CONGO",
     "subtitle": "Découvrez la beauté authentique de la République Démocratique du Congo",
     "welcome": "VISITE CONGO",
-    "heroDescription": "Plongez dans un voyage extraordinaire à travers les merveilles naturelles, la richesse culturelle et les paysages époustouflants de la RDC."
+    "heroDescription": "Plongez dans un voyage extraordinaire à travers les merveilles naturelles, la richesse culturelle et les paysages époustouflants de la RDC.",
+    "aboutTitle": "Notre Mission",
+    "aboutText": "VISITE CONGO est une plateforme dédiée à la promotion et à la valorisation du patrimoine touristique de la République Démocratique du Congo. Notre mission est de révéler au monde la beauté extraordinaire de notre pays.",
+    "joinExplorers": "Rejoindre les Explorateurs",
+    "addContent": "Ajouter du Contenu"
   },
   "hero": {
     "title": "Découvrez la RDC comme jamais auparavant",
@@ -25,6 +30,11 @@
     "quickLinks": "Liens rapides",
     "contact": "Contact",
     "followUs": "Suivez-nous",
-    "copyright": "© 2024 Visite Congo. Tous droits réservés."
+    "copyright": "© 2024 Visite Congo. Tous droits réservés.",
+    "legal": "Mentions légales",
+    "privacy": "Politique de confidentialité",
+    "partners": "Partenaires",
+    "becomePartner": "Devenir partenaire",
+    "needHelp": "Besoin d'aide"
   }
 }

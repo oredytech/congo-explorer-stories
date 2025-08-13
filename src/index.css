@@ -91,7 +91,17 @@
     @apply border-border;
   }
 
+  html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
   body {
-    @apply bg-congo-beige text-congo-brown;
+    @apply bg-congo-beige text-congo-brown w-full;
+  }
+
+  #root {
+    width: 100%;
   }
 }
