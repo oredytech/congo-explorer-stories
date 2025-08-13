@@ -14,9 +14,15 @@ import WordPressViewTracker from '@/components/WordPressViewTracker';
 const ArticleDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const { t } = useTranslation();
-  const { articles } = useWordPressArticles(50);
+  const { articles, isLoading, error } = useWordPressArticles(50);
+
+  console.log('ArticleDetail - Slug from URL:', slug);
+  console.log('ArticleDetail - Articles loaded:', articles?.length || 0);
+  console.log('ArticleDetail - Articles:', articles?.map(a => ({ id: a.id, slug: a.slug, title: a.title })));
 
   const article = articles.find(a => a.slug === slug);
+
+  console.log('ArticleDetail - Article found:', article ? article.title : 'Not found');
 
   const formatContent = (content: string) => {
     const cleanContent = content
@@ -34,14 +40,29 @@ const ArticleDetail = () => {
     return cleanContent;
   };
 
-  if (!article) {
+  // Chargement en cours
+  if (isLoading) {
     return (
       <Layout>
         <div className="py-16 bg-gradient-to-br from-congo-beige/30 to-white min-h-screen">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl font-bold text-congo-brown mb-4">Article non trouvé</h1>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-congo-green mx-auto mb-4"></div>
+            <p className="text-congo-brown/70">Chargement de l'article...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // Erreur de chargement
+  if (error) {
+    return (
+      <Layout>
+        <div className="py-16 bg-gradient-to-br from-congo-beige/30 to-white min-h-screen">
+          <div className="container mx-auto px-4 text-center">
+            <h1 className="text-4xl font-bold text-congo-brown mb-4">Erreur de chargement</h1>
             <p className="text-congo-brown/70 mb-8">
-              L'article que vous recherchez n'existe pas ou a été supprimé.
+              Impossible de charger l'article. Veuillez réessayer plus tard.
             </p>
             <Button asChild className="bg-congo-green hover:bg-congo-green/80 text-congo-beige">
               <Link to="/articles">
@@ -49,6 +70,44 @@ const ArticleDetail = () => {
                 Retour aux articles
               </Link>
             </Button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // Article non trouvé
+  if (!article) {
+    return (
+      <Layout>
+        <div className="py-16 bg-gradient-to-br from-congo-beige/30 to-white min-h-screen">
+          <div className="container mx-auto px-4 text-center">
+            <h1 className="text-4xl font-bold text-congo-brown mb-4">Article non trouvé</h1>
+            <p className="text-congo-brown/70 mb-8">
+              L'article "{slug}" n'existe pas ou a été supprimé.
+            </p>
+            <div className="space-y-4">
+              <Button asChild className="bg-congo-green hover:bg-congo-green/80 text-congo-beige">
+                <Link to="/articles">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Voir tous les articles
+                </Link>
+              </Button>
+              {articles.length > 0 && (
+                <div className="mt-8">
+                  <h2 className="text-xl font-semibold text-congo-brown mb-4">Articles suggérés :</h2>
+                  <div className="space-y-2">
+                    {articles.slice(0, 3).map((suggestedArticle) => (
+                      <Button key={suggestedArticle.id} asChild variant="outline" className="block">
+                        <Link to={`/article/${suggestedArticle.slug}`}>
+                          {suggestedArticle.title}
+                        </Link>
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </Layout>

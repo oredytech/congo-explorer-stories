@@ -1,0 +1,42 @@
+
+{
+  "nav": {
+    "home": "Home",
+    "discover": "Discover",
+    "gallery": "Gallery",
+    "articles": "Articles",
+    "join": "Join",
+    "contact": "Contact",
+    "add": "Add"
+  },
+  "home": {
+    "title": "Welcome to Visit Congo",
+    "subtitle": "Explore the hidden wonders of the Democratic Republic of Congo",
+    "description": "Discover the natural beauty, cultural richness and fascinating history of Congo through our collaborative platform.",
+    "hero": {
+      "title": "Explore the Wonders of Congo",
+      "subtitle": "Discover the natural beauty and cultural richness of the DRC",
+      "cta": "Start exploring"
+    },
+    "featuredArticles": "Featured Articles",
+    "exploreMore": "Explore more",
+    "joinCommunity": "Join the Community"
+  },
+  "footer": {
+    "description": "Explore and share the wonders of the Democratic Republic of Congo",
+    "quickLinks": "Quick Links",
+    "contact": "Contact",
+    "followUs": "Follow us",
+    "rights": "All rights reserved"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "readMore": "Read more",
+    "viewAll": "View all"
+  }
+}

@@ -1,0 +1,42 @@
+
+{
+  "nav": {
+    "home": "Accueil",
+    "discover": "Découvrir",
+    "gallery": "Galerie",
+    "articles": "Articles", 
+    "join": "Rejoindre",
+    "contact": "Contact",
+    "add": "Ajouter"
+  },
+  "home": {
+    "title": "Bienvenue sur Visite Congo",
+    "subtitle": "Explorez les merveilles cachées de la République Démocratique du Congo",
+    "description": "Découvrez la beauté naturelle, la richesse culturelle et l'histoire fascinante du Congo à travers notre plateforme collaborative.",
+    "hero": {
+      "title": "Explorez les Merveilles du Congo",
+      "subtitle": "Découvrez la beauté naturelle et la richesse culturelle de la RDC",
+      "cta": "Commencer l'exploration"
+    },
+    "featuredArticles": "Articles à la Une",
+    "exploreMore": "Explorer plus",
+    "joinCommunity": "Rejoindre la Communauté"
+  },
+  "footer": {
+    "description": "Explorez et partagez les merveilles de la République Démocratique du Congo",
+    "quickLinks": "Liens Rapides",
+    "contact": "Contact",
+    "followUs": "Suivez-nous",
+    "rights": "Tous droits réservés"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "retry": "Réessayer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "readMore": "Lire plus",
+    "viewAll": "Voir tout"
+  }
+}
