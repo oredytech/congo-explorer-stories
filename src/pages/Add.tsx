@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Layout from '@/components/Layout';
@@ -7,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { useContributor } from '@/hooks/useContributor';
+import ContributorAuth from '@/components/auth/ContributorAuth';
 import { 
   Camera, 
   Video, 
@@ -17,39 +18,23 @@ import {
   User,
   MapPin,
   Calendar,
-  Award
+  Award,
+  LogOut
 } from 'lucide-react';
-
-interface UserProfile {
-  id: string;
-  name: string;
-  email: string;
-  type: 'photographer' | 'videographer' | 'blogger';
-  points: number;
-  contributions: number;
-  rank: number;
-  joinDate: string;
-  location: string;
-}
-
-interface Contribution {
-  id: string;
-  title: string;
-  type: 'photo' | 'video' | 'article';
-  url: string;
-  description: string;
-  province: string;
-  status: 'pending' | 'approved' | 'rejected';
-  points: number;
-  createdAt: string;
-}
 
 const Add = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [contributions, setContributions] = useState<Contribution[]>([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { 
+    isAuthenticated, 
+    currentUser, 
+    profile, 
+    contributions, 
+    logout, 
+    submitContribution,
+    isSubmitting 
+  } = useContributor();
+  
   const [activeTab, setActiveTab] = useState<'dashboard' | 'add' | 'profile'>('dashboard');
   
   // Formulaire d'ajout de contenu
@@ -71,62 +56,9 @@ const Add = () => {
     'Ituri', 'Tshopo', 'Nord-Kivu', 'Sud-Kivu', 'Maniema', 'Tanganyika'
   ];
 
-  useEffect(() => {
-    // Simuler la vérification de connexion et chargement du profil
-    const checkAuth = () => {
-      const storedUser = localStorage.getItem('ot_contributor_user');
-      if (storedUser) {
-        const user = JSON.parse(storedUser);
-        setUserProfile(user);
-        setIsLoggedIn(true);
-        loadUserContributions(user.id);
-      }
-    };
-    checkAuth();
-  }, []);
-
-  const loadUserContributions = (userId: string) => {
-    // Simuler le chargement des contributions
-    const mockContributions: Contribution[] = [
-      {
-        id: '1',
-        title: 'Coucher de soleil sur le fleuve Congo',
-        type: 'photo',
-        url: 'https://example.com/photo1.jpg',
-        description: 'Une magnifique photo du coucher de soleil',
-        province: 'Kinshasa',
-        status: 'approved',
-        points: 25,
-        createdAt: '2024-01-15'
-      },
-      {
-        id: '2',
-        title: 'Les merveilles du Parc Virunga',
-        type: 'video',
-        url: 'https://youtube.com/watch?v=example',
-        description: 'Documentaire sur la faune du parc',
-        province: 'Nord-Kivu',
-        status: 'pending',
-        points: 0,
-        createdAt: '2024-01-10'
-      }
-    ];
-    setContributions(mockContributions);
-  };
-
   const handleSubmitContent = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!isLoggedIn) {
-      toast({
-        title: "Connexion requise",
-        description: "Veuillez vous connecter pour ajouter du contenu.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    // Validation pour s'assurer que le contenu concerne la RDC
     if (!contentForm.province) {
       toast({
         title: "Province requise",
@@ -137,8 +69,7 @@ const Add = () => {
     }
 
     try {
-      // Simuler l'envoi vers le plugin WordPress
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      submitContribution(contentForm);
       
       toast({
         title: "Contenu soumis !",
@@ -164,6 +95,14 @@ const Add = () => {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    toast({
+      title: "Déconnexion réussie",
+      description: "Vous avez été déconnecté de votre compte.",
+    });
+  };
+
   const renderDashboard = () => (
     <div className="space-y-6">
       {/* Stats Overview */}
@@ -174,7 +113,7 @@ const Add = () => {
             <Star className="h-4 w-4 text-congo-green" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-congo-brown">{userProfile?.points || 0}</div>
+            <div className="text-2xl font-bold text-congo-brown">{profile?.points || 0}</div>
             <p className="text-xs text-muted-foreground">+12 ce mois</p>
           </CardContent>
         </Card>
@@ -196,7 +135,7 @@ const Add = () => {
             <Trophy className="h-4 w-4 text-congo-green" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-congo-brown">#{userProfile?.rank || 0}</div>
+            <div className="text-2xl font-bold text-congo-brown">#{profile?.rank || 0}</div>
             <p className="text-xs text-muted-foreground">Ce mois</p>
           </CardContent>
         </Card>
@@ -209,7 +148,7 @@ const Add = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {contributions.map((contribution) => (
+            {contributions.length > 0 ? contributions.map((contribution) => (
               <div key={contribution.id} className="flex items-center space-x-4 p-4 border rounded-lg">
                 <div className="flex-shrink-0">
                   {contribution.type === 'photo' && <Camera className="h-6 w-6 text-congo-green" />}
@@ -234,7 +173,11 @@ const Add = () => {
                   )}
                 </div>
               </div>
-            ))}
+            )) : (
+              <p className="text-center text-muted-foreground py-8">
+                Aucune contribution pour le moment. Commencez par ajouter votre premier contenu !
+              </p>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -335,9 +278,9 @@ const Add = () => {
             />
           </div>
 
-          <Button type="submit" className="w-full" size="lg">
+          <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
             <Upload className="h-4 w-4 mr-2" />
-            Soumettre ma contribution
+            {isSubmitting ? 'Soumission...' : 'Soumettre ma contribution'}
           </Button>
         </form>
       </CardContent>
@@ -357,11 +300,11 @@ const Add = () => {
                 <User className="h-8 w-8 text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-congo-brown">{userProfile?.name}</h3>
-                <p className="text-muted-foreground">{userProfile?.email}</p>
+                <h3 className="text-lg font-semibold text-congo-brown">{profile?.name}</h3>
+                <p className="text-muted-foreground">{profile?.email}</p>
                 <div className="flex items-center space-x-2 mt-1">
                   <MapPin className="h-4 w-4 text-congo-green" />
-                  <span className="text-sm">{userProfile?.location}</span>
+                  <span className="text-sm">{profile?.location}</span>
                 </div>
               </div>
             </div>
@@ -370,14 +313,14 @@ const Add = () => {
               <div className="text-center">
                 <Calendar className="h-5 w-5 mx-auto text-congo-green mb-1" />
                 <p className="text-sm text-muted-foreground">Membre depuis</p>
-                <p className="font-medium">{userProfile?.joinDate}</p>
+                <p className="font-medium">{profile?.joinDate}</p>
               </div>
               <div className="text-center">
                 <Award className="h-5 w-5 mx-auto text-congo-green mb-1" />
                 <p className="text-sm text-muted-foreground">Type</p>
                 <p className="font-medium capitalize">
-                  {userProfile?.type === 'photographer' ? 'Photographe' :
-                   userProfile?.type === 'videographer' ? 'Vidéaste' : 'Blogueur'}
+                  {profile?.type === 'photographer' ? 'Photographe' :
+                   profile?.type === 'videographer' ? 'Vidéaste' : 'Blogueur'}
                 </p>
               </div>
             </div>
@@ -387,49 +330,12 @@ const Add = () => {
     </div>
   );
 
-  if (!isLoggedIn) {
+  if (!isAuthenticated) {
     return (
       <Layout>
         <div className="py-16 bg-congo-beige min-h-screen">
           <div className="container mx-auto px-4 max-w-md">
-            <Card>
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl text-congo-brown">Connexion requise</CardTitle>
-                <CardDescription>
-                  Connectez-vous pour accéder à votre tableau de bord contributeur
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <Button 
-                    onClick={() => {
-                      // Simuler une connexion
-                      const mockUser: UserProfile = {
-                        id: '1',
-                        name: 'Jean Mukendi',
-                        email: 'jean@example.com',
-                        type: 'photographer',
-                        points: 156,
-                        contributions: 12,
-                        rank: 3,
-                        joinDate: '2023-10-15',
-                        location: 'Kinshasa'
-                      };
-                      localStorage.setItem('ot_contributor_user', JSON.stringify(mockUser));
-                      setUserProfile(mockUser);
-                      setIsLoggedIn(true);
-                      loadUserContributions(mockUser.id);
-                    }}
-                    className="w-full"
-                  >
-                    Se connecter (Demo)
-                  </Button>
-                  <p className="text-xs text-center text-muted-foreground">
-                    En mode démo - Cliquez pour simuler une connexion
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            <ContributorAuth />
           </div>
         </div>
       </Layout>
@@ -448,14 +354,20 @@ const Add = () => {
                   Tableau de bord Contributeur
                 </h1>
                 <p className="text-congo-brown/70 mt-1">
-                  Bienvenue, {userProfile?.name} - 
-                  {userProfile?.type === 'photographer' ? ' Photographe' :
-                   userProfile?.type === 'videographer' ? ' Vidéaste' : ' Blogueur'}
+                  Bienvenue, {profile?.name} - 
+                  {profile?.type === 'photographer' ? ' Photographe' :
+                   profile?.type === 'videographer' ? ' Vidéaste' : ' Blogueur'}
                 </p>
               </div>
-              <div className="text-right">
-                <div className="text-2xl font-bold text-congo-green">{userProfile?.points} pts</div>
-                <div className="text-sm text-congo-brown/70">Classement #{userProfile?.rank}</div>
+              <div className="flex items-center space-x-4">
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-congo-green">{profile?.points || 0} pts</div>
+                  <div className="text-sm text-congo-brown/70">Classement #{profile?.rank || 0}</div>
+                </div>
+                <Button variant="outline" size="sm" onClick={handleLogout}>
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Déconnexion
+                </Button>
               </div>
             </div>
 
