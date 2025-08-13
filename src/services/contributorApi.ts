@@ -61,66 +61,126 @@ export interface MonthlyRanking {
 }
 
 class ContributorApiService {
-  // Inscription - maintenant connectée au plugin WordPress
+  private getWordPressBaseUrl(): string {
+    // Essayer de détecter l'URL de WordPress
+    const currentDomain = window.location.origin;
+    
+    // Si nous sommes sur un sous-domaine ou développement local
+    if (currentDomain.includes('localhost') || currentDomain.includes('127.0.0.1')) {
+      // Utiliser l'URL WordPress locale ou de développement
+      return 'http://localhost/wordpress'; // Ajuster selon votre configuration
+    }
+    
+    return currentDomain;
+  }
+
+  private async makeRequest(endpoint: string, options: RequestInit = {}): Promise<any> {
+    const baseUrl = this.getWordPressBaseUrl();
+    const url = `${baseUrl}${API_BASE}${endpoint}`;
+    
+    console.log('Making request to:', url);
+    
+    const response = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+      ...options,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('API Error:', response.status, errorText);
+      
+      try {
+        const errorJson = JSON.parse(errorText);
+        throw new Error(errorJson.message || `Erreur API: ${response.status}`);
+      } catch (e) {
+        throw new Error(`Erreur de connexion: ${response.status} - ${errorText}`);
+      }
+    }
+
+    return response.json();
+  }
+
+  // Inscription - connectée au plugin WordPress
   async register(data: RegistrationData): Promise<{ success: boolean; message: string; contributor_id: number }> {
     try {
-      const response = await fetch(`${API_BASE}/register`, {
+      console.log('Tentative d\'inscription avec:', { ...data, password: '[HIDDEN]' });
+      
+      const result = await this.makeRequest('/register', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(data),
       });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Erreur lors de l\'inscription');
-      }
-
-      const result = await response.json();
       
-      // Sauvegarder temporairement en local jusqu'à validation
-      const pendingData = {
-        ...data,
-        id: result.contributor_id,
-        status: 'pending',
-        createdAt: new Date().toISOString()
-      };
-      localStorage.setItem('pending_contributor', JSON.stringify(pendingData));
-      
+      console.log('Inscription réussie:', result);
       return result;
-    } catch (error) {
+      
+    } catch (error: any) {
+      console.error('Erreur d\'inscription:', error);
+      
       // Fallback vers localStorage pour la démonstration si WordPress n'est pas disponible
-      const contributor = {
-        ...data,
-        id: Date.now(),
-        status: 'pending',
-        createdAt: new Date().toISOString()
-      };
+      if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+        console.log('WordPress non disponible, utilisation du fallback local');
+        
+        const contributor = {
+          ...data,
+          id: Date.now(),
+          status: 'pending',
+          createdAt: new Date().toISOString()
+        };
+        
+        localStorage.setItem('pending_contributor', JSON.stringify(contributor));
+        
+        return {
+          success: true,
+          message: 'Inscription réussie (mode local). Votre compte est en attente de validation.',
+          contributor_id: contributor.id
+        };
+      }
       
-      localStorage.setItem('pending_contributor', JSON.stringify(contributor));
-      
-      return {
-        success: true,
-        message: 'Inscription réussie. Votre compte est en attente de validation par notre équipe.',
-        contributor_id: contributor.id
-      };
+      throw error;
     }
   }
 
   // Authentification - connectée au plugin WordPress
   async login(email: string, password: string): Promise<ContributorProfile> {
     try {
-      const response = await fetch(`${API_BASE}/auth`, {
+      console.log('Tentative de connexion pour:', email);
+      
+      const data = await this.makeRequest('/auth', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({ email, password }),
       });
-
-      if (!response.ok) {
-        // Fallback pour la démonstration
+      
+      console.log('Connexion WordPress réussie:', data);
+      
+      const user: ContributorProfile = {
+        id: data.user.id.toString(),
+        name: data.user.name,
+        email: data.user.email,
+        type: data.user.type,
+        points: data.user.points || 0,
+        contributions: 0,
+        rank: 1,
+        location: data.user.location,
+        bio: data.user.bio,
+        joinDate: new Date().toLocaleDateString('fr-FR'),
+        status: 'approved'
+      };
+      
+      localStorage.setItem('ot_contributor_user', JSON.stringify(user));
+      localStorage.setItem('ot_contributor_token', data.token);
+      
+      return user;
+      
+    } catch (error: any) {
+      console.error('Erreur de connexion WordPress:', error);
+      
+      // Fallback pour la démonstration si WordPress n'est pas disponible
+      if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+        console.log('WordPress non disponible, vérification locale');
+        
         const pendingContributor = localStorage.getItem('pending_contributor');
         if (pendingContributor) {
           const contributor = JSON.parse(pendingContributor);
@@ -145,31 +205,11 @@ class ContributorApiService {
             return user;
           }
         }
-        throw new Error('Identifiants incorrects ou compte en attente de validation');
+        
+        throw new Error('Identifiants incorrects ou WordPress non disponible');
       }
-
-      const data = await response.json();
       
-      const user: ContributorProfile = {
-        id: data.user.id.toString(),
-        name: data.user.name,
-        email: data.user.email,
-        type: data.user.type,
-        points: data.user.points || 0,
-        contributions: 0,
-        rank: 1,
-        location: data.user.location,
-        bio: data.user.bio,
-        joinDate: new Date().toLocaleDateString('fr-FR'),
-        status: 'approved'
-      };
-      
-      localStorage.setItem('ot_contributor_user', JSON.stringify(user));
-      localStorage.setItem('ot_contributor_token', data.token);
-      
-      return user;
-    } catch (error) {
-      throw new Error(error instanceof Error ? error.message : 'Erreur de connexion');
+      throw error;
     }
   }
 
@@ -300,6 +340,7 @@ class ContributorApiService {
   logout(): void {
     localStorage.removeItem('ot_contributor_token');
     localStorage.removeItem('ot_contributor_user');
+    localStorage.removeItem('pending_contributor');
   }
 }
 

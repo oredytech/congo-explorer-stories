@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Plugin Name: OT Contributor
@@ -20,10 +19,31 @@ class OTContributor {
         register_activation_hook(__FILE__, array($this, 'create_tables'));
         add_action('admin_menu', array($this, 'add_admin_menu'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
+        
+        // Ajouter les headers CORS
+        add_action('rest_api_init', function() {
+            remove_filter('rest_pre_serve_request', 'rest_send_cors_headers');
+            add_filter('rest_pre_serve_request', array($this, 'add_cors_headers'));
+        });
+    }
+    
+    public function add_cors_headers($value) {
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization, X-WP-Nonce');
+        header('Access-Control-Allow-Credentials: true');
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            header('HTTP/1.1 200 OK');
+            exit;
+        }
+        
+        return $value;
     }
     
     public function init() {
         // Initialisation du plugin
+        error_log('OT Contributor plugin initialized');
     }
     
     public function create_tables() {
@@ -76,35 +96,39 @@ class OTContributor {
     public function register_api_routes() {
         // Route pour l'inscription
         register_rest_route('ot-contributor/v1', '/register', array(
-            'methods' => 'POST',
+            'methods' => array('POST', 'OPTIONS'),
             'callback' => array($this, 'register_contributor'),
             'permission_callback' => '__return_true'
         ));
         
         // Route pour la connexion
         register_rest_route('ot-contributor/v1', '/auth', array(
-            'methods' => 'POST',
+            'methods' => array('POST', 'OPTIONS'),
             'callback' => array($this, 'authenticate_contributor'),
             'permission_callback' => '__return_true'
         ));
         
         // Route pour soumettre une contribution
         register_rest_route('ot-contributor/v1', '/contribute', array(
-            'methods' => 'POST',
+            'methods' => array('POST', 'OPTIONS'),
             'callback' => array($this, 'submit_contribution'),
             'permission_callback' => array($this, 'check_contributor_permission')
         ));
         
         // Route pour récupérer le profil
         register_rest_route('ot-contributor/v1', '/profile/(?P<id>\d+)', array(
-            'methods' => 'GET',
+            'methods' => array('GET', 'OPTIONS'),
             'callback' => array($this, 'get_contributor_profile'),
             'permission_callback' => array($this, 'check_contributor_permission')
         ));
+        
+        error_log('OT Contributor API routes registered');
     }
     
     public function register_contributor($request) {
         global $wpdb;
+        
+        error_log('Registration attempt: ' . print_r($request->get_params(), true));
         
         $name = sanitize_text_field($request->get_param('name'));
         $email = sanitize_email($request->get_param('email'));
@@ -114,6 +138,7 @@ class OTContributor {
         $bio = sanitize_textarea_field($request->get_param('bio'));
         
         if (empty($name) || empty($email) || empty($password) || empty($type)) {
+            error_log('Missing required fields for registration');
             return new WP_Error('missing_fields', 'Tous les champs requis doivent être remplis', array('status' => 400));
         }
         
@@ -125,6 +150,7 @@ class OTContributor {
         ));
         
         if ($existing_user) {
+            error_log('Email already exists: ' . $email);
             return new WP_Error('email_exists', 'Cet email est déjà utilisé', array('status' => 409));
         }
         
@@ -146,13 +172,17 @@ class OTContributor {
         );
         
         if ($result === false) {
+            error_log('Database error during registration: ' . $wpdb->last_error);
             return new WP_Error('db_error', 'Erreur lors de l\'inscription', array('status' => 500));
         }
+        
+        $contributor_id = $wpdb->insert_id;
+        error_log('New contributor registered with ID: ' . $contributor_id);
         
         return array(
             'success' => true,
             'message' => 'Inscription réussie. Votre compte est en attente de validation.',
-            'contributor_id' => $wpdb->insert_id
+            'contributor_id' => $contributor_id
         );
     }
     
@@ -162,22 +192,33 @@ class OTContributor {
         $email = sanitize_email($request->get_param('email'));
         $password = $request->get_param('password');
         
+        error_log('Login attempt for email: ' . $email);
+        
         $table_name = $wpdb->prefix . 'ot_contributors';
         $contributor = $wpdb->get_row($wpdb->prepare(
             "SELECT * FROM $table_name WHERE email = %s",
             $email
         ));
         
-        if (!$contributor || !wp_check_password($password, $contributor->password)) {
+        if (!$contributor) {
+            error_log('User not found: ' . $email);
+            return new WP_Error('invalid_credentials', 'Email ou mot de passe incorrect', array('status' => 401));
+        }
+        
+        if (!wp_check_password($password, $contributor->password)) {
+            error_log('Invalid password for user: ' . $email);
             return new WP_Error('invalid_credentials', 'Email ou mot de passe incorrect', array('status' => 401));
         }
         
         if ($contributor->status !== 'approved') {
+            error_log('Account not approved for user: ' . $email);
             return new WP_Error('account_pending', 'Votre compte est en attente de validation', array('status' => 403));
         }
         
         // Générer un token simple (en production, utilisez JWT)
         $token = wp_generate_password(32, false);
+        
+        error_log('Successful login for user: ' . $email);
         
         return array(
             'success' => true,
@@ -188,6 +229,7 @@ class OTContributor {
                 'email' => $contributor->email,
                 'type' => $contributor->type,
                 'location' => $contributor->location,
+                'bio' => $contributor->bio,
                 'points' => $contributor->points
             )
         );

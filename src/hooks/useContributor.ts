@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { contributorApi, type ContributorProfile, type Contribution, type ContributionSubmission, type MonthlyRanking } from '../services/contributorApi';
@@ -13,6 +12,8 @@ export const useContributor = () => {
     const isAuth = contributorApi.isAuthenticated();
     const user = contributorApi.getCurrentUser();
     
+    console.log('Vérification auth:', { isAuth, user });
+    
     if (isAuth && user) {
       setCurrentUser(user);
       setIsAuthenticated(true);
@@ -21,14 +22,25 @@ export const useContributor = () => {
 
   // Fonction d'authentification avec redirection vers le tableau de bord
   const login = async (email: string, password: string) => {
-    const user = await contributorApi.login(email, password);
-    setCurrentUser(user);
-    setIsAuthenticated(true);
+    console.log('Tentative de connexion avec useContributor');
     
-    // Rediriger vers le tableau de bord après connexion
-    window.location.href = '/dashboard-contributeur';
-    
-    return user;
+    try {
+      const user = await contributorApi.login(email, password);
+      console.log('Utilisateur connecté:', user);
+      
+      setCurrentUser(user);
+      setIsAuthenticated(true);
+      
+      // Rediriger vers le tableau de bord après connexion
+      setTimeout(() => {
+        window.location.href = '/dashboard-contributeur';
+      }, 1500);
+      
+      return user;
+    } catch (error) {
+      console.error('Erreur dans useContributor.login:', error);
+      throw error;
+    }
   };
 
   // Fonction de déconnexion
