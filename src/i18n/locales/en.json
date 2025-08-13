@@ -14,6 +14,7 @@
     "title": "VISIT CONGO",
     "subtitle": "Discover the authentic beauty of the Democratic Republic of Congo",
     "welcome": "Welcome to VISIT CONGO",
+    "tagline": "The premier online tourism site to discover the DRC in all its splendor.",
     "heroText": "Dive into an extraordinary journey through the natural wonders, cultural richness and breathtaking landscapes of the Democratic Republic of Congo.",
     "heroDescription": "Dive into an extraordinary journey through the natural wonders, cultural richness and breathtaking landscapes of the DRC.",
     "aboutTitle": "Our Mission",
@@ -22,7 +23,17 @@
     "joinExplorers": "Join Explorers",
     "addContent": "Add Content",
     "discoverMore": "Discover more",
-    "exploreNow": "Explore now"
+    "exploreNow": "Explore now",
+    "featuredArticles": "Featured Articles",
+    "discoverMonth": "Discovery of the Month",
+    "discovery": "Discovery",
+    "provinces": "Provinces",
+    "toDiscover": "To discover",
+    "stats": {
+      "provinces": "26 Provinces",
+      "photos": "500+ Photos",
+      "documentaries": "50+ Documentaries"
+    }
   },
   "hero": {
     "title": "Discover DRC like never before",

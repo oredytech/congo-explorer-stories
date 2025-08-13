@@ -36,6 +36,21 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, [backgroundApi]);
 
+  // Synchronisation des carousels - le fond suit le carousel principal avec un léger décalage
+  useEffect(() => {
+    if (!api || !backgroundApi) return;
+
+    const onMainCarouselSelect = () => {
+      // Synchroniser avec un petit décalage pour créer un effet de parallaxe
+      setTimeout(() => {
+        backgroundApi.scrollNext();
+      }, 500);
+    };
+
+    api.on('select', onMainCarouselSelect);
+    return () => api.off('select', onMainCarouselSelect);
+  }, [api, backgroundApi]);
+
   // Utiliser les 20 dernières images de la galerie ou images par défaut
   const displayImages = galleryItems.length > 0 
     ? galleryItems.slice(0, 20).map(item => ({
@@ -79,7 +94,7 @@ const HeroSection = () => {
 
   return (
     <section className="relative overflow-hidden py-20">
-      {/* Background Image Slider with very low opacity */}
+      {/* Background Image Slider with parallax effect */}
       <div className="absolute inset-0 z-0">
         <Carousel 
           setApi={setBackgroundApi}
@@ -96,12 +111,13 @@ const HeroSection = () => {
                   <img
                     src={image.src}
                     alt={image.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-1000 ease-out transform scale-105"
                     onError={(e) => {
                       e.currentTarget.src = "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=1920&h=1080&fit=crop";
                     }}
                   />
-                  <div className="absolute inset-0 bg-congo-beige/95"></div>
+                  {/* Overlay avec opacité dosée pour la lisibilité */}
+                  <div className="absolute inset-0 bg-congo-beige/90"></div>
                 </div>
               </CarouselItem>
             ))}
@@ -110,7 +126,7 @@ const HeroSection = () => {
       </div>
 
       {/* Gradient overlay for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-br from-congo-beige/90 via-congo-beige/85 to-congo-beige/80 z-10"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-congo-beige/85 via-congo-beige/80 to-congo-beige/75 z-10"></div>
 
       {/* Main content */}
       <div className="container mx-auto px-4 relative z-20">
@@ -128,7 +144,7 @@ const HeroSection = () => {
                   {t('home.title')}
                 </h1>
                 <p className="text-xl text-congo-green font-medium mb-6 italic">
-                  Premier site du tourisme en ligne pour vous faire découvrir la RDC dans toute sa splendeur.
+                  {t('home.tagline')}
                 </p>
                 <p className="text-xl text-congo-brown/80 leading-relaxed mb-8">
                   {t('home.subtitle')}
@@ -158,15 +174,15 @@ const HeroSection = () => {
               <div className="flex items-center space-x-8 text-sm text-congo-brown/60">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-congo-green rounded-full"></div>
-                  <span>26 Provinces</span>
+                  <span>{t('home.stats.provinces')}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-yellow-600 rounded-full"></div>
-                  <span>500+ Photos</span>
+                  <span>{t('home.stats.photos')}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                  <span>50+ Documentaires</span>
+                  <span>{t('home.stats.documentaries')}</span>
                 </div>
               </div>
             </motion.div>
@@ -193,7 +209,7 @@ const HeroSection = () => {
                         <img
                           src={image.src}
                           alt={image.title}
-                          className="w-full h-96 object-cover"
+                          className="w-full h-96 object-cover transition-transform duration-300 hover:scale-105"
                           onError={(e) => {
                             e.currentTarget.src = "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&h=600&fit=crop";
                           }}
@@ -203,7 +219,7 @@ const HeroSection = () => {
                         {/* Image info overlay */}
                         <div className="absolute bottom-4 left-4 right-4 text-white">
                           <div className="bg-congo-green text-white px-3 py-1 rounded-full text-xs font-medium mb-2 inline-block">
-                            Découverte
+                            {t('home.discovery')}
                           </div>
                           <h3 className="text-lg font-bold mb-2 line-clamp-2">
                             {image.title}
@@ -222,14 +238,14 @@ const HeroSection = () => {
               <div className="absolute -top-4 -right-4 bg-congo-beige rounded-full p-4 shadow-lg border border-congo-brown/10">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-congo-green">26</div>
-                  <div className="text-xs text-congo-brown">Provinces</div>
+                  <div className="text-xs text-congo-brown">{t('home.provinces')}</div>
                 </div>
               </div>
               
               <div className="absolute -bottom-4 -left-4 bg-congo-beige rounded-full p-4 shadow-lg border border-congo-brown/10">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-congo-brown">RDC</div>
-                  <div className="text-xs text-congo-brown/70">À découvrir</div>
+                  <div className="text-xs text-congo-brown/70">{t('home.toDiscover')}</div>
                 </div>
               </div>
             </motion.div>

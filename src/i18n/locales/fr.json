@@ -14,6 +14,7 @@
     "title": "VISITE CONGO",
     "subtitle": "Découvrez la beauté authentique de la République Démocratique du Congo",
     "welcome": "Bienvenue sur VISITE CONGO",
+    "tagline": "Premier site du tourisme en ligne pour vous faire découvrir la RDC dans toute sa splendeur.",
     "heroText": "Plongez dans un voyage extraordinaire à travers les merveilles naturelles, la richesse culturelle et les paysages époustouflants de la République Démocratique du Congo.",
     "heroDescription": "Plongez dans un voyage extraordinaire à travers les merveilles naturelles, la richesse culturelle et les paysages époustouflants de la RDC.",
     "aboutTitle": "Notre Mission",
@@ -22,7 +23,17 @@
     "joinExplorers": "Rejoindre les Explorateurs",
     "addContent": "Ajouter du Contenu",
     "discoverMore": "Découvrir plus",
-    "exploreNow": "Explorer maintenant"
+    "exploreNow": "Explorer maintenant",
+    "featuredArticles": "Articles en Vedette",
+    "discoverMonth": "Découverte du Mois",
+    "discovery": "Découverte",
+    "provinces": "Provinces",
+    "toDiscover": "À découvrir",
+    "stats": {
+      "provinces": "26 Provinces",
+      "photos": "500+ Photos",
+      "documentaries": "50+ Documentaires"
+    }
   },
   "hero": {
     "title": "Découvrez la RDC comme jamais auparavant",
