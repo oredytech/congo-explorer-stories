@@ -38,6 +38,15 @@ export interface ContributionSubmission {
   tags: string;
 }
 
+export interface RegistrationData {
+  name: string;
+  email: string;
+  password: string;
+  type: 'photographer' | 'videographer' | 'blogger';
+  location: string;
+  bio?: string;
+}
+
 export interface MonthlyRanking {
   position: number;
   contributor: {
@@ -52,32 +61,97 @@ export interface MonthlyRanking {
 }
 
 class ContributorApiService {
+  // Inscription
+  async register(data: RegistrationData): Promise<{ success: boolean; message: string; contributor_id: number }> {
+    try {
+      const response = await fetch(`${API_BASE}/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Erreur lors de l\'inscription');
+      }
+
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      // Fallback vers localStorage pour la démonstration
+      const contributor = {
+        ...data,
+        id: Date.now(),
+        status: 'pending',
+        createdAt: new Date().toISOString()
+      };
+      
+      localStorage.setItem('pending_contributor', JSON.stringify(contributor));
+      
+      return {
+        success: true,
+        message: 'Inscription réussie. Votre compte est en attente de validation.',
+        contributor_id: contributor.id
+      };
+    }
+  }
+
   // Authentification
   async login(email: string, password: string): Promise<ContributorProfile> {
-    // Vérifier d'abord le localStorage pour la démo
-    const user = localStorage.getItem('ot_contributor_user');
-    if (user) {
-      return JSON.parse(user);
+    try {
+      const response = await fetch(`${API_BASE}/auth`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        // Fallback vers localStorage pour la démonstration
+        const pendingContributor = localStorage.getItem('pending_contributor');
+        if (pendingContributor) {
+          const contributor = JSON.parse(pendingContributor);
+          if (contributor.email === email && contributor.password === password) {
+            const user = {
+              id: contributor.id.toString(),
+              name: contributor.name,
+              email: contributor.email,
+              type: contributor.type,
+              points: 0,
+              contributions: 0,
+              rank: 1,
+              location: contributor.location,
+              bio: contributor.bio,
+              joinDate: new Date(contributor.createdAt).toLocaleDateString('fr-FR')
+            };
+            
+            localStorage.setItem('ot_contributor_user', JSON.stringify(user));
+            localStorage.setItem('ot_contributor_token', 'demo_token_' + contributor.id);
+            
+            return user;
+          }
+        }
+        throw new Error('Identifiants incorrects');
+      }
+
+      const data = await response.json();
+      
+      localStorage.setItem('ot_contributor_user', JSON.stringify(data.user));
+      localStorage.setItem('ot_contributor_token', data.token);
+      
+      return {
+        ...data.user,
+        id: data.user.id.toString(),
+        contributions: 0,
+        rank: 1,
+        joinDate: new Date().toLocaleDateString('fr-FR')
+      };
+    } catch (error) {
+      throw new Error('Erreur de connexion');
     }
-
-    const response = await fetch(`${API_BASE}/auth`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (!response.ok) {
-      throw new Error('Échec de l\'authentification');
-    }
-
-    const data = await response.json();
-    
-    localStorage.setItem('ot_contributor_user', JSON.stringify(data.user));
-    localStorage.setItem('ot_contributor_token', data.token);
-    
-    return data.user;
   }
 
   // Récupérer le profil utilisateur
@@ -88,49 +162,70 @@ class ContributorApiService {
       return JSON.parse(user);
     }
 
-    const response = await fetch(`${API_BASE}/profile/${contributorId}`);
-    
-    if (!response.ok) {
+    try {
+      const response = await fetch(`${API_BASE}/profile/${contributorId}`);
+      
+      if (!response.ok) {
+        throw new Error('Erreur lors du chargement du profil');
+      }
+      
+      return response.json();
+    } catch (error) {
       throw new Error('Erreur lors du chargement du profil');
     }
-    
-    return response.json();
   }
 
   // Soumettre une contribution
   async submitContribution(data: ContributionSubmission): Promise<{ success: boolean; message: string; contribution_id: number }> {
-    const user = JSON.parse(localStorage.getItem('ot_contributor_user') || '{}');
-    
-    // Créer la contribution
-    const contribution: Contribution = {
-      id: Date.now().toString(),
-      title: data.title,
-      type: data.type,
-      url: data.url,
-      description: data.description,
-      province: data.province,
-      tags: data.tags,
-      status: 'pending',
-      points: 0,
-      createdAt: new Date().toLocaleString('fr-FR'),
-      contributorName: user.name || 'Contributeur Anonyme'
-    };
+    try {
+      const response = await fetch(`${API_BASE}/contribute`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('ot_contributor_token'),
+        },
+        body: JSON.stringify(data),
+      });
 
-    // Sauvegarder dans localStorage
-    const existingContributions = JSON.parse(localStorage.getItem('contributions') || '[]');
-    existingContributions.push(contribution);
-    localStorage.setItem('contributions', JSON.stringify(existingContributions));
+      if (!response.ok) {
+        throw new Error('Erreur lors de la soumission');
+      }
 
-    // Mettre à jour les contributions de l'utilisateur
-    const userContributions = JSON.parse(localStorage.getItem(`user_contributions_${user.id}`) || '[]');
-    userContributions.push(contribution);
-    localStorage.setItem(`user_contributions_${user.id}`, JSON.stringify(userContributions));
+      return response.json();
+    } catch (error) {
+      // Fallback vers localStorage pour la démonstration
+      const user = JSON.parse(localStorage.getItem('ot_contributor_user') || '{}');
+      
+      const contribution: Contribution = {
+        id: Date.now().toString(),
+        title: data.title,
+        type: data.type,
+        url: data.url,
+        description: data.description,
+        province: data.province,
+        tags: data.tags,
+        status: 'pending',
+        points: 0,
+        createdAt: new Date().toLocaleString('fr-FR'),
+        contributorName: user.name || 'Contributeur Anonyme'
+      };
 
-    return {
-      success: true,
-      message: 'Contribution soumise avec succès',
-      contribution_id: parseInt(contribution.id)
-    };
+      // Sauvegarder dans localStorage
+      const existingContributions = JSON.parse(localStorage.getItem('contributions') || '[]');
+      existingContributions.push(contribution);
+      localStorage.setItem('contributions', JSON.stringify(existingContributions));
+
+      // Mettre à jour les contributions de l'utilisateur
+      const userContributions = JSON.parse(localStorage.getItem(`user_contributions_${user.id}`) || '[]');
+      userContributions.push(contribution);
+      localStorage.setItem(`user_contributions_${user.id}`, JSON.stringify(userContributions));
+
+      return {
+        success: true,
+        message: 'Contribution soumise avec succès',
+        contribution_id: parseInt(contribution.id)
+      };
+    }
   }
 
   // Récupérer les contributions de l'utilisateur

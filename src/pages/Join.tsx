@@ -1,4 +1,6 @@
+
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import VolunteerProtocolSection from '@/components/join/VolunteerProtocolSection';
 import { Button } from '@/components/ui/button';
@@ -6,15 +8,16 @@ import { UserPlus, ArrowRight } from 'lucide-react';
 
 const Join = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const handleJoinClick = () => {
-    // This will be connected to the registration form later
-    console.log('Redirecting to registration form...');
+    // Rediriger vers la page d'inscription du contributeur
+    navigate('/ajouter');
   };
 
   return (
     <Layout>
-      <div className="py-8 md:py-16 bg-congo-beige min-h-screen">
+      <div className="py-8 md:py-16 bg-congo-beige min-h-screen w-full">
         <div className="container mx-auto px-4 max-w-6xl">
           {/* Header */}
           <div className="text-center mb-12 md:mb-16">
@@ -50,7 +53,7 @@ const Join = () => {
                   size="lg"
                   className="w-full md:w-auto text-lg px-8 py-4 bg-congo-green hover:bg-congo-green/90 text-congo-beige"
                 >
-                  Postuler maintenant
+                  Rejoindre
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 

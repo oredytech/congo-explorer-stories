@@ -8,6 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Camera, Video, PenTool, Loader2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { contributorApi, type RegistrationData } from '@/services/contributorApi';
 
 interface RegistrationFormProps {
   onSuccess: () => void;
@@ -59,20 +60,20 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
     setIsLoading(true);
 
     try {
-      // Simulation d'inscription réussie
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Stocker temporairement les données pour la démonstration
-      localStorage.setItem('pending_contributor', JSON.stringify({
-        ...registerForm,
-        id: Date.now(),
-        status: 'pending',
-        createdAt: new Date().toISOString()
-      }));
+      const registrationData: RegistrationData = {
+        name: registerForm.name,
+        email: registerForm.email,
+        password: registerForm.password,
+        type: registerForm.type,
+        location: registerForm.location,
+        bio: registerForm.bio
+      };
+
+      const result = await contributorApi.register(registrationData);
       
       toast({
         title: "Inscription réussie !",
-        description: "Votre compte a été créé. Vous pouvez maintenant vous connecter.",
+        description: result.message,
       });
       
       // Rediriger vers la connexion
@@ -81,7 +82,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
     } catch (error) {
       toast({
         title: "Erreur d'inscription",
-        description: "Impossible de créer votre compte. Réessayez.",
+        description: error instanceof Error ? error.message : "Impossible de créer votre compte. Réessayez.",
         variant: "destructive"
       });
     } finally {
@@ -107,7 +108,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
               onChange={(e) => setRegisterForm(prev => ({ ...prev, name: e.target.value }))}
               placeholder="Jean Mukendi"
               required
-              className="bg-white/90 border-congo-brown/30 text-congo-brown placeholder:text-congo-brown/60"
+              className="bg-white border-congo-brown/30 text-congo-brown placeholder:text-congo-brown/60"
             />
           </div>
 
@@ -120,7 +121,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
               onChange={(e) => setRegisterForm(prev => ({ ...prev, email: e.target.value }))}
               placeholder="jean@example.com"
               required
-              className="bg-white/90 border-congo-brown/30 text-congo-brown placeholder:text-congo-brown/60"
+              className="bg-white border-congo-brown/30 text-congo-brown placeholder:text-congo-brown/60"
             />
           </div>
 
@@ -139,7 +140,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                   className={`p-3 border rounded-lg flex flex-col items-center space-y-1 text-xs transition-colors ${
                     registerForm.type === type 
                       ? 'border-congo-green bg-congo-green/20 text-congo-brown' 
-                      : 'border-congo-brown/30 hover:border-congo-green text-congo-brown/80 bg-white/50'
+                      : 'border-congo-brown/30 hover:border-congo-green text-congo-brown/80 bg-white'
                   }`}
                 >
                   <Icon className="h-4 w-4" />
@@ -152,7 +153,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
           <div className="space-y-2">
             <Label className="text-congo-brown">Province</Label>
             <Select value={registerForm.location} onValueChange={(value) => setRegisterForm(prev => ({ ...prev, location: value }))}>
-              <SelectTrigger className="bg-white/90 border-congo-brown/30 text-congo-brown">
+              <SelectTrigger className="bg-white border-congo-brown/30 text-congo-brown">
                 <SelectValue placeholder="Sélectionnez votre province" />
               </SelectTrigger>
               <SelectContent className="bg-white border-congo-brown/30">
@@ -171,7 +172,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
               onChange={(e) => setRegisterForm(prev => ({ ...prev, bio: e.target.value }))}
               placeholder="Parlez-nous de votre passion..."
               rows={3}
-              className="bg-white/90 border-congo-brown/30 text-congo-brown placeholder:text-congo-brown/60"
+              className="bg-white border-congo-brown/30 text-congo-brown placeholder:text-congo-brown/60"
             />
           </div>
 
@@ -184,7 +185,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
               onChange={(e) => setRegisterForm(prev => ({ ...prev, password: e.target.value }))}
               placeholder="••••••••"
               required
-              className="bg-white/90 border-congo-brown/30 text-congo-brown"
+              className="bg-white border-congo-brown/30 text-congo-brown"
             />
           </div>
 
@@ -197,7 +198,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
               onChange={(e) => setRegisterForm(prev => ({ ...prev, confirmPassword: e.target.value }))}
               placeholder="••••••••"
               required
-              className="bg-white/90 border-congo-brown/30 text-congo-brown"
+              className="bg-white border-congo-brown/30 text-congo-brown"
             />
           </div>
 
