@@ -1,3 +1,4 @@
+
 const API_BASE = 'https://visitecongo.com/wp-json/ot-contributor/v1';
 
 export interface ContributorProfile {
@@ -103,86 +104,8 @@ export const contributorApi = {
       return result;
       
     } catch (error) {
-      console.error('Erreur d\'inscription complète:', error);
-      
-      // Si c'est une erreur réseau ou CORS, on essaie une approche alternative
-      if (error instanceof TypeError || error.message.includes('fetch')) {
-        console.log('Tentative avec approche alternative pour CORS...');
-        
-        try {
-          // Créer un formulaire pour contourner les restrictions CORS
-          const formData = new FormData();
-          formData.append('action', 'ot_contributor_register');
-          formData.append('name', data.name);
-          formData.append('email', data.email);
-          formData.append('password', data.password);
-          formData.append('type', data.type);
-          formData.append('location', data.location || '');
-          formData.append('bio', data.bio || '');
-          
-          const alternativeResponse = await fetch('https://visitecongo.com/wp-admin/admin-ajax.php', {
-            method: 'POST',
-            body: formData,
-          });
-          
-          if (alternativeResponse.ok) {
-            const altResult = await alternativeResponse.json();
-            if (altResult.success) {
-              return { success: true, message: 'Inscription réussie via méthode alternative', contributor_id: altResult.data.id };
-            }
-          }
-        } catch (altError) {
-          console.error('Erreur méthode alternative:', altError);
-        }
-      }
-      
-      // Fallback: stockage local temporaire et notification
-      console.log('Utilisation du fallback local...');
-      const contributors = JSON.parse(localStorage.getItem('contributors') || '[]');
-      const newContributor = {
-        ...data,
-        id: Date.now(),
-        points: 0,
-        contributions: 0,
-        rank: contributors.length + 1,
-        joinDate: new Date().toISOString(),
-        status: 'pending'
-      };
-      contributors.push(newContributor);
-      localStorage.setItem('contributors', JSON.stringify(contributors));
-      
-      // Envoyer les données par email comme backup
-      try {
-        const emailData = {
-          to: 'admin@visitecongo.com',
-          subject: 'Nouvelle inscription contributeur (Backup)',
-          message: `
-            Nouvelle inscription de contributeur:
-            - Nom: ${data.name}
-            - Email: ${data.email}
-            - Type: ${data.type}
-            - Localisation: ${data.location}
-            - Bio: ${data.bio}
-            
-            Cette inscription a été sauvegardée localement car l'API n'était pas accessible.
-          `
-        };
-        
-        // Tentative d'envoi par email
-        await fetch('https://visitecongo.com/wp-json/wp/v2/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(emailData)
-        });
-      } catch (emailError) {
-        console.error('Impossible d\'envoyer l\'email de backup:', emailError);
-      }
-      
-      return { 
-        success: true, 
-        message: 'Inscription enregistrée. Votre compte sera créé dès que la connexion sera rétablie.', 
-        contributor_id: newContributor.id 
-      };
+      console.error('Erreur d\'inscription:', error);
+      throw error; // Ne pas utiliser de fallback, laisser l'erreur remonter
     }
   },
 
@@ -213,19 +136,7 @@ export const contributorApi = {
       return result.user;
     } catch (error) {
       console.error('Erreur d\'authentification:', error);
-      // Fallback pour les données locales
-      const contributors = JSON.parse(localStorage.getItem('contributors') || '[]');
-      const contributor = contributors.find((c: any) => c.email === email);
-      
-      if (contributor && contributor.password === password) {
-        const token = `local_${contributor.id}_${Date.now()}`;
-        localStorage.setItem('contributor_token', token);
-        localStorage.setItem('contributor_user', JSON.stringify(contributor));
-        
-        return contributor;
-      }
-      
-      throw new Error('Email ou mot de passe incorrect');
+      throw error;
     }
   },
 
@@ -245,13 +156,7 @@ export const contributorApi = {
       return await response.json();
     } catch (error) {
       console.error('Erreur profil:', error);
-      // Fallback local
-      const contributors = JSON.parse(localStorage.getItem('contributors') || '[]');
-      const contributor = contributors.find((c: any) => c.id === id);
-      if (!contributor) {
-        throw new Error('Contributeur non trouvé');
-      }
-      return contributor;
+      throw error;
     }
   },
 
@@ -276,24 +181,7 @@ export const contributorApi = {
       return await response.json();
     } catch (error) {
       console.error('Erreur soumission:', error);
-      // Fallback local
-      const contributions = JSON.parse(localStorage.getItem('contributions') || '[]');
-      const user = JSON.parse(localStorage.getItem('contributor_user') || '{}');
-      
-      const newContribution = {
-        ...data,
-        id: Date.now(),
-        contributor_id: user.id,
-        status: 'pending',
-        points: 0,
-        createdAt: new Date().toISOString(),
-        contributorName: user.name
-      };
-      
-      contributions.push(newContribution);
-      localStorage.setItem('contributions', JSON.stringify(contributions));
-      
-      return { success: true, contribution_id: newContribution.id };
+      throw error;
     }
   },
 
@@ -313,9 +201,7 @@ export const contributorApi = {
       return await response.json();
     } catch (error) {
       console.error('Erreur contributions:', error);
-      // Fallback local
-      const contributions = JSON.parse(localStorage.getItem('contributions') || '[]');
-      return contributions.filter((c: any) => c.contributor_id === userId);
+      return []; // Retourner un tableau vide en cas d'erreur
     }
   },
 
@@ -339,7 +225,7 @@ export const contributorApi = {
       return await response.json();
     } catch (error) {
       console.error('Erreur classements:', error);
-      // Fallback local
+      // Retourner des données de démonstration en cas d'erreur
       return [
         {
           position: 1,
@@ -381,9 +267,7 @@ export const contributorApi = {
       return await response.json();
     } catch (error) {
       console.error('Erreur upload:', error);
-      // Fallback: créer une URL locale temporaire
-      const url = URL.createObjectURL(file);
-      return { url };
+      throw error;
     }
   },
 

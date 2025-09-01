@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -77,7 +76,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
       if (result.success) {
         toast({
           title: "Inscription réussie !",
-          description: result.message || "Votre compte a été créé avec succès.",
+          description: result.message || "Votre compte a été créé avec succès. Il est en attente de validation.",
           action: <CheckCircle className="h-4 w-4 text-green-500" />
         });
         
@@ -104,18 +103,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
       console.error('Erreur lors de l\'inscription:', error);
       
       toast({
-        title: "Problème d'inscription",
-        description: error instanceof Error ? error.message : "Votre inscription a été sauvegardée et sera traitée dès que possible.",
-        variant: error instanceof Error && error.message.includes('serveur') ? "destructive" : "default",
-        action: <AlertCircle className="h-4 w-4 text-amber-500" />
+        title: "Erreur d'inscription",
+        description: error instanceof Error ? error.message : "Une erreur s'est produite lors de l'inscription.",
+        variant: "destructive",
+        action: <AlertCircle className="h-4 w-4 text-red-500" />
       });
-      
-      // Si c'est une erreur de fallback (pas vraiment une erreur), on peut rediriger
-      if (!(error instanceof Error) || !error.message.includes('serveur')) {
-        setTimeout(() => {
-          onSuccess();
-        }, 3000);
-      }
     } finally {
       setIsLoading(false);
     }
