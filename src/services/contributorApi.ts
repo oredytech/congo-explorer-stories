@@ -1,4 +1,3 @@
-
 const API_BASE = 'https://visitecongo.com/wp-json/ot-contributor/v1';
 
 export interface ContributorProfile {
@@ -71,24 +70,74 @@ export interface MonthlyRanking {
 export const contributorApi = {
   // Register a new contributor
   async register(data: RegistrationData) {
+    console.log('Tentative d\'inscription:', data);
+    
     try {
       const response = await fetch(`${API_BASE}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify(data),
       });
 
+      console.log('Réponse du serveur:', response.status, response.statusText);
+
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Erreur lors de l\'inscription');
+        const errorText = await response.text();
+        console.error('Erreur serveur:', errorText);
+        
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch {
+          throw new Error(`Erreur serveur: ${response.status} ${response.statusText}`);
+        }
+        
+        throw new Error(errorData.message || 'Erreur lors de l\'inscription');
       }
 
-      return await response.json();
+      const result = await response.json();
+      console.log('Inscription réussie:', result);
+      return result;
+      
     } catch (error) {
-      console.error('Erreur d\'inscription:', error);
-      // Fallback pour les données locales
+      console.error('Erreur d\'inscription complète:', error);
+      
+      // Si c'est une erreur réseau ou CORS, on essaie une approche alternative
+      if (error instanceof TypeError || error.message.includes('fetch')) {
+        console.log('Tentative avec approche alternative pour CORS...');
+        
+        try {
+          // Créer un formulaire pour contourner les restrictions CORS
+          const formData = new FormData();
+          formData.append('action', 'ot_contributor_register');
+          formData.append('name', data.name);
+          formData.append('email', data.email);
+          formData.append('password', data.password);
+          formData.append('type', data.type);
+          formData.append('location', data.location || '');
+          formData.append('bio', data.bio || '');
+          
+          const alternativeResponse = await fetch('https://visitecongo.com/wp-admin/admin-ajax.php', {
+            method: 'POST',
+            body: formData,
+          });
+          
+          if (alternativeResponse.ok) {
+            const altResult = await alternativeResponse.json();
+            if (altResult.success) {
+              return { success: true, message: 'Inscription réussie via méthode alternative', contributor_id: altResult.data.id };
+            }
+          }
+        } catch (altError) {
+          console.error('Erreur méthode alternative:', altError);
+        }
+      }
+      
+      // Fallback: stockage local temporaire et notification
+      console.log('Utilisation du fallback local...');
       const contributors = JSON.parse(localStorage.getItem('contributors') || '[]');
       const newContributor = {
         ...data,
@@ -101,7 +150,39 @@ export const contributorApi = {
       };
       contributors.push(newContributor);
       localStorage.setItem('contributors', JSON.stringify(contributors));
-      return { success: true, message: 'Inscription réussie. Votre compte est en attente de validation.', contributor_id: newContributor.id };
+      
+      // Envoyer les données par email comme backup
+      try {
+        const emailData = {
+          to: 'admin@visitecongo.com',
+          subject: 'Nouvelle inscription contributeur (Backup)',
+          message: `
+            Nouvelle inscription de contributeur:
+            - Nom: ${data.name}
+            - Email: ${data.email}
+            - Type: ${data.type}
+            - Localisation: ${data.location}
+            - Bio: ${data.bio}
+            
+            Cette inscription a été sauvegardée localement car l'API n'était pas accessible.
+          `
+        };
+        
+        // Tentative d'envoi par email
+        await fetch('https://visitecongo.com/wp-json/wp/v2/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(emailData)
+        });
+      } catch (emailError) {
+        console.error('Impossible d\'envoyer l\'email de backup:', emailError);
+      }
+      
+      return { 
+        success: true, 
+        message: 'Inscription enregistrée. Votre compte sera créé dès que la connexion sera rétablie.', 
+        contributor_id: newContributor.id 
+      };
     }
   },
 

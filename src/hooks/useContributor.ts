@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { contributorApi, type ContributorProfile, type Contribution, type ContributionSubmission, type MonthlyRanking } from '../services/contributorApi';
+import { useContributorSync } from './useContributorSync';
 
 export const useContributor = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState<ContributorProfile | null>(null);
   const queryClient = useQueryClient();
+  
+  // Utiliser la synchronisation automatique
+  useContributorSync();
 
   // Vérifier l'authentification au chargement
   useEffect(() => {
