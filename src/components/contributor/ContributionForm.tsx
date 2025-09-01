@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -133,14 +132,14 @@ export const ContributionForm: React.FC<ContributionFormProps> = ({ onClose }) =
   };
 
   return (
-    <Card className="border-0 shadow-none">
-      <CardHeader className="flex flex-row items-center justify-between">
+    <Card className="border-0 shadow-lg bg-white">
+      <CardHeader className="flex flex-row items-center justify-between bg-white border-b border-congo-brown/10">
         <CardTitle className="text-congo-brown">Nouvelle contribution</CardTitle>
-        <Button variant="ghost" size="sm" onClick={onClose} className="text-congo-brown">
+        <Button variant="ghost" size="sm" onClick={onClose} className="text-congo-brown hover:bg-congo-brown/10">
           <X className="h-4 w-4" />
         </Button>
       </CardHeader>
-      <CardContent>
+      <CardContent className="bg-white">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="title" className="text-congo-brown">Titre *</Label>
