@@ -1,4 +1,3 @@
-
 import { useTranslation } from 'react-i18next';
 import { ArrowRight, Camera, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -116,8 +115,8 @@ const HeroSection = () => {
                       e.currentTarget.src = "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=1920&h=1080&fit=crop";
                     }}
                   />
-                  {/* Overlay avec opacité dosée pour la lisibilité */}
-                  <div className="absolute inset-0 bg-congo-beige/90"></div>
+                  {/* Overlay avec opacité réduite pour plus de visibilité des images */}
+                  <div className="absolute inset-0 bg-congo-beige/60"></div>
                 </div>
               </CarouselItem>
             ))}
@@ -125,8 +124,8 @@ const HeroSection = () => {
         </Carousel>
       </div>
 
-      {/* Gradient overlay for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-br from-congo-beige/85 via-congo-beige/80 to-congo-beige/75 z-10"></div>
+      {/* Gradient overlay for better text readability with reduced opacity */}
+      <div className="absolute inset-0 bg-gradient-to-br from-congo-beige/40 via-congo-beige/30 to-congo-beige/35 z-10"></div>
 
       {/* Main content */}
       <div className="container mx-auto px-4 relative z-20">
