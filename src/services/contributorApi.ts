@@ -1,6 +1,6 @@
 
 // ⚠️ IMPORTANT: Remplacez cette URL par l'URL réelle de votre site WordPress
-const API_BASE = 'https://votresite-wordpress.com/wp-json/ot-contributor/v1';
+const API_BASE = 'https://visitcongo.net/wp-json/ot-contributor/v1';
 
 export interface ContributorProfile {
   id: number;
