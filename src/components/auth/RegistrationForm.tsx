@@ -68,17 +68,28 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
         bio: registerForm.bio
       };
 
-      console.log('Envoi des données d\'inscription:', registrationData);
+      console.log('📝 Envoi des données d\'inscription:', registrationData);
+      console.log('🔄 Démarrage de l\'inscription...');
+      
       const result = await contributorApi.register(registrationData);
       
-      console.log('Résultat de l\'inscription:', result);
+      console.log('📋 Résultat de l\'inscription:', result);
       
-      if (result.success) {
+      // Vérifier différents formats de réponse
+      const isSuccess = result?.success === true || result?.contributor_id;
+      
+      if (isSuccess) {
+        const successMessage = result?.message || 
+          "Votre inscription a été enregistrée avec succès ! Votre compte est en attente de validation par un administrateur. Vous recevrez une notification par email une fois votre compte approuvé.";
+        
         toast({
-          title: "Inscription réussie !",
-          description: result.message || "Votre compte a été créé avec succès. Il est en attente de validation.",
+          title: "🎉 Inscription réussie !",
+          description: successMessage,
+          duration: 8000, // Afficher plus longtemps
           action: <CheckCircle className="h-4 w-4 text-green-500" />
         });
+        
+        console.log('✅ Affichage de la notification de succès');
         
         // Réinitialiser le formulaire
         setRegisterForm({
@@ -91,21 +102,46 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
           bio: ''
         });
         
+        // Afficher une notification supplémentaire
+        setTimeout(() => {
+          toast({
+            title: "📧 Prochaines étapes",
+            description: "Surveillez votre boîte email pour les notifications de validation. En attendant, vous pouvez essayer de vous connecter une fois votre compte approuvé.",
+            duration: 6000,
+          });
+        }, 1000);
+        
         // Rediriger vers la connexion après un délai
         setTimeout(() => {
           onSuccess();
-        }, 2000);
+        }, 3000);
+        
       } else {
-        throw new Error(result.message || 'Erreur lors de l\'inscription');
+        console.warn('⚠️ Réponse inattendue du serveur:', result);
+        throw new Error(result?.message || result?.data?.message || 'Réponse inattendue du serveur');
       }
       
     } catch (error) {
-      console.error('Erreur lors de l\'inscription:', error);
+      console.error('💥 Erreur lors de l\'inscription:', error);
+      
+      let errorMessage = "Une erreur s'est produite lors de l'inscription.";
+      
+      if (error instanceof Error) {
+        errorMessage = error.message;
+        
+        // Messages d'erreur spécifiques
+        if (error.message.includes('email_exists') || error.message.includes('déjà utilisé')) {
+          errorMessage = "Cette adresse email est déjà utilisée. Veuillez utiliser une autre adresse ou essayer de vous connecter.";
+        } else if (error.message.includes('connexion') || error.message.includes('fetch')) {
+          errorMessage = "Impossible de contacter le serveur. Vérifiez votre connexion internet et réessayez.";
+        }
+      }
       
       toast({
-        title: "Erreur d'inscription",
-        description: error instanceof Error ? error.message : "Une erreur s'est produite lors de l'inscription.",
+        title: "❌ Erreur d'inscription",
+        description: errorMessage,
         variant: "destructive",
+        duration: 8000,
         action: <AlertCircle className="h-4 w-4 text-red-500" />
       });
     } finally {

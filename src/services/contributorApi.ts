@@ -72,10 +72,14 @@ export interface MonthlyRanking {
 export const contributorApi = {
   // Register a new contributor
   async register(data: RegistrationData) {
-    console.log('Tentative d\'inscription:', data);
+    console.log('🚀 Tentative d\'inscription:', data);
+    console.log('🔗 API_BASE utilisée:', API_BASE);
     
     try {
-      const response = await fetch(`${API_BASE}/register`, {
+      const url = `${API_BASE}/register`;
+      console.log('📡 URL complète:', url);
+      
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,29 +88,42 @@ export const contributorApi = {
         body: JSON.stringify(data),
       });
 
-      console.log('Réponse du serveur:', response.status, response.statusText);
+      console.log('📨 Réponse du serveur:', {
+        status: response.status,
+        statusText: response.statusText,
+        url: response.url,
+        headers: Object.fromEntries(response.headers.entries())
+      });
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Erreur serveur:', errorText);
+        console.error('❌ Erreur serveur (texte brut):', errorText);
         
         let errorData;
         try {
           errorData = JSON.parse(errorText);
-        } catch {
-          throw new Error(`Erreur serveur: ${response.status} ${response.statusText}`);
+          console.error('❌ Erreur serveur (JSON):', errorData);
+        } catch (parseError) {
+          console.error('❌ Impossible de parser la réponse d\'erreur:', parseError);
+          throw new Error(`Erreur serveur: ${response.status} ${response.statusText} - ${errorText.substring(0, 200)}`);
         }
         
-        throw new Error(errorData.message || 'Erreur lors de l\'inscription');
+        throw new Error(errorData.message || errorData.data?.message || 'Erreur lors de l\'inscription');
       }
 
       const result = await response.json();
-      console.log('Inscription réussie:', result);
+      console.log('✅ Inscription réussie:', result);
       return result;
       
     } catch (error) {
-      console.error('Erreur d\'inscription:', error);
-      throw error; // Ne pas utiliser de fallback, laisser l'erreur remonter
+      console.error('💥 Erreur d\'inscription complète:', error);
+      
+      // Vérifier si c'est une erreur réseau
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error('Erreur de connexion au serveur. Vérifiez votre connexion internet et l\'URL de l\'API.');
+      }
+      
+      throw error;
     }
   },
 
